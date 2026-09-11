@@ -238,68 +238,79 @@
         <a href="https://172.16.13.6:8443/lab/collection/#/login" target="_blank" class="link">Molulab (Extracciones)</a>
       </div>
 
-     <div class="rectangle">
+<div class="rectangle">
   <h2 class="news-title">Noticias</h2>
   
-  <!-- Contenedor del carrusel vertical -->
+  <!-- Contenedor visible para todas las noticias -->
   <div class="news-carousel-container">
-    <div class="news-carousel-wrapper" id="newsWrapper">
-      <!-- Noticia 1 -->
-      <div class="news-item">Buen Fin de Semana a Todo el Personal del Hospital</div>
-      <!-- Noticia 2 -->
+    <div class="news-carousel-wrapper" id="newsVerticalWrapper">
+      <div class="news-item active">Buen Fin de Semana a Todo el Personal del Hospital</div>
       <div class="news-item">Capacitación sobre Protocolos de Seguridad este Viernes</div>
-      <!-- Noticia 3 -->
       <div class="news-item">Recordatorio: Actualización de Credenciales en Capital Humano</div>
-      <!-- Noticia 4 -->
       <div class="news-item">Nuevo Menú Disponible en la Cafetería Central</div>
     </div>
   </div>
 </div>
 
-<!-- Estilos necesarios para el efecto vertical -->
 <style>
+  /* Mantiene visible todo el bloque de noticias */
   .news-carousel-container {
-    height: 50px; /* Ajusta según la altura deseada de tu noticia */
-    overflow: hidden;
-    position: relative;
+    width: 100%;
+    padding: 10px 0;
   }
 
   .news-carousel-wrapper {
     display: flex;
     flex-direction: column;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    gap: 8px;
+    transition: transform 0.8s ease-in-out;
   }
 
+  /* Estilo base para cada elemento visible */
   .news-item {
-    height: 50px; /* Debe coincidir con la altura del contenedor */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    box-sizing: border-box;
-    padding: 0 10px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #ccc;
+    transition: all 0.5s ease;
+    opacity: 0.7;
+  }
+
+  /* Noticia enfocado durante el deslizamiento */
+  .news-item.active {
+    opacity: 1;
+    background-color: #e8f0fe;
+    border-left-color: #1a73ff;
+    font-weight: bold;
+    transform: scale(1.02);
   }
 </style>
 
-<!-- Script para deslizar automáticamente cada 10 segundos -->
 <script>
   (function() {
-    const wrapper = document.getElementById('newsWrapper');
+    const wrapper = document.getElementById('newsVerticalWrapper');
     const items = wrapper.querySelectorAll('.news-item');
     const totalItems = items.length;
     let currentIndex = 0;
-    const slideHeight = 50; // Misma altura en px definida en el CSS
 
     setInterval(() => {
-      currentIndex++;
-      
-      // Si llega al final, reinicia al primer elemento suavemente
-      if (currentIndex >= totalItems) {
-        currentIndex = 0;
-      }
+      // Remueve el estado activo actual
+      items[currentIndex].classList.remove('active');
 
-      // Desplaza el contenedor verticalmente hacia abajo/arriba
-      wrapper.style.transform = `translateY(-${currentIndex * slideHeight}px)`;
+      // Avanza al siguiente elemento (o reinicia al primero)
+      currentIndex = (currentIndex + 1) % totalItems;
+
+      // Aplica el estado activo al nuevo elemento
+      items[currentIndex].classList.add('active');
+
+      // Desplaza suavemente hacia abajo el bloque
+      const offsetY = currentIndex * 12; // Ajuste suave de desplazamiento vertical
+      wrapper.style.transform = `translateY(${offsetY}px)`;
+      
+      // Si llega al final, reinicia la posición inicial
+      if (currentIndex === 0) {
+        wrapper.style.transform = 'translateY(0px)';
+      }
     }, 10000); // 10000 ms = 10 segundos
   })();
 </script>
