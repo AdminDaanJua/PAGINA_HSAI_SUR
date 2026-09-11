@@ -238,13 +238,71 @@
         <a href="https://172.16.13.6:8443/lab/collection/#/login" target="_blank" class="link">Molulab (Extracciones)</a>
       </div>
 
-      <div class="rectangle">
-        <h2 class="news-title">Noticias</h2>
-        <div class="news-item">Buen Fin de Semana a Todo el Personal del Hospital</div>
-        <div class="news-item"></div>
-        <div class="news-item"></div>
-        <div class="news-item"></div>
-      </div>
+     <div class="rectangle">
+  <h2 class="news-title">Noticias</h2>
+  
+  <!-- Contenedor del carrusel vertical -->
+  <div class="news-carousel-container">
+    <div class="news-carousel-wrapper" id="newsWrapper">
+      <!-- Noticia 1 -->
+      <div class="news-item">Buen Fin de Semana a Todo el Personal del Hospital</div>
+      <!-- Noticia 2 -->
+      <div class="news-item">Capacitación sobre Protocolos de Seguridad este Viernes</div>
+      <!-- Noticia 3 -->
+      <div class="news-item">Recordatorio: Actualización de Credenciales en Capital Humano</div>
+      <!-- Noticia 4 -->
+      <div class="news-item">Nuevo Menú Disponible en la Cafetería Central</div>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos necesarios para el efecto vertical -->
+<style>
+  .news-carousel-container {
+    height: 50px; /* Ajusta según la altura deseada de tu noticia */
+    overflow: hidden;
+    position: relative;
+  }
+
+  .news-carousel-wrapper {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .news-item {
+    height: 50px; /* Debe coincidir con la altura del contenedor */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 0 10px;
+  }
+</style>
+
+<!-- Script para deslizar automáticamente cada 10 segundos -->
+<script>
+  (function() {
+    const wrapper = document.getElementById('newsWrapper');
+    const items = wrapper.querySelectorAll('.news-item');
+    const totalItems = items.length;
+    let currentIndex = 0;
+    const slideHeight = 50; // Misma altura en px definida en el CSS
+
+    setInterval(() => {
+      currentIndex++;
+      
+      // Si llega al final, reinicia al primer elemento suavemente
+      if (currentIndex >= totalItems) {
+        currentIndex = 0;
+      }
+
+      // Desplaza el contenedor verticalmente hacia abajo/arriba
+      wrapper.style.transform = `translateY(-${currentIndex * slideHeight}px)`;
+    }, 10000); // 10000 ms = 10 segundos
+  })();
+</script>
 
       <div class="hygiene-box">
         <h3>APARTADO EN CONSTRUCCION</h3>
