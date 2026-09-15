@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Web - Hospital San Angel Inn Sur</title>
+  <title>Portal Web - Hospital San Ángel Inn Sur</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
@@ -64,13 +64,33 @@
       font-size: 0.93rem;
     }
     .link:hover { color: #1a73ff; text-decoration: underline; }
+    
+    /* Noticias */
+    .news-carousel-container {
+      width: 100%;
+      padding: 10px 0;
+    }
+    .news-carousel-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.8s ease-in-out;
+    }
     .news-item {
-      background-color: #e8f5e8;
-      padding: 0.65rem;
-      border-left: 5px solid #4caf50;
-      border-radius: 8px;
-      margin-bottom: 0.65rem;
+      padding: 12px 16px;
+      border-radius: 6px;
+      background-color: #f8f9fa;
+      border-left: 4px solid #ccc;
+      transition: all 0.5s ease;
+      opacity: 0.7;
       font-size: 0.88rem;
+    }
+    .news-item.active {
+      opacity: 1;
+      background-color: #e8f0fe;
+      border-left-color: #1a73ff;
+      font-weight: bold;
+      transform: scale(1.02);
     }
 
     /* Higiene de manos */
@@ -96,10 +116,9 @@
     .extensions-box      { grid-row: 1; grid-column: 1; }
     .ordenes-box         { grid-row: 2; grid-column: 1; align-self: start; }
     .accreditation-box   { grid-row: 1; grid-column: 2; align-self: start; }
-    .english-box         { grid-row: 2; grid-column: 2; align-self: start; } /* ← AQUÍ ESTÁ EL CAMBIO */
+    .english-box         { grid-row: 2; grid-column: 2; align-self: start; }
     .right-column        { grid-row: 1 / 4; grid-column: 3; display: flex; flex-direction: column; gap: 8px; }
 
-    /* Resto de estilos sin tocar */
     .orange-folder, .blue-folder, .neutral-folder {
       height: 380px;
       border-radius: 16px;
@@ -218,7 +237,6 @@
       .main-area { grid-template-columns: 1fr; grid-template-rows: auto auto auto auto; }
       .right-column { grid-row: auto; }
     }
-    
   </style>
 </head>
 <body>
@@ -229,7 +247,6 @@
 
   <div class="container">
     <div class="sidebar-left">
-      <!-- Sidebar 100% igual -->
       <div class="rectangle">
         <h2 class="sidebar-title">Enlaces Rápidos</h2>
         <a href="https://hsai.intramed.mx/h-sur/" target="_blank" class="link">Intramed - HSAI SUR</a>
@@ -238,87 +255,20 @@
         <a href="https://172.16.13.6:8443/lab/collection/#/login" target="_blank" class="link">Molulab (Extracciones)</a>
       </div>
 
-<div class="rectangle">
-  <h2 class="news-title">Noticias</h2>
-  
-  <!-- Contenedor visible para todas las noticias -->
-  <div class="news-carousel-container">
-    <div class="news-carousel-wrapper" id="newsVerticalWrapper">
-      <div class="news-item active">Buen Inicio de Semana</div>
-      <div class="news-item">Nuevo Menú Disponible en la Cafetería Central</div>
-      <div class="news-item"></div>
-      <div class="news-item"></div>
-    </div>
-  </div>
-</div>
-
-<style>
-  /* Mantiene visible todo el bloque de noticias */
-  .news-carousel-container {
-    width: 100%;
-    padding: 10px 0;
-  }
-
-  .news-carousel-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    transition: transform 0.8s ease-in-out;
-  }
-
-  /* Estilo base para cada elemento visible */
-  .news-item {
-    padding: 12px 16px;
-    border-radius: 6px;
-    background-color: #f8f9fa;
-    border-left: 4px solid #ccc;
-    transition: all 0.5s ease;
-    opacity: 0.7;
-  }
-
-  /* Noticia enfocado durante el deslizamiento */
-  .news-item.active {
-    opacity: 1;
-    background-color: #e8f0fe;
-    border-left-color: #1a73ff;
-    font-weight: bold;
-    transform: scale(1.02);
-  }
-</style>
-
-<script>
-  (function() {
-    const wrapper = document.getElementById('newsVerticalWrapper');
-    const items = wrapper.querySelectorAll('.news-item');
-    const totalItems = items.length;
-    let currentIndex = 0;
-
-    setInterval(() => {
-      // Remueve el estado activo actual
-      items[currentIndex].classList.remove('active');
-
-      // Avanza al siguiente elemento (o reinicia al primero)
-      currentIndex = (currentIndex + 1) % totalItems;
-
-      // Aplica el estado activo al nuevo elemento
-      items[currentIndex].classList.add('active');
-
-      // Desplaza suavemente hacia abajo el bloque
-      const offsetY = currentIndex * 12; // Ajuste suave de desplazamiento vertical
-      wrapper.style.transform = `translateY(${offsetY}px)`;
-      
-      // Si llega al final, reinicia la posición inicial
-      if (currentIndex === 0) {
-        wrapper.style.transform = 'translateY(0px)';
-      }
-    }, 5000); // 5000 ms = 5 segundos
-  })();
-</script>
+      <div class="rectangle">
+        <h2 class="news-title">Noticias</h2>
+        <div class="news-carousel-container">
+          <div class="news-carousel-wrapper" id="newsVerticalWrapper">
+            <div class="news-item active">Feliz Martes a Todos </div>
+            <div class="news-item">Menú del día 15-09-2026<br>*Crema de Chayote <br> *Ensalada de Pepino <br> *Tostadas de Tinga de Pollo y Pata de Res <br> *Agua de Melón <br> *Gelatina Tricolor </div>
+            <div class="news-item">...</div>
+          </div>
+        </div>
+      </div>
 
       <div class="hygiene-box">
         <h3>APARTADO EN CONSTRUCCION</h3>
-        <img src="">
-        <p></p>
+        <p>Próximamente novedades de higiene</p>
       </div>
 
       <div class="rectangle">
@@ -449,136 +399,59 @@
         </div>
       </div>
 
-      <!-- === ÚNICO CAMBIO: "Órdenes de Servicio" reemplaza "Apartado en construcción" === -->
       <div class="rectangle construction-box">
         <h2 style="font-size:1.18rem; font-weight:bold; color:#1a73ff; text-decoration:underline; text-align:center; margin-bottom:0.8rem;">
           APARTADO EN CONSTRUCCION
         </h2>
         <ol class="video-list">
-          <li><a href="" target="_blank">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
-          <li><a href="">...</a></li>
+          <li><a href="#">Enlace en mantenimiento...</a></li>
         </ol>
       </div>
 
-      <!-- === ESTÁNDAR ACCREDITATION CANADÁ - MODIFICADO CON PDF GOLONDRIOS === -->
-      <!-- MARCA: Este es el apartado que modificaste -->
       <div class="rectangle accreditation-box">
-  <h2 style="font-size:1.18rem; font-weight:bold; color:#1a73ff; text-decoration:underline; text-align:center; margin-bottom:0.8rem;">
-    ¡COMUNICADOS!
-  </h2>
-  
-  <!-- CARRUSEL DE IMÁGENES -->
-  <div class="carousel-container" style="position: relative; max-width: 100%; margin: 1rem 0; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-    
-    <!-- Imagen 1 -->
-    <div class="orienta-slide">
-      <img src="Simulacro.jpg" alt="Programa Orienta 1" style="width:100%; height:auto; display:block;">
-    </div>
+        <h2 style="font-size:1.18rem; font-weight:bold; color:#1a73ff; text-decoration:underline; text-align:center; margin-bottom:0.8rem;">
+          ¡COMUNICADOS!
+        </h2>
+        
+        <div class="carousel-container" style="position: relative; max-width: 100%; margin: 1rem 0; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+          <div class="orienta-slide">
+            <img src="Simulacro.jpg" alt="Programa Orienta 1" style="width:100%; height:auto; display:block;">
+          </div>
+          <div class="orienta-slide" style="display:none;">
+            <img src="Aviso.jpg" alt="Programa Orienta 2" style="width:100%; height:auto; display:block;">
+          </div>
+          <div class="orienta-slide" style="display:none;">
+            <img src="Tabaquismo.jpeg" alt="Programa Orienta 3" style="width:100%; height:auto; display:block;">
+          </div>
+          <div class="orienta-slide" style="display:none;">
+            <img src="Clinica_Dental.jpeg" alt="Programa Orienta 4" style="width:100%; height:auto; display:block;">
+          </div>
+          <div class="orienta-slide" style="display:none;">
+            <img src="Caja_Ahorro.jpeg" alt="Programa Orienta 5" style="width:100%; height:auto; display:block;">
+          </div>
+          <div class="orienta-slide" style="display:none;">
+            <img src="Orienta.jpeg" alt="Programa Orienta 6" style="width:100%; height:auto; display:block;">
+          </div>
 
-    <!-- Imagen 2 -->
-    <div class="orienta-slide">
-      <img src="Aviso.jpg" alt="Programa Orienta 1" style="width:100%; height:auto; display:block;">
-    </div>
-    
-    <!-- Imagen 3 (reemplaza la ruta con tu archivo) -->
-    <div class="orienta-slide" style="display:none;">
-      <img src="Tabaquismo.jpeg" alt="Programa Orienta 2" style="width:100%; height:auto; display:block;">
-    </div>
-    
-    <!-- Imagen 4 (reemplaza la ruta con tu archivo) -->
-    <div class="orienta-slide" style="display:none;">
-      <img src="Clinica_Dental.jpeg" alt="Programa Orienta 3" style="width:100%; height:auto; display:block;">
-    </div>
+          <button type="button" onclick="changeSlide(-1)" style="position:absolute; top:50%; left:8px; transform:translateY(-50%); background:rgba(0,0,0,0.4); color:white; border:none; width:28px; height:28px; border-radius:50%; cursor:pointer; font-weight:bold; display:flex; align-items:center; justify-content:center;">&#10094;</button>
+          <button type="button" onclick="changeSlide(1)" style="position:absolute; top:50%; right:8px; transform:translateY(-50%); background:rgba(0,0,0,0.4); color:white; border:none; width:28px; height:28px; border-radius:50%; cursor:pointer; font-weight:bold; display:flex; align-items:center; justify-content:center;">&#10095;</button>
 
-    <!-- Imagen 5 (reemplaza la ruta con tu archivo) -->
-    <div class="orienta-slide" style="display:none;">
-      <img src="Caja_Ahorro.jpeg" alt="Programa Orienta 3" style="width:100%; height:auto; display:block;">
-    </div>
+          <div style="text-align:center; position:absolute; bottom:8px; width:100%;">
+            <span class="orienta-dot" onclick="setSlide(1)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
+            <span class="orienta-dot" onclick="setSlide(2)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
+            <span class="orienta-dot" onclick="setSlide(3)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
+            <span class="orienta-dot" onclick="setSlide(4)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
+            <span class="orienta-dot" onclick="setSlide(5)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
+            <span class="orienta-dot" onclick="setSlide(6)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
+          </div>
+        </div>
 
-    <!-- Imagen 6 (reemplaza la ruta con tu archivo) -->
-    <div class="orienta-slide" style="display:none;">
-      <img src="Orienta.jpeg" alt="Programa Orienta 3" style="width:100%; height:auto; display:block;">
-    </div>
+        <div style="text-align:center;">
+          <p style="margin-top:0.8rem; font-weight:bold; color:#1a73ff;">¡PRÉPARATE PARA VIVIR TU BIENESTAR COMO NUNCA ANTES!</p>
+          <p style="color:#333; font-size:0.95rem;">Para más información acércate a capital humano.</p>
+        </div>
+      </div>
 
-    <!-- Flechas de navegación -->
-    <button type="button" onclick="changeSlide(-1)" style="position:absolute; top:50%; left:8px; transform:translateY(-50%); background:rgba(0,0,0,0.4); color:white; border:none; width:28px; height:28px; border-radius:50%; cursor:pointer; font-weight:bold; display:flex; align-items:center; justify-content:center;">&#10094;</button>
-    <button type="button" onclick="changeSlide(1)" style="position:absolute; top:50%; right:8px; transform:translateY(-50%); background:rgba(0,0,0,0.4); color:white; border:none; width:28px; height:28px; border-radius:50%; cursor:pointer; font-weight:bold; display:flex; align-items:center; justify-content:center;">&#10095;</button>
-
-    <!-- Indicadores inferiores -->
-    <div style="text-align:center; position:absolute; bottom:8px; width:100%;">
-      <span class="orienta-dot" onclick="setSlide(1)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
-      <span class="orienta-dot" onclick="setSlide(2)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
-      <span class="orienta-dot" onclick="setSlide(3)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
-      <span class="orienta-dot" onclick="setSlide(4)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
-      <span class="orienta-dot" onclick="setSlide(5)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
-      <span class="orienta-dot" onclick="setSlide(6)" style="height:8px; width:8px; margin:0 3px; background-color:rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer;"></span>
-    </div>
-  </div>
-
-  <!-- Información complementaria -->
-  <div style="text-align:center;">
-    <p style="margin-top:0.8rem; font-weight:bold; color:#1a73ff;">¡PRÉPARATE PARA VIVIR TU BIENESTAR COMO NUNCA ANTES!</p>
-    <p style="color:#333; font-size:0.95rem;">Para más información acércate a capital humano.</p>
-  </div>
-</div>
-
-<!-- LÓGICA DEL CARRUSEL -->
-<script>
-  let slideIndex = 1;
-  let autoTimer = setInterval(() => changeSlide(1), 7000);
-
-  function displaySlide(n) {
-    const slides = document.getElementsByClassName("orienta-slide");
-    const dots = document.getElementsByClassName("orienta-dot");
-
-    if (n > slides.length) slideIndex = 1;
-    if (n < 1) slideIndex = slides.length;
-
-    for (let i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-    }
-    for (let i = 0; i < dots.length; i++) {
-      dots[i].style.backgroundColor = "rgba(255,255,255,0.6)";
-    }
-
-    slides[slideIndex - 1].style.display = "block";
-    if (dots.length > 0) {
-      dots[slideIndex - 1].style.backgroundColor = "#1a73ff";
-    }
-  }
-
-  function changeSlide(n) {
-    displaySlide(slideIndex += n);
-    restartTimer();
-  }
-
-  function setSlide(n) {
-    displaySlide(slideIndex = n);
-    restartTimer();
-  }
-
-  function restartTimer() {
-    clearInterval(autoTimer);
-    autoTimer = setInterval(() => changeSlide(1), 7000);
-  }
-
-  displaySlide(slideIndex);
-</script>
-
-      <!-- HABLA INGLÉS → ahora perfectamente al lado derecho de Órdenes de Servicio -->
       <div class="rectangle english-box">
         <h2 class="english-title">APARTADO EN CONSTRUCCION</h2>
         <div class="english-vertical">
@@ -596,7 +469,7 @@
         <a href="https://grupohospitalario.sharepoint.com/:b:/s/HospitalesSanAngelInn/IQABznSDRj-jT74nsBmVvf1MATF2sA9-i6cWpaWG9Lr6RmU?e=vHZ4jg" target="_blank" class="blue-folder">
           CUADRO BÁSICO<br>DE MEDICAMENTOS<div class="subtitle">Haz clic para abrir</div>
         </a>
-        <a href="" target="_blank" class="neutral-folder">
+        <a href="#" class="neutral-folder">
           APARTADO EN CONSTRUCCION
           <div class="subtitle">Haz clic para abrir</div>
         </a>
@@ -605,13 +478,73 @@
     </div>
   </div>
 
-  <!-- MODAL PARA IMAGEN AMPLIADA -->
+  <!-- Modal -->
   <div id="imageModal" class="fixed inset-0 hidden items-center justify-center bg-black/90 z-[1000]">
     <span onclick="hideImageModal()" class="close-modal text-white text-5xl absolute top-6 right-8 cursor-pointer hover:text-gray-300">&times;</span>
     <img id="modalImage" src="GOLONDRINOS.png" alt="Programa Golondrinos" class="max-w-[95%] max-h-[95%] rounded-xl shadow-2xl">
   </div>
 
   <script>
+    // Noticias Carousel Logic
+    (function() {
+      const wrapper = document.getElementById('newsVerticalWrapper');
+      if (!wrapper) return;
+      const items = wrapper.querySelectorAll('.news-item');
+      const totalItems = items.length;
+      let currentIndex = 0;
+
+      setInterval(() => {
+        items[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % totalItems;
+        items[currentIndex].classList.add('active');
+        const offsetY = currentIndex * -12;
+        wrapper.style.transform = `translateY(${offsetY}px)`;
+      }, 5000);
+    })();
+
+    // Main Carousel Logic
+    let slideIndex = 1;
+    let autoTimer = setInterval(() => changeSlide(1), 7000);
+
+    function displaySlide(n) {
+      const slides = document.getElementsByClassName("orienta-slide");
+      const dots = document.getElementsByClassName("orienta-dot");
+      if (slides.length === 0) return;
+
+      if (n > slides.length) slideIndex = 1;
+      if (n < 1) slideIndex = slides.length;
+
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].style.backgroundColor = "rgba(255,255,255,0.6)";
+      }
+
+      slides[slideIndex - 1].style.display = "block";
+      if (dots.length > 0) {
+        dots[slideIndex - 1].style.backgroundColor = "#1a73ff";
+      }
+    }
+
+    function changeSlide(n) {
+      displaySlide(slideIndex += n);
+      restartTimer();
+    }
+
+    function setSlide(n) {
+      displaySlide(slideIndex = n);
+      restartTimer();
+    }
+
+    function restartTimer() {
+      clearInterval(autoTimer);
+      autoTimer = setInterval(() => changeSlide(1), 7000);
+    }
+
+    displaySlide(slideIndex);
+
+    // Filter Extensions
     function filterExtensions() {
       const term = document.getElementById('searchInput').value.toLowerCase().trim();
       document.querySelectorAll('#extensionsTable tbody tr').forEach(row => {
@@ -620,11 +553,12 @@
       });
     }
 
+    // Notepad
     const notepad = document.getElementById('notepad');
     notepad.value = localStorage.getItem('notes') || '';
     notepad.addEventListener('input', () => localStorage.setItem('notes', notepad.value));
 
-    // Funciones del modal
+    // Modal
     function showImageModal() {
       document.getElementById('imageModal').classList.remove('hidden');
       document.getElementById('imageModal').classList.add('flex');
@@ -635,15 +569,9 @@
       document.getElementById('imageModal').classList.remove('flex');
     }
 
-    // Cerrar modal al hacer clic fuera de la imagen
     document.getElementById('imageModal').addEventListener('click', function(e) {
       if (e.target === this) hideImageModal();
     });
   </script>
 </body>
-</html>
-
-  
-</body>
-
 </html>
