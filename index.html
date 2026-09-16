@@ -260,17 +260,264 @@
         <h2 class="news-title">Noticias</h2>
         <div class="news-carousel-container">
           <div class="news-carousel-wrapper" id="newsVerticalWrapper">
-            <div class="news-item active">Buen Martes a Todos</div>
-            <div class="news-item">Nuevo Menú Disponible en la Cafetería Central</div>
+            <div class="news-item active">Excelente Miercoles</div>
+            <div class="news-item"></div>
             <div class="news-item"></div>
           </div>
         </div>
       </div>
+    
 
-      <div class="hygiene-box">
-        <h3>APARTADO EN CONSTRUCCIÓN</h3>
-        <p>Próximamente novedades de higiene</p>
-      </div>
+      <!-- Apartado de el correcto lavado de manos -->
+
+<div class="hygiene-box">
+  <div class="hygiene-header">
+    <span class="sparkle-icon">✨</span>
+    <h3>¡Superpoder Anti-Gérmenes!</h3>
+    <p>Domina el arte del lavado de manos paso a paso</p>
+  </div>
+
+  <!-- Carrusel de pasos -->
+  <div class="step-carousel">
+    <div class="step-card active">
+      <div class="step-num">1</div>
+      <h4>Agua al rescate</h4>
+      <p>Moja tus manos con agua limpia y cierra el grifo para ahorrar.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h4>Súper espuma</h4>
+      <p>Aplica jabón y frota las palmas hasta crear tu armadura protectora.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h4>Ataque dorsal</h4>
+      <p>Frota la palma contra el dorso de la otra mano entrelazando los dedos.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <h4>Zona invisible</h4>
+      <p>Limpia entre los dedos, los nudillos y abraza tus pulgares.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">5</div>
+      <h4>Gran aclarado</h4>
+      <p>Enjuaga bien con abundante agua y despídete de la suciedad.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">6</div>
+      <h4>Secado de crack</h4>
+      <p>Usa una toalla limpia o de papel (¡y úsala para cerrar el grifo!).</p>
+    </div>
+  </div>
+
+  <!-- Barra de progreso que se llena en 5 segundos -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Indicadores de puntos -->
+  <div class="step-dots" id="stepDots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+
+  <div class="hygiene-footer">
+    ⏱️ <strong>Duración ideal total:</strong> 20 a 30 segundos en el lavabo.
+  </div>
+</div>
+
+<style>
+.hygiene-box {
+  background: linear-gradient(135deg, #e0f7fa 0%, #e1f5fe 100%);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0, 150, 136, 0.15);
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #004d40;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hygiene-header {
+  margin-bottom: 20px;
+}
+
+.sparkle-icon {
+  font-size: 2rem;
+  display: inline-block;
+  animation: pulse 1.5s infinite alternate;
+}
+
+.hygiene-header h3 {
+  margin: 6px 0 4px 0;
+  font-size: 1.5rem;
+  color: #00695c;
+}
+
+.hygiene-header p {
+  margin: 0;
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+.step-carousel {
+  position: relative;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  position: absolute;
+  width: 100%;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateX(30px) scale(0.95);
+  transition: all 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+.step-card.active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+}
+
+.step-num {
+  background: #00acc1;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin: 0 auto 10px auto;
+}
+
+.step-card h4 {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  color: #00796b;
+}
+
+.step-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #455a64;
+}
+
+/* Barra de progreso de 5s */
+.progress-bar-container {
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 172, 193, 0.2);
+  border-radius: 2px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #00acc1;
+}
+
+.progress-bar.animate {
+  animation: fillProgress 5s linear infinite;
+}
+
+/* Indicadores */
+.step-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b2ebf2;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.dot.active {
+  background: #00acc1;
+  transform: scale(1.3);
+}
+
+.hygiene-footer {
+  margin-top: 18px;
+  background: rgba(255, 255, 255, 0.6);
+  border-left: 4px solid #00acc1;
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.2); }
+}
+
+@keyframes fillProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const cards = document.querySelectorAll(".step-card");
+  const dots = document.querySelectorAll(".dot");
+  const progressBar = document.getElementById("progressBar");
+  let currentIndex = 0;
+  const intervalTime = 5000; // 5 segundos por paso
+
+  function showStep(index) {
+    cards.forEach((card, i) => {
+      card.classList.toggle("active", i === index);
+      dots[i].classList.toggle("active", i === index);
+    });
+
+    // Reiniciar animación de la barra de progreso
+    progressBar.classList.remove("animate");
+    void progressBar.offsetWidth; // Trigger reflow
+    progressBar.classList.add("animate");
+  }
+
+  // Iniciar temporizador
+  showStep(currentIndex);
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % cards.length;
+    showStep(currentIndex);
+  }, intervalTime);
+});
+</script>
+
+  <!-- Bloc de Notas -->
 
       <div class="rectangle">
         <h2 class="sidebar-title">Bloc de Notas</h2>
