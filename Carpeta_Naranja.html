@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Códigos de Seguridad Hospitalarios - San Ángel Inn Sur</title>
+    <!-- Tailwind CSS desde CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-900 text-white p-2 rounded-lg">
+                    <i data-lucide="shield-alert" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl text-blue-950 leading-tight">Hospital San Ángel Inn Sur</h1>
+                    <p class="text-xs text-slate-500 font-medium">Manual Interactivo de Códigos de Seguridad Hospitalarios</p>
+                </div>
+            </div>
+
+            <!-- Banner de Marcación de Emergencia Ext 70 -->
+            <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-2 flex items-center space-x-3 text-red-700">
+                <i data-lucide="phone-call" class="w-5 h-5 text-red-600 animate-pulse"></i>
+                <div class="text-xs sm:text-sm">
+                    <span class="font-bold">Activación General:</span> Marcar <span class="font-extrabold underline text-red-800">Ext. "70"</span> (Indicar lugar exacto y nombre)
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Sidebar / Filtros y Lista de Códigos -->
+        <aside class="lg:col-span-4 bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex flex-col h-[600px] lg:h-[calc(100vh-140px)] sticky top-24">
+            
+            <!-- Buscador y Filtro -->
+            <div class="space-y-3 pb-4 border-b border-slate-100">
+                <div class="relative">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar código, participante o evento..." 
+                        class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
+                </div>
+                
+                <div class="flex flex-wrap gap-1.5" id="categoryFilters">
+                    <button data-filter="all" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-blue-900 text-white">Todos</button>
+                    <button data-filter="medico" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Médicos</button>
+                    <button data-filter="seguridad" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Seguridad</button>
+                    <button data-filter="evacuacion" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Evacuación</button>
+                </div>
+            </div>
+
+            <!-- Lista de Códigos -->
+            <div id="codeList" class="overflow-y-auto flex-grow divide-y divide-slate-100 mt-2 custom-scrollbar">
+                <!-- Se genera dinámicamente con JS -->
+            </div>
+        </aside>
+
+        <!-- Panel de Detalle del Código Seleccionado -->
+        <section class="lg:col-span-8 bg-white rounded-xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between min-h-[500px]">
+            <div id="codeDetailContainer">
+                <!-- Detalle se carga dinámicamente con JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            Plataforma de Consulta Rápida — Protocolos Internos del Hospital San Ángel Inn Sur
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Datos extraídos del documento Carpeta_Naranja.pdf
+        const codigosData = [
+            {
+                id: "oro",
+                nombre: "Código Oro",
+                subtitulo: "Emergencia Obstétrica",
+                categoria: "medico",
+                colorBadge: "bg-amber-100 text-amber-800 border-amber-300",
+                colorHeader: "from-amber-500 to-yellow-600",
+                icono: "baby",
+                lider: "Coordinador Médico de Cuidados Intensivos",
+                participantes: ["Médicos de Terapia Intensiva", "Médicos de Ginecología y Obstetricia", "Anestesiología", "Pediatría", "Enfermería (3)", "Supervisor Enfermería", "Laboratorio", "Imagenología", "Quirófano", "Medicina Respiratoria", "Admisión", "Camilleros", "Vigilancia"],
+                antes: ["Revisión continua de Cajas Mater con material completo.", "Capacitación continua del personal.", "Simulacros continuos para áreas de oportunidad."],
+                durante: ["Integración del Equipo de Respuesta Inmediata Obstétrica (ERIO) en ≤ 3 minutos.", "Atención inmediata acorde al protocolo de Triage Obstétrico.", "Estabilización y minimización de daño."],
+                despues: ["Reporte de seguimiento de Código Oro.", "Análisis de atención y resultados.", "Implementación de acciones de mejora."]
+            },
+            {
+                id: "rosa",
+                nombre: "Código Rosa",
+                subtitulo: "Extracción de paciente pediátrico o recién nacido",
+                categoria: "seguridad",
+                colorBadge: "bg-pink-100 text-pink-800 border-pink-300",
+                colorHeader: "from-pink-500 to-rose-600",
+                icono: "user-x",
+                lider: "Coordinación de Pediatría",
+                participantes: ["Dirección de Infraestructura y Servicios", "Enfermera responsable del paciente", "Vigilancia", "Relaciones Públicas"],
+                antes: ["No dejar al menor sin supervisión ni a cargo de desconocidos.", "Capacitación y simulacros continuos."],
+                durante: ["Cierre inmediato de puertas de acceso y restricción al hospital.", "Voceo especificando género/edad (H, M, RN).", "Recorrido e inspección minuciosa (cuartos, baños, sépticos, bolsos grandes).", "Revisión de cámaras CCTV.", "Reporte al MP si no se localiza en los primeros 10 min."],
+                despues: ["Evaluación médica al menor localizado.", "Entrega formal a familiares con identificación oficial (INE).", "Si no es localizado, pase del procedimiento a Relaciones Públicas."]
+            },
+            {
+                id: "morado",
+                nombre: "Código Morado",
+                subtitulo: "Violencia no armada",
+                categoria: "seguridad",
+                colorBadge: "bg-purple-100 text-purple-800 border-purple-300",
+                colorHeader: "from-purple-600 to-indigo-700",
+                icono: "frown",
+                lider: "Dirección de Infraestructura y Servicios",
+                participantes: ["Vigilancia", "Relaciones Públicas", "Cuerpo de Gobierno", "Seguridad Hospitalaria"],
+                antes: ["Informar a vigilancia al detectar pacientes o visitantes potencialmente agresivos.", "Capacitación continua."],
+                durante: ["Acudir de inmediato al punto de activación.", "Tratar de calmar, negociar y no desafiar al agresor.", "Invitar a una zona aparte.", "Contención física en equipo solo si es estrictamente necesario para defensa.", "Solicitar apoyo de Seguridad Pública mediante vigilancia."],
+                despues: ["Monitoreo constante del área y de las personas involucradas."]
+            },
+            {
+                id: "azul",
+                nombre: "Código Azul",
+                subtitulo: "Resucitación Cardiopulmonar (Paro Cardiorrespiratorio)",
+                categoria: "medico",
+                colorBadge: "bg-blue-100 text-blue-800 border-blue-300",
+                colorHeader: "from-blue-600 to-cyan-700",
+                icono: "heart-pulse",
+                lider: "Médico de Urgencias / Hospitalización / Terapia Intensiva",
+                participantes: ["Médicos y Enfermería de Urgencias", "Hospitalización y Terapia Intensiva", "Camilleros", "Técnico de Med. Respiratoria", "Técnico de Laboratorio"],
+                antes: ["Garantizar insumos para atención de paro.", "Valorar pulso y respiración durante 10 segundos.", "Solicitar carro rojo e iniciar compresiones si no responde/no respira."],
+                durante: ["RCP de alta calidad.", "Cardioversión o desfibrilación según indicación.", "Acceso IV/IO y administración de medicamentos.", "Manejo avanzado de vía aérea y búsqueda de causas reversibles."],
+                despues: ["Cuidados postparo si hay retorno de circulación espontánea (oxigenación, ECG, temperatura).", "Traslado a Cuidados Críticos o trámites de defunción."]
+            },
+            {
+                id: "amarillo",
+                nombre: "Código Amarillo",
+                subtitulo: "Derrame de sustancias peligrosas",
+                categoria: "seguridad",
+                colorBadge: "bg-yellow-100 text-yellow-800 border-yellow-300",
+                colorHeader: "from-yellow-500 to-amber-600",
+                icono: "triangle-alert",
+                lider: "Supervisores de Servicios Generales",
+                participantes: ["Personal capacitado en recolección de residuos químicos", "Empresas de disposición final"],
+                antes: ["Identificación y almacén correcto de sustancias químicas.", "Revisión mensual de kits contra derrames."],
+                durante: ["Acudir de inmediato e identificar la sustancia derramada.", "Tomar precauciones adecuadas para la manipulación.", "Ejecutar procedimiento de recolección seguro."],
+                despues: ["Resguardo de residuos en cuarto de almacenamiento temporal.", "Verificar limpieza y desinfección total del área."]
+            },
+            {
+                id: "negro",
+                nombre: "Código Negro",
+                subtitulo: "Amenaza de Bomba",
+                categoria: "seguridad",
+                colorBadge: "bg-slate-800 text-white border-slate-900",
+                colorHeader: "from-slate-800 to-slate-950",
+                icono: "bomb",
+                lider: "Dirección de Infraestructura y Servicios",
+                participantes: ["Vigilancia (CCTV Ext. 408)", "Seguridad Hospitalaria (Ext. 156)", "Protección Civil", "Secretaría de Seguridad Ciudadana"],
+                antes: ["Vigilancia permanente de objetos sospechosos y mochilas en áreas comunes.", "Capacitación."],
+                durante: ["NO SE VOCEA. Notificar discreta e inmediatamente a Seguridad Ext. 156 y CCTV Ext. 408.", "Inspección rápida del área.", "Si se halla objeto sospechoso: NO TOCAR, delimitar el área y avisar autoridades.", "Si es real, activar CÓDIGO COE para evaluar CÓDIGO VERDE o evacuación parcial."],
+                despues: ["Descartado el artefacto, liberar el área resguardada y reanudar actividades."]
+            },
+            {
+                id: "naranja",
+                nombre: "Código Naranja",
+                subtitulo: "Arribo Masivo de Pacientes a Urgencias",
+                categoria: "medico",
+                colorBadge: "bg-orange-100 text-orange-800 border-orange-300",
+                colorHeader: "from-orange-500 to-red-600",
+                icono: "users font-bold",
+                lider: "Coordinador o Médico de Urgencias de Turno",
+                participantes: ["Urgencias", "Admisión", "Camilleros", "Terapia Intensiva", "Vigilancia", "Hospitalización", "Almacén General", "Laboratorio", "Imagenología"],
+                antes: ["Recibir notificación previa de arribo masivo.", "Capacitación en Triage y manejo de contingencias masivas."],
+                durante: ["Clasificación por Triage y asignación de médicos/enfermeras por prioridad.", "Gestión expedita de insumos con Almacén.", "Priorización de estudios de Imagen y tomas de Laboratorio.", "Apoyo de personal médico de piso."],
+                despues: ["Reporte y análisis del evento masivo.", "Implementación de medidas de mejora operativa."]
+            },
+            {
+                id: "rojo",
+                nombre: "Código Rojo",
+                subtitulo: "Fuego y Humo (Incendio)",
+                categoria: "evacuacion",
+                colorBadge: "bg-red-100 text-red-800 border-red-300",
+                colorHeader: "from-red-600 to-rose-800",
+                icono: "flame",
+                lider: "Dirección de Infraestructura y Servicios",
+                participantes: ["Brigada de Combate contra Incendios", "Heroico Cuerpo de Bomberos"],
+                antes: ["Evaluación de riesgos y mantenimiento a equipos contra incendio.", "No obstruir extintores, hidrantes ni salidas de emergencia."],
+                durante: ["Conservar la calma y activar código.", "Usar extintor solo en conatos iniciales.", "No usar elevadores. Arrastrarse si hay humo denso.", "Al llegar Bomberos, entregar el mando y apoyar según requieran."],
+                despues: ["Valoración de daños.", "Desechar alimentos, bebidas o medicamentos expuestos al calor/humo.", "No reingresar hasta autorización oficial."]
+            },
+            {
+                id: "bronce",
+                nombre: "Código Bronce",
+                subtitulo: "Repliegue a Zonas de Menor Riesgo",
+                categoria: "evacuacion",
+                colorBadge: "bg-amber-800 text-amber-100 border-amber-900",
+                colorHeader: "from-amber-700 to-amber-900",
+                icono: "shield-check",
+                lider: "Dirección de Infraestructura y Servicios",
+                participantes: ["Brigadas de Repliegue y Evacuación"],
+                antes: ["Identificación clara de zonas de repliegue.", "Mantenimiento del sistema de voceo y alerta sísmica."],
+                durante: ["Ubicación y repliegue de personal y usuarios en zonas de menor riesgo.", "Conteo de personal y espera de indicaciones de brigadistas."],
+                despues: ["Verificar personas lesionadas y notificar al responsable."]
+            },
+            {
+                id: "verde",
+                nombre: "Código Verde",
+                subtitulo: "Evacuación de las Instalaciones",
+                categoria: "evacuacion",
+                colorBadge: "bg-emerald-100 text-emerald-800 border-emerald-300",
+                colorHeader: "from-emerald-600 to-teal-800",
+                icono: "footprints",
+                lider: "Dirección de Infraestructura y Servicios",
+                participantes: ["Brigada de Evacuación, Búsqueda y Rescate", "Todo el Personal"],
+                antes: ["Listados actualizados, rutas despejadas y señalización óptima."],
+                durante: ["Evacuar por escaleras pegado a la derecha (NO CORRER, NO GRITAR, NO EMPUJAR).", "Rutas: Edificio A (Urgencias / Acceso Principal), Edificio B (Cafetería).", "Formarse por pisos en los Puntos de Reunión y realizar censo."],
+                despues: ["Reingreso ordenado solo tras desactivación.", "Evaluación de daños por el COE si no se puede reingresar."]
+            },
+            {
+                id: "cafe",
+                nombre: "Código Café",
+                subtitulo: "Desastres de origen natural y humano",
+                categoria: "evacuacion",
+                colorBadge: "bg-stone-200 text-stone-800 border-stone-400",
+                colorHeader: "from-stone-600 to-stone-800",
+                icono: "landmark",
+                lider: "Director General y Dirección de Infraestructura",
+                participantes: ["Vigilancia", "Brigadistas de Protección Civil"],
+                antes: ["Contactos actualizados de Protección Civil.", "Rutas libres de obstáculos.", "Sistemas de comunicación al 100%."],
+                durante: ["Reunión inmediata del COE.", "Toma de decisiones de acuerdo al tipo de desastre.", "Seguir indicaciones de Protección Civil."],
+                despues: ["Análisis de infraestructura para confirmar condiciones óptimas antes de reanudar."]
+            },
+            {
+                id: "plata",
+                nombre: "Código Plata",
+                subtitulo: "Agresión de persona con arma de fuego",
+                categoria: "seguridad",
+                colorBadge: "bg-slate-200 text-slate-800 border-slate-400",
+                colorHeader: "from-slate-500 to-slate-700",
+                icono: "shield-alert",
+                lider: "Dirección de Infraestructura y Servicios",
+                participantes: ["Vigilancia capacitada en contención", "Secretaría de Seguridad Pública (911)"],
+                antes: ["Control de accesos y prevención de delitos en coordinación policial."],
+                durante: ["Acudimiento inmediato del personal de seguridad.", "Llamar al 911 para respuesta policial.", "Resguardo de personal y pacientes."],
+                despues: ["Traslado de lesionados a Urgencias.", "Seguimiento legal y policial de los hechos."]
+            },
+            {
+                id: "ambar",
+                nombre: "Código Ámbar",
+                subtitulo: "Extravío o pérdida de un paciente Hospitalizado",
+                categoria: "seguridad",
+                colorBadge: "bg-amber-100 text-amber-900 border-amber-300",
+                colorHeader: "from-amber-400 to-orange-500",
+                icono: "user-search",
+                lider: "Supervisor de Enfermería / Relaciones Públicas",
+                participantes: ["Enfermería", "Relaciones Públicas", "Mantenimiento", "Seguridad Hospitalaria", "Camilleros", "CCTV", "Vigilancia"],
+                antes: ["Identificación de todos los pacientes y delimitación de áreas de deambulación."],
+                durante: ["Rastreo por CCTV (último punto visto).", "Bloqueo de accesos principales, proveedores y urgencias.", "Búsqueda exhaustiva en instalaciones."],
+                despues: ["Valoración clínica si se localiza.", "Notificación a Médico Tratante y Ministerio Público si no es hallado.", "Análisis de causalidad."]
+            },
+            {
+                id: "blanco",
+                nombre: "Código Blanco",
+                subtitulo: "Asistencia de Caída de Paciente",
+                categoria: "medico",
+                colorBadge: "bg-slate-100 text-slate-700 border-slate-300",
+                colorHeader: "from-slate-400 to-slate-600",
+                icono: "user-down",
+                lider: "Médico de Guardia y Supervisión de Enfermería",
+                participantes: ["Enfermera responsable", "Camillero", "Relaciones Públicas", "Vigilancia"],
+                antes: ["Educación a paciente/familiar sobre protocolo de caídas.", "Mantenimiento de mobiliario."],
+                durante: ["Atención inmediata en el punto del evento.", "Valoración médica general.", "Traslado a Imagenología para radiografías/tomografía si se requiere.", "Notificación a médico tratante."],
+                despues: ["Reporte en plataforma Intramed (www.hsais.intramed.mx).", "Análisis de causas y revaloración del riesgo de caída."]
+            },
+            {
+                id: "magenta",
+                nombre: "Código Magenta",
+                subtitulo: "Daño en el Sistema (Falla Crítica)",
+                categoria: "seguridad",
+                colorBadge: "bg-fuchsia-100 text-fuchsia-800 border-fuchsia-300",
+                colorHeader: "from-fuchsia-600 to-pink-700",
+                icono: "database-zap",
+                lider: "Director de Infraestructura y Servicios",
+                participantes: ["Mantenimiento", "Tecnología de la Información (TI)", "Servicios Generales"],
+                antes: ["Mantenimiento preventivo diario a servicios vitales y sistemas."],
+                durante: ["Reportar tipo de falla (Hidráulica, Electrónica o Informática).", "Seccionamiento de flujo en caso de fugas hidrosanitarias.", "Acciones de TI para reactivación de voz, datos, servidores y líneas."],
+                despues: ["Ejecución de actividades de recuperación operativa."]
+            },
+            {
+                id: "err",
+                nombre: "Código ERR",
+                subtitulo: "Equipo de Respuesta Rápida",
+                categoria: "medico",
+                colorBadge: "bg-teal-100 text-teal-800 border-teal-300",
+                colorHeader: "from-teal-600 to-emerald-700",
+                icono: "activity",
+                lider: "Médico de Urgencias / Hospitalización / Terapia Intensiva",
+                participantes: ["Médicos y Enfermería (Urgencias, Hosp, UTI)", "Camilleros", "Técnicos de Lab y Med. Respiratoria"],
+                antes: ["Detección de criterios: FR <8 o >36, SpO2 <85%, FC <40 o >140, PAS <80 o >200, pérdida de conciencia, convulsiones, dolor precordial, etc."],
+                durante: ["Evaluación estructurada (Situación, Antecedentes).", "Soporte respiratorio y monitoreo hemodinámico continuo.", "ECG, laboratorio, glucosa capilar, vía aérea si aplica."],
+                despues: ["Nota conjunta ERR.", "Aviso a médico tratante.", "Traslado a Terapia Intensiva de ser necesario."]
+            },
+            {
+                id: "infarto",
+                nombre: "Código Infarto",
+                subtitulo: "Rescate Cardiovascular (Infarto Agudo al Miocardio)",
+                categoria: "medico",
+                colorBadge: "bg-red-100 text-red-800 border-red-300",
+                colorHeader: "from-red-600 to-amber-600",
+                icono: "heart-crack",
+                lider: "Coordinador del Servicio de Urgencias",
+                participantes: ["Médicos y Enfermería de Urgencias", "Laboratorio", "Radiólogo", "Técnico Imagen", "Camillero"],
+                antes: ["Verificación diaria de medicamentos e insumos de código cardiovascular."],
+                durante: ["Ingreso inmediato a área de choque.", "Electrocardiograma en <10 min y niveles de Troponina I.", "Tratamiento óptimo y registro de Síndrome Coronario Agudo.", "Gestión de traslado si aplica."],
+                despues: ["Reporte de seguimiento y análisis de oportunidad clínica."]
+            },
+            {
+                id: "uno",
+                nombre: "Código Uno",
+                subtitulo: "Persona Custodiada",
+                categoria: "seguridad",
+                colorBadge: "bg-indigo-100 text-indigo-800 border-indigo-300",
+                colorHeader: "from-indigo-600 to-blue-800",
+                icono: "lock",
+                lider: "Dirección de Infraestructura y Servicios",
+                participantes: ["Médico de Hospitalización", "Vigilancia", "Enfermería"],
+                antes: ["Personal de seguridad equipado con radiocomunicación."],
+                durante: ["Atención médica sin discriminación.", "Asignación de personal clínico exclusivo.", "EL PERSONAL CLÍNICO NUNCA INGRESA SOLO (Siempre acompañado de un custodio)."],
+                despues: ["Acompañamiento permanente hasta la retirada del paciente.", "Resguardo de la privacidad en todo momento."]
+            },
+            {
+                id: "coe",
+                nombre: "Código COE",
+                subtitulo: "Activación del Centro de Operaciones de Emergencias",
+                categoria: "evacuacion",
+                colorBadge: "bg-cyan-100 text-cyan-800 border-cyan-300",
+                colorHeader: "from-cyan-700 to-blue-900",
+                icono: "building-2",
+                lider: "Director General / Director de Operaciones",
+                participantes: ["Directores", "Coordinadores (Enfermería, Admisión, Capital Humano, Calidad, Seguridad, R.P.)", "Contralor"],
+                antes: ["Directorios telefónicos de emergencia y equipos de comunicación listos."],
+                durante: ["Reunión inmediata del comité en Dirección General.", "Activación del Plan de Preparativos y Mando Único.", "Canal de comunicación directo con el sitio de crisis."],
+                despues: ["Valoración integral y desactivación oficial del Plan de Preparativos."]
+            },
+            {
+                id: "ictus",
+                nombre: "Código Ictus / Stroke",
+                subtitulo: "Rescate Neurovascular (Evento Cerebrovascular)",
+                categoria: "medico",
+                colorBadge: "bg-sky-100 text-sky-800 border-sky-300",
+                colorHeader: "from-sky-600 to-indigo-800",
+                icono: "brain",
+                lider: "Coordinador de Urgencias / Urgenciólogo de turno",
+                participantes: ["Urgencias", "Imagenología", "Camilleros", "Enfermería"],
+                antes: ["Capacitación en detección de signos de ECV e insumos listos."],
+                durante: ["Aplicar Escala Cincinnati (Enfermería) y Escala NIHSS (Médico).", "Notificar a grupo Hospitalario Stroke.", "Solicitud prioritaria de AngioTAC de cráneo.", "Tratamiento según Guías Internacionales (AHA/ASA 2018)."],
+                despues: ["Reporte de seguimiento Ictus, análisis del caso y plan de mejora."]
+            },
+            {
+                id: "100",
+                nombre: "Código 100",
+                subtitulo: "Intento o Ideación Suicida",
+                categoria: "medico",
+                colorBadge: "bg-violet-100 text-violet-800 border-violet-300",
+                colorHeader: "from-violet-600 to-purple-800",
+                icono: "life-buoy",
+                lider: "Médico de Urgencias",
+                participantes: ["Relaciones Públicas", "Psicólogo", "Médicos de Urgencias y Hospitalización"],
+                antes: ["Aplicación de valoración SAD Person al ingreso y escala ASQ."],
+                durante: ["Activación ante riesgo moderado-alto.", "Contención psicológica inmediata por Psicología y Relaciones Públicas.", "Custodia y resguardo de la seguridad del paciente.", "Gestión de traslado si se requiere."],
+                despues: ["Reporte de seguimiento y análisis de áreas de oportunidad."]
+            },
+            {
+                id: "7",
+                nombre: "Código 7",
+                subtitulo: "Accidente Grave de Personal",
+                categoria: "medico",
+                colorBadge: "bg-rose-100 text-rose-800 border-rose-300",
+                colorHeader: "from-rose-600 to-red-700",
+                icono: "user-cog",
+                lider: "Médico de Urgencias",
+                participantes: ["Médico de Guardia / Urgencias", "Enfermería", "Camillero"],
+                antes: ["Procedimientos de orden, limpieza y seguridad laboral vigentes."],
+                durante: ["Acudir de inmediato al punto del accidente.", "Valoración integral y traslado seguro del colaborador a Urgencias."],
+                despues: ["Reporte oficial de accidente laboral en Intramed (www.hsais.intramed.mx).", "Análisis de causalidad y medidas preventivas."]
+            }
+        ];
+
+        let selectedCodeId = "oro";
+        let activeFilter = "all";
+        let searchQuery = "";
+
+        // Inicializador
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCodeList();
+            renderCodeDetail(selectedCodeId);
+            setupEventListeners();
+            lucide.createIcons();
+        });
+
+        // Configurar Event Listeners
+        function setupEventListeners() {
+            // Buscador
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase();
+                renderCodeList();
+            });
+
+            // Filtros
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('bg-blue-900', 'text-white');
+                        b.classList.add('bg-slate-100', 'text-slate-600');
+                    });
+                    e.target.classList.remove('bg-slate-100', 'text-slate-600');
+                    e.target.classList.add('bg-blue-900', 'text-white');
+
+                    activeFilter = e.target.getAttribute('data-filter');
+                    renderCodeList();
+                });
+            });
+        }
+
+        // Renderizar Lista Lateral
+        function renderCodeList() {
+            const listContainer = document.getElementById('codeList');
+            listContainer.innerHTML = '';
+
+            const filteredCodes = codigosData.filter(item => {
+                const matchesFilter = activeFilter === 'all' || item.categoria === activeFilter;
+                const matchesSearch = item.nombre.toLowerCase().includes(searchQuery) || 
+                                      item.subtitulo.toLowerCase().includes(searchQuery) ||
+                                      item.lider.toLowerCase().includes(searchQuery);
+                return matchesFilter && matchesSearch;
+            });
+
+            if(filteredCodes.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="p-6 text-center text-slate-400 text-sm">
+                        No se encontraron códigos con los criterios aplicados.
+                    </div>
+                `;
+                return;
+            }
+
+            filteredCodes.forEach(item => {
+                const isSelected = item.id === selectedCodeId;
+                const card = document.createElement('div');
+                card.className = `p-3.5 rounded-lg cursor-pointer transition-all duration-150 mb-1 flex items-center justify-between ${
+                    isSelected 
+                        ? 'bg-blue-50 border-l-4 border-blue-700 shadow-sm' 
+                        : 'hover:bg-slate-50 border-l-4 border-transparent'
+                }`;
+
+                card.onclick = () => {
+                    selectedCodeId = item.id;
+                    renderCodeList();
+                    renderCodeDetail(item.id);
+                };
+
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2 rounded-lg bg-slate-100 text-slate-700">
+                            <i data-lucide="${item.icono}" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm text-slate-800">${item.nombre}</div>
+                            <div class="text-xs text-slate-500 line-clamp-1">${item.subtitulo}</div>
+                        </div>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+                `;
+                listContainer.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // Renderizar Detalle de Código
+        function renderCodeDetail(codeId) {
+            const container = document.getElementById('codeDetailContainer');
+            const data = codigosData.find(c => c.id === codeId);
+
+            if(!data) return;
+
+            container.innerHTML = `
+                <!-- Encabezado del Detalle -->
+                <div class="bg-gradient-to-r ${data.colorHeader} text-white p-6 rounded-xl shadow-md mb-6 relative overflow-hidden">
+                    <div class="absolute right-4 bottom-2 opacity-10">
+                        <i data-lucide="${data.icono}" class="w-36 h-36"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md bg-white/20 backdrop-blur-md text-white mb-2 uppercase tracking-wider">
+                            ${data.categoria}
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-black">${data.nombre}</h2>
+                        <p class="text-sm sm:text-base text-white/90 font-medium mt-1">${data.subtitulo}</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta del Líder de Respuesta -->
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-6 flex items-start space-x-3">
+                    <div class="bg-blue-100 p-2 rounded-lg text-blue-800 mt-0.5">
+                        <i data-lucide="user-check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Líder del Protocolo</span>
+                        <h4 class="font-bold text-slate-800 text-base">${data.lider}</h4>
+                    </div>
+                </div>
+
+                <!-- Grid de Fases: ANTES, DURANTE, DESPUÉS -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    
+                    <!-- FASE ANTES -->
+                    <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+                        <div class="flex items-center space-x-2 text-blue-600 font-bold text-sm mb-3 pb-2 border-b border-slate-100">
+                            <i data-lucide="clock" class="w-4 h-4"></i>
+                            <span>ANTES (Prevención)</span>
+                        </div>
+                        <ul class="space-y-2 text-xs text-slate-600">
+                            ${data.antes.map(item => `<li class="flex items-start"><span class="text-blue-500 mr-1.5">•</span><span>${item}</span></li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- FASE DURANTE -->
+                    <div class="bg-white border border-amber-200 rounded-lg p-4 shadow-sm bg-amber-50/20">
+                        <div class="flex items-center space-x-2 text-amber-600 font-bold text-sm mb-3 pb-2 border-b border-amber-100">
+                            <i data-lucide="zap" class="w-4 h-4"></i>
+                            <span>DURANTE (Acción)</span>
+                        </div>
+                        <ul class="space-y-2 text-xs text-slate-700 font-medium">
+                            ${data.durante.map(item => `<li class="flex items-start"><span class="text-amber-500 mr-1.5">•</span><span>${item}</span></li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- FASE DESPUÉS -->
+                    <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+                        <div class="flex items-center space-x-2 text-emerald-600 font-bold text-sm mb-3 pb-2 border-b border-slate-100">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                            <span>DESPUÉS (Seguimiento)</span>
+                        </div>
+                        <ul class="space-y-2 text-xs text-slate-600">
+                            ${data.despues.map(item => `<li class="flex items-start"><span class="text-emerald-500 mr-1.5">•</span><span>${item}</span></li>`).join('')}
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- Equipo Participante -->
+                <div class="bg-white border border-slate-200 rounded-lg p-4">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <i data-lucide="users" class="w-4 h-4 text-slate-500"></i> Integrantes y Equipo Multidisciplinario
+                    </h4>
+                    <div class="flex flex-wrap gap-1.5">
+                        ${data.participantes.map(p => `<span class="bg-slate-100 text-slate-700 text-xs px-2.5 py-1 rounded-md font-medium">${p}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
