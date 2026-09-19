@@ -1,753 +1,722 @@
+<!--
+================================================================================
+  PORTAL WEB INTERNO - HOSPITAL SAN ÁNGEL INN SUR (VERSIÓN MEJORADA 2026)
+================================================================================
+  Principales Mejoras Realizadas:
+  
+  1. Diseño Visual & UX Moderno:
+     - Paleta de color optimizada con azul médico profundo (Slate/Navy) e hiper-legible.
+     - Fondo claro/sutil en degradado con tarjetas elevadas (Glassmorphism & Soft Shadows).
+     - Tipografía Inter/System optimizada para alta legibilidad.
+     
+  2. Buscador de Extensiones y Filtros Dinámicos:
+     - Buscador flotante con indicador de coincidencias e íconos interactivos.
+     - Acción instantánea de "Copiar Extensión" con feedback visual y Toast moderno.
+     
+  3. Carruseles Interactivos y Fluidos:
+     - Carrusel de Comunicados con controles touch/hover, autoplay inteligente e integración con Modal Zoom.
+     - Carrusel vertical de Noticias y Avisos en tiempo real con indicador dinámico.
+     - Módulo de Higiene de Manos interactivo con pasos numerados, barra de progreso fluida y temporizador.
+     
+  4. Bloc de Notas Personal y Herramientas:
+     - Persistencia de datos local en tiempo real con localStorage y contador de caracteres.
+     
+  5. Responsividad y Micro-interacciones:
+     - Layout 100% adaptable mediante CSS Grid / Flexbox (Mobile, Tablet, Desktop).
+     - Efectos Hover en botones, cards interactivas y animaciones fluidas CSS/JS.
+================================================================================
+-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Web - Hospital San Ángel Inn Sur</title>
+  <title>Portal Web Interno - Hospital San Ángel Inn Sur</title>
+  
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Lucide-style icons via CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            hsai: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              500: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              dark: '#0a192f',
+              accent: '#2563eb'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
     body {
-      background-color: #0f172a; /* Azul noche elegante para mejor contraste */
-      background-image: radial-gradient(#1e293b 1px, transparent 0);
-      background-size: 24px 24px;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      color: #334155;
-    }
-    
-    /* Header principal */
-    .main-header {
-      background: linear-gradient(180deg, #002244 0%, #003366 100%);
-      padding: 1.25rem;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      border-bottom: 3px solid #1a73ff;
-    }
-    .main-header img {
-      max-height: 75px;
-      width: auto;
-      display: block;
-      margin: 0 auto;
-      filter: drop-shadow(0px 2px 8px rgba(255,255,255,0.2));
-      transition: transform 0.3s ease;
-    }
-    .main-header img:hover {
-      transform: scale(1.02);
-    }
-
-    /* Layout principal */
-    .container-layout {
-      max-width: 1600px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 1rem;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-      flex: 1;
-    }
-
-    @media (min-width: 1024px) {
-      .container-layout {
-        grid-template-columns: 300px 1fr;
-        padding: 1.5rem;
-      }
-    }
-
-    .rectangle {
-      background-color: #ffffff;
-      padding: 1.25rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .rectangle:hover {
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Sidebar izquierdo */
-    .sidebar-left {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-    .sidebar-title, .news-title, .main-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #003366;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 0.5rem;
-      margin-bottom: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .link {
-      color: #1e40af;
-      display: flex;
-      align-items: center;
-      padding: 0.6rem 0.8rem;
-      font-size: 0.92rem;
-      font-weight: 500;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      word-break: break-word;
-    }
-    .link:hover {
-      color: #1d4ed8;
-      background-color: #eff6ff;
-      transform: translateX(4px);
-    }
-    .link::before {
-      content: '🔗';
-      font-size: 0.85rem;
-      margin-right: 8px;
-    }
-    
-    /* Noticias */
-    .news-carousel-container {
-      width: 100%;
-      padding: 2px 0;
-      overflow: hidden;
-    }
-    .news-carousel-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .news-item {
-      padding: 12px 14px;
-      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       background-color: #f8fafc;
-      border-left: 4px solid #cbd5e1;
-      transition: all 0.4s ease;
-      opacity: 0.6;
-      font-size: 0.9rem;
-    }
-    .news-item.active {
-      opacity: 1;
-      background-color: #eff6ff;
-      border-left-color: #2563eb;
-      font-weight: 600;
-      color: #1e3a8a;
-      transform: scale(1.02);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    }
-
-    /* Higiene de manos */
-    .hygiene-box {
-      background: linear-gradient(135deg, #e0f7fa 0%, #e1f5fe 100%);
-      border: 2px solid #b2ebf2;
-      border-radius: 16px;
-      padding: 1.25rem;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(0, 172, 193, 0.15);
-      color: #004d40;
-    }
-    .hygiene-header { margin-bottom: 15px; }
-    .sparkle-icon {
-      font-size: 1.8rem;
-      display: inline-block;
-      animation: pulse 1.5s infinite alternate;
-    }
-    .hygiene-header h3 { margin: 4px 0; font-size: 1.25rem; color: #00695c; font-weight: 700; }
-    .hygiene-header p { margin: 0; opacity: 0.85; font-size: 0.85rem; }
-
-    .step-carousel {
-      position: relative;
-      min-height: 150px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .step-card {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      position: absolute;
-      width: 100%;
-      box-sizing: border-box;
-      opacity: 0;
-      transform: translateX(20px) scale(0.95);
-      transition: all 0.5s ease-in-out;
-      pointer-events: none;
-    }
-    .step-card.active {
-      opacity: 1;
-      transform: translateX(0) scale(1);
-      pointer-events: auto;
-    }
-    .step-num {
-      background: #00acc1;
-      color: #fff;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 0.9rem;
-      margin: 0 auto 8px auto;
-    }
-    .step-card h4 { margin: 0 0 4px 0; font-size: 1rem; color: #00796b; font-weight: 700; }
-    .step-card p { margin: 0; font-size: 0.85rem; line-height: 1.35; color: #455a64; }
-
-    .progress-bar-container {
-      width: 100%;
-      height: 4px;
-      background: rgba(0, 172, 193, 0.2);
-      border-radius: 2px;
-      margin-top: 15px;
-      overflow: hidden;
-    }
-    .progress-bar { height: 100%; width: 0%; background: #00acc1; }
-    .progress-bar.animate { animation: fillProgress 5s linear infinite; }
-
-    .step-dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #b2ebf2;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    .dot.active { background: #00acc1; transform: scale(1.3); }
-
-    .hygiene-footer {
-      margin-top: 15px;
-      background: rgba(255, 255, 255, 0.7);
-      border-left: 4px solid #00acc1;
-      padding: 8px 12px;
-      border-radius: 0 8px 8px 0;
-      font-size: 0.8rem;
-      text-align: left;
-    }
-
-    /* Área Principal GRID Responsivo */
-    .main-area {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-    }
-
-    @media (min-width: 768px) {
-      .main-area { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (min-width: 1280px) {
-      .main-area { grid-template-columns: 1fr 1fr 300px; }
-      .right-column { grid-column: 3; grid-row: 1 / 3; }
-    }
-
-    .right-column {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    /* Carpetas Estilo Botón */
-    .orange-folder, .blue-folder, .neutral-folder {
-      min-height: 160px;
-      border-radius: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: white;
-      text-align: center;
-      font-weight: 700;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      text-decoration: none;
-      padding: 1.5rem 1rem;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    @media (min-width: 1280px) {
-      .orange-folder, .blue-folder, .neutral-folder {
-        height: 100%;
-        min-height: 200px;
-      }
-    }
-
-    .orange-folder { background: linear-gradient(135deg, #ff9800, #ed6c02); font-size: 1.5rem; }
-    .blue-folder { background: linear-gradient(135deg, #0288d1, #01579b); font-size: 1.3rem; }
-    .neutral-folder { background: #ffffff; color: #003366; border: 3px solid #003366; font-size: 1.3rem; }
-    
-    .orange-folder:hover, .blue-folder:hover, .neutral-folder:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 14px 28px rgba(0,0,0,0.22);
-    }
-
-    .subtitle {
-      font-size: 0.85rem;
-      margin-top: 0.6rem;
-      font-weight: 500;
-      opacity: 0.9;
-      background: rgba(0, 0, 0, 0.15);
-      padding: 4px 12px;
-      border-radius: 20px;
-    }
-    .neutral-folder .subtitle { background: rgba(0, 51, 102, 0.1); }
-    
-    .search-input {
-      width: 100%;
-      padding: 0.7rem 1rem;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      margin-bottom: 0.8rem;
-      outline: none;
-      transition: border-color 0.2s ease;
-    }
-    .search-input:focus { border-color: #2563eb; }
-
-    /* Tabla de extensiones */
-    .table-wrapper {
-      max-height: 420px;
-      overflow-y: auto;
-      overflow-x: auto;
-      background: white;
-      border-radius: 10px;
-      border: 1px solid #e2e8f0;
-    }
-
-    .extensions-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.88rem;
-    }
-    .extensions-table th, .extensions-table td {
-      padding: 0.65rem 0.85rem;
-      border-bottom: 1px solid #f1f5f9;
-      text-align: left;
-    }
-    .extensions-table tbody tr {
-      cursor: pointer;
-      transition: background-color 0.15s ease;
-    }
-    .extensions-table tbody tr:hover { background-color: #f0f9ff; }
-    .extensions-table th {
-      background-color: #f8fafc;
+      background-image: radial-gradient(#e2e8f0 1.2px, transparent 1.2px);
+      background-size: 20px 20px;
       color: #1e293b;
-      font-weight: 700;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    .highlight { background-color: #fef08a; padding: 0 2px; border-radius: 2px; }
-
-    .notepad {
-      width: 100%;
-      min-height: 120px;
-      padding: 0.8rem;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      outline: none;
-      resize: vertical;
-      transition: border-color 0.2s;
+    /* Tarjetas Elevadas */
+    .hsai-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05), 0 2px 6px -2px rgba(0, 0, 0, 0.02);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .notepad:focus { border-color: #2563eb; }
 
-    /* Toast Notification */
-    #toast {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #1e293b;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      display: opacity;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      z-index: 2000;
-      font-size: 0.9rem;
+    .hsai-card:hover {
+      box-shadow: 0 12px 25px -5px rgba(2, 132, 199, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      transform: translateY(-2px);
     }
-    #toast.show { opacity: 1; }
 
-    @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
-    @keyframes fillProgress { 0% { width: 0%; } 100% { width: 100%; } }
+    /* Scrollbars elegantes */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Barra de progreso interactiva */
+    .progress-bar-fill {
+      transition: width 0.1s linear;
+    }
+
+    /* Animación pulse suave */
+    @keyframes softPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.03); }
+    }
+    .pulse-soft {
+      animation: softPulse 3s infinite ease-in-out;
+    }
+
+    .highlight-match {
+      background-color: #fef08a;
+      color: #854d0e;
+      padding: 0 3px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
   </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 
-  <!-- Header con Logo -->
-  <header class="main-header">
-    <img src="logo-image.jpg" alt="Hospital San Ángel Inn Sur">
+  <!-- Header Superior Principal -->
+  <header class="bg-gradient-to-r from-hsai-dark via-hsai-900 to-hsai-800 text-white shadow-lg border-b-4 border-hsai-500 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-4">
+      
+      <div class="flex items-center gap-4">
+        <div class="bg-white p-2 rounded-xl shadow-md border border-slate-200/20">
+          <img src="logo.jpg" alt="Hospital San Ángel Inn Sur" class="h-10 md:h-12 w-auto object-contain" onerror="this.onerror=null; this.src='https://via.placeholder.com/180x50?text=San+Angel+Inn';">
+        </div>
+        <div>
+          <h1 class="text-lg md:text-xl font-bold tracking-tight text-white flex items-center gap-2">
+            Portal Intranet
+            <span class="bg-blue-500/30 text-blue-200 text-xs px-2.5 py-0.5 rounded-full border border-blue-400/30 font-medium">HSAI Sur</span>
+          </h1>
+          <p class="text-xs text-slate-300 hidden sm:block">Plataforma Digital de Información y Servicios Operativos</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 ml-auto sm:ml-0">
+        <div class="bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-lg border border-white/10 text-xs text-slate-200 flex items-center gap-2">
+          <i class="fa-regular fa-clock text-blue-300"></i>
+          <span id="liveClock" class="font-mono font-semibold">--:--:--</span>
+        </div>
+      </div>
+
+    </div>
   </header>
 
-  <div class="container-layout">
-    
-    <!-- Sidebar Izquierdo -->
-    <aside class="sidebar-left">
+  <!-- Layout Principal de Contenido -->
+  <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LATERAL IZQUIERDO (4 Columnas en Desktop) -->
+    <aside class="lg:col-span-4 flex flex-col gap-6">
+
       <!-- Enlaces Rápidos -->
-      <div class="rectangle">
-        <h2 class="sidebar-title">Enlaces Rápidos</h2>
-        <a href="https://hsai.intramed.mx/h-sur/" target="_blank" class="link">Intramed - HSAI SUR</a>
-        <a href="https://hsai.atlassian.net/servicedesk/customer/portals" target="_blank" class="link">Jira Services</a>
-        <a href="https://apps.evacenter.com/login" target="_blank" class="link">Eden Med</a>
-        <a href="https://172.16.13.6:8443/lab/collection/#/login" target="_blank" class="link">Molulab (Extracciones)</a>
-      </div>
+      <section class="hsai-card p-5">
+        <h2 class="text-base font-bold text-hsai-900 border-b border-slate-100 pb-3 mb-3 flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <i class="fa-solid fa-compass text-hsai-500"></i> Enlaces Operativos
+          </span>
+          <span class="text-xs font-normal text-slate-400">Accesos directos</span>
+        </h2>
+        <div class="grid grid-cols-1 gap-2">
+          <a href="https://hsai.intramed.mx/h-sur/" target="_blank" class="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 hover:bg-hsai-50 text-slate-700 hover:text-hsai-700 font-medium text-sm transition group border border-slate-200/60">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-hospital-user text-hsai-500 group-hover:scale-110 transition-transform"></i>
+              Intramed - HSAI SUR
+            </span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-40 group-hover:opacity-100 transition"></i>
+          </a>
 
-      <!-- Noticias -->
-      <div class="rectangle">
-        <h2 class="news-title">Noticias</h2>
-        <div class="news-carousel-container">
-          <div class="news-carousel-wrapper" id="newsVerticalWrapper">
-            <div class="news-item active">¡Bienvenidos al nuevo portal web!</div>
-            <div class="news-item">Excelente Viernes!</div>
-            <div class="news-item"></div>
+          <a href="https://hsai.atlassian.net/servicedesk/customer/portals" target="_blank" class="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 hover:bg-hsai-50 text-slate-700 hover:text-hsai-700 font-medium text-sm transition group border border-slate-200/60">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-headset text-indigo-500 group-hover:scale-110 transition-transform"></i>
+              Jira Service Desk
+            </span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-40 group-hover:opacity-100 transition"></i>
+          </a>
+
+          <a href="https://apps.evacenter.com/login" target="_blank" class="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 hover:bg-hsai-50 text-slate-700 hover:text-hsai-700 font-medium text-sm transition group border border-slate-200/60">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-laptop-medical text-teal-500 group-hover:scale-110 transition-transform"></i>
+              Eden Med (PACS / RIS)
+            </span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-40 group-hover:opacity-100 transition"></i>
+          </a>
+
+          <a href="https://172.16.13.6:8443/lab/collection/#/login" target="_blank" class="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 hover:bg-hsai-50 text-slate-700 hover:text-hsai-700 font-medium text-sm transition group border border-slate-200/60">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-vial text-rose-500 group-hover:scale-110 transition-transform"></i>
+              Molulab (Extracciones)
+            </span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-40 group-hover:opacity-100 transition"></i>
+          </a>
+        </div>
+      </section>
+
+      <!-- Noticias e Informes Rápidos -->
+      <section class="hsai-card p-5">
+        <h2 class="text-base font-bold text-hsai-900 border-b border-slate-100 pb-3 mb-3 flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <i class="fa-solid fa-bullhorn text-amber-500"></i> Avisos Internos
+          </span>
+          <span id="newsCounter" class="text-xs text-slate-400">1/3</span>
+        </h2>
+
+        <div class="relative overflow-hidden min-h-[90px] flex items-center bg-slate-50 rounded-xl p-3 border border-slate-100">
+          <div id="newsWrapper" class="w-full transition-all duration-500">
+            <!-- Renderizado dinámico de noticias JS -->
           </div>
         </div>
-      </div>
-
-      <!-- Higiene de Manos -->
-      <div class="hygiene-box" id="hygieneContainer">
-        <div class="hygiene-header">
-          <span class="sparkle-icon">✨</span>
-          <h3>¡Superpoder Anti-Gérmenes!</h3>
-          <p>Domina el arte del lavado de manos paso a paso</p>
+        <div class="flex justify-end gap-1 mt-2">
+          <button onclick="prevNews()" class="p-1 px-2 text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 rounded transition"><i class="fa-solid fa-chevron-left"></i></button>
+          <button onclick="nextNews()" class="p-1 px-2 text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 rounded transition"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
+      </section>
 
-        <div class="step-carousel">
-          <div class="step-card active">
-            <div class="step-num">1</div>
-            <h4>Agua al rescate</h4>
-            <p>Moja tus manos con agua limpia y cierra el grifo para ahorrar.</p>
+      <!-- Higiene de Manos (Módulo Interactivo) -->
+      <section id="hygieneContainer" class="hsai-card p-5 bg-gradient-to-br from-teal-50/50 via-white to-sky-50/50 border-teal-200/80 relative overflow-hidden">
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-teal-500 text-white flex items-center justify-center font-bold shadow-sm">
+            <i class="fa-solid fa-hands-bubbles"></i>
           </div>
-          <div class="step-card">
-            <div class="step-num">2</div>
-            <h4>Súper espuma</h4>
-            <p>Aplica jabón y frota las palmas hasta crear tu armadura protectora.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-num">3</div>
-            <h4>Ataque dorsal</h4>
-            <p>Frota la palma contra el dorso de la otra mano entrelazando los dedos.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-num">4</div>
-            <h4>Zona invisible</h4>
-            <p>Limpia entre los dedos, los nudillos y abraza tus pulgares.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-num">5</div>
-            <h4>Gran aclarado</h4>
-            <p>Enjuaga bien con abundante agua y despídete de la suciedad.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-num">6</div>
-            <h4>Secado de crack</h4>
-            <p>Usa una toalla limpia o de papel (¡y úsala para cerrar el grifo!).</p>
+          <div>
+            <h3 class="text-sm font-bold text-teal-900">Seguridad del Paciente</h3>
+            <p class="text-[11px] text-teal-600 font-medium">Técnica Correcta de Higiene de Manos</p>
           </div>
         </div>
 
-        <div class="progress-bar-container">
-          <div class="progress-bar" id="progressBar"></div>
+        <div class="relative min-h-[110px] bg-white rounded-xl p-3 border border-teal-100 shadow-sm">
+          <div id="hygieneCardContent">
+            <!-- Contenido del Paso JS -->
+          </div>
         </div>
 
-        <div class="step-dots" id="stepDots">
-          <span class="dot active" onclick="jumpToHygieneStep(0)"></span>
-          <span class="dot" onclick="jumpToHygieneStep(1)"></span>
-          <span class="dot" onclick="jumpToHygieneStep(2)"></span>
-          <span class="dot" onclick="jumpToHygieneStep(3)"></span>
-          <span class="dot" onclick="jumpToHygieneStep(4)"></span>
-          <span class="dot" onclick="jumpToHygieneStep(5)"></span>
+        <!-- Indicador de Progresión -->
+        <div class="mt-3 space-y-2">
+          <div class="w-full bg-teal-100 h-1.5 rounded-full overflow-hidden">
+            <div id="hygieneProgressBar" class="bg-teal-500 h-full w-0 progress-bar-fill"></div>
+          </div>
+          <div id="stepDots" class="flex justify-center gap-1.5 pt-1">
+            <!-- Dots JS -->
+          </div>
         </div>
+      </section>
 
-        <div class="hygiene-footer">
-          ⏱️ <strong>Duración ideal:</strong> 20 a 30 segundos en el lavabo.
+      <!-- Bloc de Notas Personal (con localStorage) -->
+      <section class="hsai-card p-5">
+        <h2 class="text-base font-bold text-hsai-900 border-b border-slate-100 pb-3 mb-3 flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <i class="fa-solid fa-note-sticky text-yellow-500"></i> Notas Rápidas
+          </span>
+          <span class="text-[10px] text-slate-400">Guardado Local</span>
+        </h2>
+        <textarea id="notepad" class="w-full h-28 p-3 text-xs bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-hsai-500 resize-none transition" placeholder="Escribe notas de tu turno aquí..."></textarea>
+        <div class="flex items-center justify-between mt-2 text-[11px] text-slate-400">
+          <span id="noteCharCount">0 caracteres</span>
+          <span id="noteSavedStatus" class="text-emerald-600 hidden"><i class="fa-solid fa-check"></i> Guardado</span>
         </div>
-      </div>
+      </section>
 
-      <!-- Bloc de Notas Local -->
-      <div class="rectangle">
-        <h2 class="sidebar-title">📝 Bloc de Notas</h2>
-        <textarea class="notepad" id="notepad" placeholder="Escribe aquí tus notas rápidas (se guardan automáticamente)..."></textarea>
-      </div>
     </aside>
 
-    <!-- Área Principal -->
-    <main class="main-area">
+    <!-- ÁREA PRINCIPAL DERECHA (8 Columnas en Desktop) -->
+    <main class="lg:col-span-8 flex flex-col gap-6">
 
-      <!-- Extensiones Telefónicas -->
-      <section class="rectangle">
-        <h2 class="main-title">📞 Extensiones Telefónicas</h2>
-        <input type="text" id="searchInput" class="search-input" placeholder="Buscar contacto o extensión..." onkeyup="filterExtensions()">
-        <div class="table-wrapper">
-          <table class="extensions-table" id="extensionsTable">
-            <thead>
-              <tr><th>Contacto</th><th style="width: 90px;">Extensión</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Coordinaciones Clínicas</td><td><strong>30224</strong></td></tr>
-              <tr><td>Administración de Dirección</td><td><strong>30298</strong></td></tr>
-              <tr><td>Dirección de Experiencia al Cliente</td><td><strong>30155</strong></td></tr>
-              <tr><td>Dirección de Planificación</td><td><strong>30169</strong></td></tr>
-              <tr><td>Dirección de Infraestructura</td><td><strong>30180</strong></td></tr>
-              <tr><td>Calidad</td><td><strong>30154</strong></td></tr>
-              <tr><td>Dirección de Finanzas</td><td><strong>30190</strong></td></tr>
-              <tr><td>Terapia Intensiva Adultos</td><td><strong>30251</strong></td></tr>
-              <tr><td>Terapia Intensiva Neonatal</td><td><strong>30222</strong></td></tr>
-              <tr><td>Urgencias</td><td><strong>30401</strong></td></tr>
-              <tr><td>Nutrición</td><td><strong>30262</strong></td></tr>
-              <tr><td>Farmacovigilancia</td><td><strong>30112</strong></td></tr>
-              <tr><td>Vigilancia Epidemiológica</td><td><strong>30263</strong></td></tr>
-              <tr><td>Inhaloterapia</td><td><strong>30266</strong></td></tr>
-              <tr><td>Clínica Control de Peso</td><td><strong>30267</strong></td></tr>
-              <tr><td>Terapia Física</td><td><strong>30269</strong></td></tr>
-              <tr><td>Residencia Médica</td><td><strong>30243</strong></td></tr>
-              <tr><td>Laboratorio</td><td><strong>30405</strong></td></tr>
-              <tr><td>Laboratorio Recepción</td><td><strong>30406</strong></td></tr>
-              <tr><td>Ultrasonido</td><td><strong>30104</strong></td></tr>
-              <tr><td>Tomografía</td><td><strong>30404</strong></td></tr>
-              <tr><td>Biomédica</td><td><strong>30410</strong></td></tr>
-              <tr><td>Archivo Clínico</td><td><strong>30172</strong></td></tr>
-              <tr><td>Activación de Código</td><td><strong>70</strong></td></tr>
-              <tr><td>Dalinde Recepción</td><td><strong>10000</strong></td></tr>
-              <tr><td>HSAI UNIVERSIDAD</td><td><strong>021</strong></td></tr>
-              <tr><td>HSAI CHAPULTEPEC</td><td><strong>31000</strong></td></tr>
-              <tr><td>HSAI DEL VALLE</td><td><strong>33100</strong></td></tr>
-              <tr><td>HSAI PATRIOTISMO</td><td><strong>32057</strong></td></tr>
-              <tr><td>Quirófano</td><td><strong>30260</strong></td></tr>
-              <tr><td>Quirófano 2</td><td><strong>30261</strong></td></tr>
-              <tr><td>Recuperación</td><td><strong>30265</strong></td></tr>
-              <tr><td>Descanso Médicos</td><td><strong>30252</strong></td></tr>
-              <tr><td>CEyE</td><td><strong>30262</strong></td></tr>
-              <tr><td>Coordinación de Enfermería</td><td><strong>30250</strong></td></tr>
-              <tr><td>Coordinación de Enseñanza</td><td><strong>30266</strong></td></tr>
-              <tr><td>Supervisión de Enfermería</td><td><strong>30253</strong></td></tr>
-              <tr><td>Central de Enfermería "PB"</td><td><strong>30100</strong></td></tr>
-              <tr><td>Central de Enfermería "2A"</td><td><strong>30200</strong></td></tr>
-              <tr><td>Central de Enfermería "2B"</td><td><strong>30219</strong></td></tr>
-              <tr><td>Central de Enfermería Cuneros</td><td><strong>30220</strong></td></tr>
-              <tr><td>Central de Enfermería UCIN</td><td><strong>30222</strong></td></tr>
-              <tr><td>Central de Enfermería UCIA</td><td><strong>30251</strong></td></tr>
-              <tr><td>Central de Enfermería Urgencias</td><td><strong>30401</strong></td></tr>
-              <tr><td>Seguridad Hospitalaria</td><td><strong>30156</strong></td></tr>
-              <tr><td>Mantenimiento</td><td><strong>30407</strong></td></tr>
-              <tr><td>Tecnologías de la Información / Sistemas</td><td><strong>30175</strong></td></tr>
-              <tr><td>Servicios Generales / Ropería</td><td><strong>30201</strong></td></tr>
-              <tr><td>Vigilancia</td><td><strong>30408</strong></td></tr>
-              <tr><td>Cafetería</td><td><strong>30400</strong></td></tr>
-              <tr><td>Cocina</td><td><strong>30411</strong></td></tr>
-              <tr><td>Relaciones Públicas</td><td><strong>30294</strong></td></tr>
-              <tr><td>Coordinación de Admisión</td><td><strong>30111</strong></td></tr>
-              <tr><td>Caja</td><td><strong>30151</strong></td></tr>
-              <tr><td>Admisión Principal</td><td><strong>30152</strong></td></tr>
-              <tr><td>Recepción Principal</td><td><strong>30150</strong></td></tr>
-              <tr><td>Recepción 2</td><td><strong>30199</strong></td></tr>
-              <tr><td>Recepción Urgencias</td><td><strong>30402</strong></td></tr>
-              <tr><td>Mesa de Control Aseguradoras</td><td><strong>30174</strong></td></tr>
-              <tr><td>Recepción Consultorio 1</td><td><strong>30177</strong></td></tr>
-              <tr><td>Recepción Consultorio 2</td><td><strong>30178</strong></td></tr>
-              <tr><td>Mesa de Control</td><td><strong>30173</strong></td></tr>
-              <tr><td>Analista CxC</td><td><strong>30412</strong></td></tr>
-              <tr><td>Embajador Comercial</td><td><strong>30126</strong></td></tr>
-              <tr><td>Coordinación de Contabilidad</td><td><strong>30190</strong></td></tr>
-              <tr><td>Coordinación de Cuentas por Cobrar</td><td><strong>30181</strong></td></tr>
-              <tr><td>Auxiliar Cuentas por Cobrar</td><td><strong>30182</strong></td></tr>
-              <tr><td>Contador General</td><td><strong>30167</strong></td></tr>
-              <tr><td>Contabilidad Egresos</td><td><strong>30170</strong></td></tr>
-              <tr><td>Contabilidad Ingresos</td><td><strong>30189</strong></td></tr>
-              <tr><td>Coordinación de Compras</td><td><strong>30165</strong></td></tr>
-              <tr><td>Compras</td><td><strong>30158</strong></td></tr>
-              <tr><td>Coordinación de Almacén</td><td><strong>30409</strong></td></tr>
-              <tr><td>Coordinación de Farmacia</td><td><strong>30259</strong></td></tr>
-              <tr><td>Almacén de Farmacia</td><td><strong>30227</strong></td></tr>
-              <tr><td>Coordinación de Capital Humano</td><td><strong>30162</strong></td></tr>
-              <tr><td>Reclutamiento</td><td><strong>30161</strong></td></tr>
-              <tr><td>Nóminas</td><td><strong>30166</strong></td></tr>
-              <tr><td>Sala de Usos Múltiples (SUM)</td><td><strong>30179</strong></td></tr>
-              <tr><td>Habitación 101</td><td><strong>30101</strong></td></tr>
-              <tr><td>Habitación 102</td><td><strong>30102</strong></td></tr>
-              <tr><td>Habitación 103</td><td><strong>30103</strong></td></tr>
-              <tr><td>Habitación 104</td><td><strong>30104</strong></td></tr>
-              <tr><td>Habitación 106</td><td><strong>30106</strong></td></tr>
-              <tr><td>Habitación 107</td><td><strong>30107</strong></td></tr>
-              <tr><td>Habitación 108</td><td><strong>30108</strong></td></tr>
-              <tr><td>Habitación 109</td><td><strong>30109</strong></td></tr>
-              <tr><td>Habitación 110</td><td><strong>30110</strong></td></tr>
-              <tr><td>Habitación 202</td><td><strong>30202</strong></td></tr>
-              <tr><td>Habitación 203</td><td><strong>30203</strong></td></tr>
-              <tr><td>Habitación 204</td><td><strong>30204</strong></td></tr>
-              <tr><td>Habitación 205</td><td><strong>30205</strong></td></tr>
-              <tr><td>Habitación 206</td><td><strong>30206</strong></td></tr>
-              <tr><td>Habitación 207</td><td><strong>30207</strong></td></tr>
-              <tr><td>Habitación 208</td><td><strong>30208</strong></td></tr>
-              <tr><td>Habitación 209</td><td><strong>30209</strong></td></tr>
-              <tr><td>Habitación 210</td><td><strong>30210</strong></td></tr>
-              <tr><td>Habitación 211</td><td><strong>30211</strong></td></tr>
-              <tr><td>Habitación 212</td><td><strong>30212</strong></td></tr>
-              <tr><td>Habitación 213</td><td><strong>30213</strong></td></tr>
-              <tr><td>Habitación 214</td><td><strong>30214</strong></td></tr>
-              <tr><td>Habitación 215</td><td><strong>30215</strong></td></tr>
-              <tr><td>Habitación 216</td><td><strong>30216</strong></td></tr>
-              <tr><td>Habitación 217</td><td><strong>30217</strong></td></tr>
-              <tr><td>Habitación 218</td><td><strong>30218</strong></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <!-- Fila Superior: Directorio de Extensiones + Carpetas Destacadas -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
 
-      <!-- Comunicados y Carrusel -->
-      <section class="rectangle" id="carouselContainer">
-        <h2 class="main-title text-center" style="justify-content: center;">📢 ¡COMUNICADOS!</h2>
-        
-        <div class="relative w-full my-4 overflow-hidden rounded-xl shadow-lg group">
-          <div class="orienta-slide cursor-pointer" onclick="openModalWithImage(this)">
-            <img src="Simulacro.jpg" alt="Comunicado 1" class="w-full h-auto block hover:opacity-95 transition">
-          </div>
-          <div class="orienta-slide cursor-pointer" onclick="openModalWithImage(this)">
-            <img src="Orienta.jpeg" alt="Comunicado 2" class="w-full h-auto block hover:opacity-95 transition">
-          </div>
-          <div class="orienta-slide cursor-pointer" onclick="openModalWithImage(this)">
-            <img src="Caja_Ahorro.jpeg" alt="Comunicado 3" class="w-full h-auto block hover:opacity-95 transition">
-          </div>
-          <div class="orienta-slide hidden cursor-pointer" onclick="openModalWithImage(this)">
-            <img src="Tabaquismo.jpeg" alt="Comunicado 4" class="w-full h-auto block hover:opacity-95 transition">
-          </div>
-          <div class="orienta-slide hidden cursor-pointer" onclick="openModalWithImage(this)">
-            <img src="Clinica_Dental.jpeg" alt="Comunicado 5" class="w-full h-auto block hover:opacity-95 transition">
+        <!-- Tabla de Extensiones (Directorio) - 7 cols -->
+        <section class="md:col-span-7 hsai-card p-5 flex flex-col">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3 border-b border-slate-100 pb-3">
+            <div>
+              <h2 class="text-base font-bold text-hsai-900 flex items-center gap-2">
+                <i class="fa-solid fa-phone-volume text-hsai-500"></i> Directorio Telefónico
+              </h2>
+              <p class="text-xs text-slate-500">Haz clic en una fila para copiar la extensión</p>
+            </div>
+            <span id="matchCount" class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-md font-semibold">
+              88 contactos
+            </span>
           </div>
 
-          <!-- Botones de Navegación -->
-          <button type="button" onclick="changeSlide(-1)" class="absolute top-1/2 left-3 -translate-y-1/2 bg-black/60 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold hover:bg-black/80 transition opacity-80 group-hover:opacity-100">&lt;</button>
-          <button type="button" onclick="changeSlide(1)" class="absolute top-1/2 right-3 -translate-y-1/2 bg-black/60 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold hover:bg-black/80 transition opacity-80 group-hover:opacity-100">&gt;</button>
-
-          <!-- Indicadores -->
-          <div class="text-center absolute bottom-3 w-full backdrop-blur-sm bg-black/20 py-1">
-            <span class="orienta-dot h-2.5 w-2.5 mx-1 bg-white/60 rounded-full inline-block cursor-pointer transition-all" onclick="setSlide(1)"></span>
-            <span class="orienta-dot h-2.5 w-2.5 mx-1 bg-white/60 rounded-full inline-block cursor-pointer transition-all" onclick="setSlide(2)"></span>
-            <span class="orienta-dot h-2.5 w-2.5 mx-1 bg-white/60 rounded-full inline-block cursor-pointer transition-all" onclick="setSlide(3)"></span>
-            <span class="orienta-dot h-2.5 w-2.5 mx-1 bg-white/60 rounded-full inline-block cursor-pointer transition-all" onclick="setSlide(4)"></span>
-            <span class="orienta-dot h-2.5 w-2.5 mx-1 bg-white/60 rounded-full inline-block cursor-pointer transition-all" onclick="setSlide(5)"></span>            
+          <!-- Buscador de Extensiones -->
+          <div class="relative mb-3">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input type="text" id="searchInput" onkeyup="filterExtensions()" placeholder="Buscar por departamento o extensión..." class="w-full pl-10 pr-9 py-2 text-xs md:text-sm bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-hsai-500 focus:bg-white transition">
+            <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
           </div>
-        </div>
 
-        <div class="text-center mt-2">
-          <p class="font-bold text-blue-700 text-sm md:text-base">¡PREPÁRATE PARA VIVIR TU BIENESTAR COMO NUNCA ANTES!</p>
-          <p class="text-gray-600 text-xs md:text-sm mt-0.5">Para más información acércate a Capital Humano.</p>
-        </div>
-      </section>
+          <!-- Tabla de Extensiones -->
+          <div class="overflow-y-auto max-h-[420px] rounded-lg border border-slate-100">
+            <table class="w-full text-xs text-left text-slate-700" id="extensionsTable">
+              <thead class="text-[11px] uppercase bg-slate-100 text-slate-600 sticky top-0 z-10 font-bold">
+                <tr>
+                  <th scope="col" class="py-2.5 px-3">Área / Contacto</th>
+                  <th scope="col" class="py-2.5 px-3 text-right">Extensión</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr><td class="py-2 px-3 font-medium">Coordinaciones Clínicas</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30224</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Administración de Dirección</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30298</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Dirección de Experiencia al Cliente</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30155</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Dirección de Planificación</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30169</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Dirección de Infraestructura</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30180</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Calidad</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30154</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Dirección de Finanzas</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30190</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Terapia Intensiva Adultos (UCIA)</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30251</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Terapia Intensiva Neonatal (UCIN)</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30222</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Urgencias Hospitalarias</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30401</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Nutrición Clínica</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30262</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Farmacovigilancia</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30112</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Vigilancia Epidemiológica</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30263</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Inhaloterapia</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30266</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Clínica Control de Peso</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30267</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Terapia Física y Rehabilitación</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30269</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Residencia Médica</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30243</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Laboratorio Central</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30405</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Laboratorio Recepción</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30406</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Imagenología / Ultrasonido</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30104</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Tomografía Computarizada</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30404</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Ingeniería Biomédica</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30410</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Archivo Clínico</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30172</td></tr>
+                <tr class="bg-red-50/50"><td class="py-2 px-3 font-bold text-red-700">Activación de Código de Emergencia</td><td class="py-2 px-3 text-right font-bold text-red-700">70</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Dalinde Recepción</td><td class="py-2 px-3 text-right font-bold text-hsai-700">10000</td></tr>
+                <tr><td class="py-2 px-3 font-medium">HSAI UNIVERSIDAD</td><td class="py-2 px-3 text-right font-bold text-hsai-700">021</td></tr>
+                <tr><td class="py-2 px-3 font-medium">HSAI CHAPULTEPEC</td><td class="py-2 px-3 text-right font-bold text-hsai-700">31000</td></tr>
+                <tr><td class="py-2 px-3 font-medium">HSAI DEL VALLE</td><td class="py-2 px-3 text-right font-bold text-hsai-700">33100</td></tr>
+                <tr><td class="py-2 px-3 font-medium">HSAI PATRIOTISMO</td><td class="py-2 px-3 text-right font-bold text-hsai-700">32057</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Quirófano</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30260</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Quirófano 2</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30261</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Recuperación</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30265</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Descanso Médicos</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30252</td></tr>
+                <tr><td class="py-2 px-3 font-medium">CEyE</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30262</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Coordinación de Enfermería</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30250</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Coordinación de Enseñanza</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30266</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Supervisión de Enfermería</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30253</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Central de Enfermería "PB"</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30100</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Central de Enfermería "2A"</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30200</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Central de Enfermería "2B"</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30219</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Central de Enfermería Cuneros</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30220</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Central de Enfermería UCIN</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30222</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Central de Enfermería UCIA</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30251</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Central de Enfermería Urgencias</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30401</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Seguridad Hospitalaria</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30156</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Mantenimiento</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30407</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Tecnologías de la Información / Sistemas</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30175</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Servicios Generales / Ropería</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30201</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Vigilancia</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30408</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Cafetería</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30400</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Cocina</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30411</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Relaciones Públicas</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30294</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Coordinación de Admisión</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30111</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Caja</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30151</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Admisión Principal</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30152</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Recepción Principal</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30150</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Recepción 2</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30199</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Recepción Urgencias</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30402</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Mesa de Control Aseguradoras</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30174</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Recepción Consultorio 1</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30177</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Recepción Consultorio 2</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30178</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Mesa de Control</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30173</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Analista CxC</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30412</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Embajador Comercial</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30126</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Coordinación de Contabilidad</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30190</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Coordinación de Cuentas por Cobrar</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30181</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Auxiliar Cuentas por Cobrar</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30182</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Contador General</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30167</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Contabilidad Egresos</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30170</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Contabilidad Ingresos</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30189</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Coordinación de Compras</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30165</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Compras</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30158</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Coordinación de Almacén</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30409</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Coordinación de Farmacia</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30259</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Almacén de Farmacia</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30227</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Coordinación Capital Humano</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30162</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Reclutamiento y Selección</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30161</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Oficina Nóminas</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30166</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Sala Usos Múltiples (SUM)</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30179</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Habitaciones 101 a 110</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30101-30110</td></tr>
+                <tr><td class="py-2 px-3 font-medium">Habitaciones 202 a 218</td><td class="py-2 px-3 text-right font-bold text-hsai-700">30202-30218</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
 
-      <!-- Enlaces Destacados / Carpetas -->
-      <div class="right-column">
-        <a href="Carpeta_Naranja.html" target="_blank" class="orange-folder">
-          📂 CARPETA NARANJA
-          <div class="subtitle">Haz clic para abrir</div>
-        </a>
-        <a href="https://grupohospitalario.sharepoint.com/:b:/s/HospitalesSanAngelInn/IQABznSDRj-jT74nsBmVvf1MATF2sA9-i6cWpaWG9Lr6RmU?e=vHZ4jg" target="_blank" class="blue-folder">
-          💊 CUADRO BÁSICO<br>DE MEDICAMENTOS
-          <div class="subtitle">Haz clic para abrir</div>
-        </a>
-        <a href="#" class="neutral-folder">
-          🚧 APARTADO EN CONSTRUCCIÓN
-          <div class="subtitle">Próximamente disponible</div>
-        </a>
+        <!-- Carpetas e Información Institucional - 5 cols -->
+        <section class="md:col-span-5 flex flex-col gap-4">
+
+          <a href="Carpeta_Naranja.html" target="_blank" class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 p-5 text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="relative z-10 flex flex-col h-full justify-between">
+              <div class="flex justify-between items-start">
+                <span class="p-2.5 bg-white/20 rounded-lg backdrop-blur-sm"><i class="fa-solid fa-folder-open text-xl"></i></span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-70 group-hover:opacity-100 transition"></i>
+              </div>
+              <div class="mt-4">
+                <h3 class="text-base font-extrabold tracking-wide uppercase">CARPETA NARANJA</h3>
+                <p class="text-xs text-orange-100 mt-1 font-medium">Procedimientos, protocolos y documentos hospitalarios</p>
+              </div>
+            </div>
+            <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
+          </a>
+
+          <a href="https://grupohospitalario.sharepoint.com/:b:/s/HospitalesSanAngelInn/IQABznSDRj-jT74nsBmVvf1MATF2sA9-i6cWpaWG9Lr6RmU?e=vHZ4jg" target="_blank" class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-sky-600 to-hsai-800 p-5 text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="relative z-10 flex flex-col h-full justify-between">
+              <div class="flex justify-between items-start">
+                <span class="p-2.5 bg-white/20 rounded-lg backdrop-blur-sm"><i class="fa-solid fa-pills text-xl"></i></span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-70 group-hover:opacity-100 transition"></i>
+              </div>
+              <div class="mt-4">
+                <h3 class="text-base font-extrabold tracking-wide uppercase">CUADRO BÁSICO DE MEDICAMENTOS</h3>
+                <p class="text-xs text-sky-100 mt-1 font-medium">Consulta el catálogo institucional actualizado</p>
+              </div>
+            </div>
+            <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
+          </a>
+
+          <div class="rounded-xl border-2 border-dashed border-slate-200 p-5 text-center flex flex-col items-center justify-center bg-slate-50/50">
+            <i class="fa-solid fa-person-digging text-slate-300 text-2xl mb-2"></i>
+            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Módulo en Desarrollo</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5">Nuevas herramientas se incorporarán próximamente</p>
+          </div>
+
+        </section>
+
       </div>
+
+      <!-- Carrusel de Comunicados Institucionales -->
+      <section id="carouselContainer" class="hsai-card p-5 relative overflow-hidden">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+          <h2 class="text-base font-bold text-hsai-900 flex items-center gap-2">
+            <i class="fa-solid fa-newspaper text-hsai-500"></i> Comunicados Destacados
+          </h2>
+          <span class="text-xs text-slate-400 font-medium">Haz clic en la imagen para ampliar</span>
+        </div>
+
+        <div class="relative rounded-xl overflow-hidden bg-slate-900 shadow-md group">
+          
+          <!-- Slide Container -->
+          <div class="relative min-h-[220px] md:min-h-[340px] flex items-center justify-center bg-black/40">
+            
+            <div class="orienta-slide w-full h-full cursor-pointer flex items-center justify-center transition-all duration-500" onclick="openModalWithImage(this)">
+              <img src="Simulacro.jpg" alt="Simulacro Institucional" class="max-h-[360px] w-auto object-contain hover:scale-[1.01] transition-transform duration-300" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=Comunicado+Simulacro';">
+            </div>
+
+            <div class="orienta-slide hidden w-full h-full cursor-pointer flex items-center justify-center transition-all duration-500" onclick="openModalWithImage(this)">
+              <img src="Orienta.jpeg" alt="Programa Orienta" class="max-h-[360px] w-auto object-contain hover:scale-[1.01] transition-transform duration-300" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=Programa+Orienta';">
+            </div>
+
+            <div class="orienta-slide hidden w-full h-full cursor-pointer flex items-center justify-center transition-all duration-500" onclick="openModalWithImage(this)">
+              <img src="Caja_Ahorro.jpeg" alt="Caja de Ahorro" class="max-h-[360px] w-auto object-contain hover:scale-[1.01] transition-transform duration-300" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=Caja+de+Ahorro';">
+            </div>
+
+            <div class="orienta-slide hidden w-full h-full cursor-pointer flex items-center justify-center transition-all duration-500" onclick="openModalWithImage(this)">
+              <img src="Tabaquismo.jpeg" alt="Prevención Tabaquismo" class="max-h-[360px] w-auto object-contain hover:scale-[1.01] transition-transform duration-300" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=Espacio+Libre+de+Humo';">
+            </div>
+
+            <div class="orienta-slide hidden w-full h-full cursor-pointer flex items-center justify-center transition-all duration-500" onclick="openModalWithImage(this)">
+              <img src="Clinica_Dental.jpeg" alt="Convenio Dental" class="max-h-[360px] w-auto object-contain hover:scale-[1.01] transition-transform duration-300" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=Convenio+Clinica+Dental';">
+            </div>
+
+          </div>
+
+          <!-- Botones de Navegación del Carrusel -->
+          <button type="button" onclick="changeSlide(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-slate-900/70 hover:bg-slate-900 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow-lg opacity-80 group-hover:opacity-100">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+          </button>
+          <button type="button" onclick="changeSlide(1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-slate-900/70 hover:bg-slate-900 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow-lg opacity-80 group-hover:opacity-100">
+            <i class="fa-solid fa-chevron-right text-sm"></i>
+          </button>
+
+          <!-- Indicadores tipo Puntos -->
+          <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2 z-10">
+            <span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(1)"></span>
+            <span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(2)"></span>
+            <span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(3)"></span>
+            <span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(4)"></span>
+            <span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(5)"></span>
+          </div>
+
+        </div>
+
+        <div class="mt-4 text-center bg-hsai-50/50 p-3 rounded-xl border border-hsai-100">
+          <p class="font-bold text-hsai-800 text-xs md:text-sm">¡PREPÁRATE PARA VIVIR TU BIENESTAR COMO NUNCA ANTES!</p>
+          <p class="text-slate-500 text-[11px] mt-0.5">Para más detalles sobre los beneficios o comunicados, acércate a la Coordinación de Capital Humano.</p>
+        </div>
+      </section>
 
     </main>
   </div>
 
+  <!-- Footer -->
+  <footer class="bg-hsai-dark text-slate-400 py-6 border-t border-slate-800 text-center text-xs mt-auto">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p>© 2026 Hospital San Ángel Inn Sur. Todos los derechos reservados.</p>
+      <p class="text-slate-500">Dirección de Tecnologías de Información & Sistemas</p>
+    </div>
+  </footer>
+
   <!-- Modal para Zoom de Imagen -->
-  <div id="imageModal" class="fixed inset-0 hidden items-center justify-center bg-black/90 z-[1000] p-4 backdrop-blur-sm">
-    <span onclick="hideImageModal()" class="text-white text-4xl absolute top-4 right-6 cursor-pointer hover:text-gray-300 font-bold">&times;</span>
-    <img id="modalImage" src="" alt="Visualización ampliada" class="max-w-full max-h-[90vh] rounded-xl shadow-2xl object-contain">
+  <div id="imageModal" class="fixed inset-0 hidden items-center justify-center bg-black/85 z-50 p-4 backdrop-blur-sm transition-opacity duration-300">
+    <div class="relative max-w-4xl w-full max-h-[90vh] flex flex-col items-center justify-center">
+      <button onclick="hideImageModal()" class="absolute -top-10 right-0 text-white text-2xl hover:text-slate-300 font-bold p-2 transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <img id="modalImage" src="" alt="Visualización Ampliada" class="max-w-full max-h-[85vh] rounded-xl shadow-2xl object-contain border border-white/10">
+    </div>
   </div>
 
-  <!-- Elemento Toast -->
-  <div id="toast">Extensión copiada al portapapeles</div>
+  <!-- Toast Notification Container -->
+  <div id="toast" class="fixed bottom-5 right-5 bg-hsai-dark text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 translate-y-20 opacity-0 transition-all duration-300 z-50 border border-slate-700">
+    <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm">
+      <i class="fa-solid fa-check"></i>
+    </div>
+    <span id="toastMessage" class="text-xs md:text-sm font-medium">Extensión copiada al portapapeles</span>
+  </div>
 
+  <!-- SCRIPTING LÓGICO Y CONTROL DE INTERACCIONES -->
   <script>
-    // --- Notificación Toast ---
+    // --- Reloj Digital en Tiempo Real ---
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('liveClock').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // --- Notificaciones Toast ---
     function showToast(message) {
       const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2500);
+      const toastMsg = document.getElementById('toastMessage');
+      toastMsg.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
     }
 
-    // --- Carrusel Noticias ---
-    (function() {
-      const wrapper = document.getElementById('newsVerticalWrapper');
-      if (!wrapper) return;
-      const items = wrapper.querySelectorAll('.news-item');
-      let currentIndex = 0;
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`📋 Extensión ${text} copiada al portapapeles`);
+      }).catch(err => {
+        console.error('Error al copiar: ', err);
+      });
+    }
 
-      setInterval(() => {
-        items[currentIndex].classList.remove('active');
-        currentIndex = (currentIndex + 1) % items.length;
-        items[currentIndex].classList.add('active');
-        wrapper.style.transform = `translateY(${currentIndex * -10}px)`;
+    // --- Módulo de Avisos y Noticias ---
+    const newsList = [
+      { text: "¡Bienvenidos al nuevo portal web institucional del Hospital San Ángel Inn Sur!", tag: "General" },
+      { text: "Recordatorio: La actualización del Cuadro Básico de Medicamentos se encuentra disponible.", tag: "Farmacia" },
+      { text: "Mantén limpio tu espacio de trabajo y reporta incidencias a la ext. 30175.", tag: "Sistemas" }
+    ];
+    let currentNewsIndex = 0;
+
+    function renderNews() {
+      const news = newsList[currentNewsIndex];
+      const wrapper = document.getElementById('newsWrapper');
+      wrapper.innerHTML = `
+        <div class="space-y-1">
+          <span class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase">${news.tag}</span>
+          <p class="text-xs font-semibold text-slate-700 leading-snug">${news.text}</p>
+        </div>
+      `;
+      document.getElementById('newsCounter').textContent = `${currentNewsIndex + 1}/${newsList.length}`;
+    }
+
+    function nextNews() {
+      currentNewsIndex = (currentNewsIndex + 1) % newsList.length;
+      renderNews();
+    }
+
+    function prevNews() {
+      currentNewsIndex = (currentNewsIndex - 1 + newsList.length) % newsList.length;
+      renderNews();
+    }
+    renderNews();
+    setInterval(nextNews, 6000);
+
+    // --- Higiene de Manos Interactivo ---
+    const hygieneSteps = [
+      { num: 1, title: "Agua al rescate", desc: "Moja tus manos con agua limpia y aplica suficiente jabón." },
+      { num: 2, title: "Súper espuma", desc: "Frota las palmas entre sí para generar abundante espuma." },
+      { num: 3, title: "Ataque dorsal", desc: "Frota la palma de una mano contra el dorso de la otra entrelazando dedos." },
+      { num: 4, title: "Entre los dedos", desc: "Limpia nudillos, espacio interdigital y rodea los pulgares." },
+      { num: 5, title: "Gran aclarado", desc: "Enjuaga completamente con abundante agua." },
+      { num: 6, title: "Secado seguro", desc: "Seca con toalla desechable y úsala para cerrar la llave del grifo." }
+    ];
+    let currentHygieneIndex = 0;
+    let hygieneInterval = null;
+
+    function renderHygieneStep(index) {
+      const step = hygieneSteps[index];
+      const card = document.getElementById('hygieneCardContent');
+      
+      card.innerHTML = `
+        <div class="flex items-start gap-3">
+          <span class="w-7 h-7 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold text-xs shrink-0">${step.num}</span>
+          <div>
+            <h4 class="text-xs font-bold text-teal-900">${step.title}</h4>
+            <p class="text-[11px] text-slate-600 leading-tight mt-0.5">${step.desc}</p>
+          </div>
+        </div>
+      `;
+
+      // Actualizar Dots
+      const dotsContainer = document.getElementById('stepDots');
+      dotsContainer.innerHTML = hygieneSteps.map((_, i) => 
+        `<span onclick="jumpHygieneStep(${i})" class="w-2 h-2 rounded-full cursor-pointer transition-all ${i === index ? 'bg-teal-600 w-4' : 'bg-teal-200'}"></span>`
+      ).join('');
+
+      // Reiniciar Animación de Barra
+      const bar = document.getElementById('hygieneProgressBar');
+      bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = '100%'; }, 50);
+    }
+
+    function startHygieneCycle() {
+      renderHygieneStep(currentHygieneIndex);
+      if (hygieneInterval) clearInterval(hygieneInterval);
+      hygieneInterval = setInterval(() => {
+        currentHygieneIndex = (currentHygieneIndex + 1) % hygieneSteps.length;
+        renderHygieneStep(currentHygieneIndex);
       }, 5000);
-    })();
+    }
 
-    // --- Higiene de Manos Carrusel ---
-    let hygieneIndex = 0;
-    let hygieneTimer = null;
-    const hygieneCards = document.querySelectorAll(".step-card");
-    const hygieneDots = document.querySelectorAll("#stepDots .dot");
-    const progressBar = document.getElementById("progressBar");
-    const hygieneContainer = document.getElementById("hygieneContainer");
+    function jumpHygieneStep(index) {
+      currentHygieneIndex = index;
+      startHygieneCycle();
+    }
 
-    function showHygieneStep(index) {
-      hygieneCards.forEach((card, i) => {
-        card.classList.toggle("active", i === index);
-        if (hygieneDots[i]) hygieneDots[i].classList.toggle("active", i === index);
+    const hygieneBox = document.getElementById('hygieneContainer');
+    hygieneBox.addEventListener('mouseenter', () => clearInterval(hygieneInterval));
+    hygieneBox.addEventListener('mouseleave', startHygieneCycle);
+    startHygieneCycle();
+
+    // --- Filtro e Interacción con la Tabla de Extensiones ---
+    const tableRows = document.querySelectorAll('#extensionsTable tbody tr');
+    
+    tableRows.forEach(tr => {
+      tr.classList.add('cursor-pointer', 'hover:bg-hsai-50', 'transition-colors');
+      tr.addEventListener('click', () => {
+        const extCell = tr.cells[1];
+        if (extCell) {
+          copyToClipboard(extCell.textContent.trim());
+        }
+      });
+    });
+
+    function filterExtensions() {
+      const input = document.getElementById('searchInput');
+      const term = input.value.toLowerCase().trim();
+      const clearBtn = document.getElementById('clearSearchBtn');
+      let visibleCount = 0;
+
+      if (term.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+
+      tableRows.forEach(tr => {
+        const contact = tr.cells[0].textContent;
+        const ext = tr.cells[1].textContent;
+        
+        const match = contact.toLowerCase().includes(term) || ext.toLowerCase().includes(term);
+
+        if (match) {
+          tr.style.display = '';
+          visibleCount++;
+        } else {
+          tr.style.display = 'none';
+        }
       });
 
-      if (progressBar) {
-        progressBar.classList.remove("animate");
-        void progressBar.offsetWidth; // Trigger Reflow
-        progressBar.classList.add("animate");
-      }
+      document.getElementById('matchCount').textContent = `${visibleCount} contactos`;
     }
 
-    function startHygieneTimer() {
-      stopHygieneTimer();
-      showHygieneStep(hygieneIndex);
-      hygieneTimer = setInterval(() => {
-        hygieneIndex = (hygieneIndex + 1) % hygieneCards.length;
-        showHygieneStep(hygieneIndex);
-      }, 5000);
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      filterExtensions();
     }
 
-    function stopHygieneTimer() {
-      if (hygieneTimer) clearInterval(hygieneTimer);
+    // --- Bloc de Notas con LocalStorage ---
+    const notepad = document.getElementById('notepad');
+    const noteCharCount = document.getElementById('noteCharCount');
+    const noteSavedStatus = document.getElementById('noteSavedStatus');
+
+    if (notepad) {
+      notepad.value = localStorage.getItem('hsai_sur_notes') || '';
+      noteCharCount.textContent = `${notepad.value.length} caracteres`;
+
+      notepad.addEventListener('input', () => {
+        localStorage.setItem('hsai_sur_notes', notepad.value);
+        noteCharCount.textContent = `${notepad.value.length} caracteres`;
+        
+        noteSavedStatus.classList.remove('hidden');
+        setTimeout(() => { noteSavedStatus.classList.add('hidden'); }, 1500);
+      });
     }
 
-    function jumpToHygieneStep(index) {
-      hygieneIndex = index;
-      startHygieneTimer();
-    }
-
-    if (hygieneContainer) {
-      hygieneContainer.addEventListener('mouseenter', stopHygieneTimer);
-      hygieneContainer.addEventListener('mouseleave', startHygieneTimer);
-      startHygieneTimer();
-    }
-
-    // --- Carrusel Principal de Comunicados ---
+    // --- Carrusel de Comunicados Principal ---
     let slideIndex = 1;
     let autoTimer = null;
-    const carouselContainer = document.getElementById('carouselContainer');
 
     function displaySlide(n) {
       const slides = document.getElementsByClassName("orienta-slide");
@@ -761,14 +730,14 @@
         slides[i].classList.add("hidden");
       }
       for (let i = 0; i < dots.length; i++) {
-        dots[i].style.backgroundColor = "rgba(255,255,255,0.6)";
-        dots[i].style.transform = "scale(1)";
+        dots[i].classList.remove("bg-white", "w-5");
+        dots[i].classList.add("bg-white/40", "w-2.5");
       }
 
       slides[slideIndex - 1].classList.remove("hidden");
-      if (dots.length > 0 && dots[slideIndex - 1]) {
-        dots[slideIndex - 1].style.backgroundColor = "#2563eb";
-        dots[slideIndex - 1].style.transform = "scale(1.3)";
+      if (dots[slideIndex - 1]) {
+        dots[slideIndex - 1].classList.remove("bg-white/40", "w-2.5");
+        dots[slideIndex - 1].classList.add("bg-white", "w-5");
       }
     }
 
@@ -783,65 +752,20 @@
     }
 
     function restartTimer() {
-      clearInterval(autoTimer);
+      if (autoTimer) clearInterval(autoTimer);
       autoTimer = setInterval(() => changeSlide(1), 7000);
     }
 
     displaySlide(slideIndex);
     restartTimer();
 
+    const carouselContainer = document.getElementById('carouselContainer');
     if (carouselContainer) {
       carouselContainer.addEventListener('mouseenter', () => clearInterval(autoTimer));
       carouselContainer.addEventListener('mouseleave', restartTimer);
     }
 
-    // --- Filtro e Interacción con Tabla de Extensiones ---
-    const originalRows = [];
-    document.querySelectorAll('#extensionsTable tbody tr').forEach(tr => {
-      originalRows.push({
-        element: tr,
-        contact: tr.cells[0].innerText,
-        ext: tr.cells[1].innerText
-      });
-
-      // Hacer clic copia la extensión al portapapeles
-      tr.addEventListener('click', () => {
-        const extNumber = tr.cells[1].innerText.trim();
-        navigator.clipboard.writeText(extNumber).then(() => {
-          showToast(`📋 Extension ${extNumber} copiada al portapapeles`);
-        });
-      });
-    });
-
-    function filterExtensions() {
-      const term = document.getElementById('searchInput').value.toLowerCase().trim();
-
-      originalRows.forEach(item => {
-        const contactMatch = item.contact.toLowerCase().includes(term);
-        const extMatch = item.ext.toLowerCase().includes(term);
-
-        if (contactMatch || extMatch) {
-          item.element.style.display = '';
-          if (term !== '') {
-            const regex = new RegExp(`(${term})`, 'gi');
-            item.element.cells[0].innerHTML = item.contact.replace(regex, '<mark class="highlight">$1</mark>');
-          } else {
-            item.element.cells[0].innerHTML = item.contact;
-          }
-        } else {
-          item.element.style.display = 'none';
-        }
-      });
-    }
-
-    // --- Bloc de Notas ---
-    const notepad = document.getElementById('notepad');
-    if (notepad) {
-      notepad.value = localStorage.getItem('hsai_notes') || '';
-      notepad.addEventListener('input', () => localStorage.setItem('hsai_notes', notepad.value));
-    }
-
-    // --- Modal de Imágenes ---
+    // --- Modal para Zoom de Imagen ---
     function openModalWithImage(container) {
       const img = container.querySelector('img');
       if (img) {
