@@ -50,52 +50,57 @@
     </header>
 
     <!-- Main Layout -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow">
 
-        <!-- Sidebar / Filtros y Lista de Códigos -->
-        <aside class="lg:col-span-4 bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex flex-col h-[600px] lg:h-[calc(100vh-140px)] sticky top-24">
-            
-            <!-- Buscador y Filtro -->
-            <div class="space-y-3 pb-4 border-b border-slate-100">
-                <div class="relative">
-                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
-                    <input type="text" id="searchInput" placeholder="Buscar código, participante o evento..." 
-                        class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
-                </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- Sidebar / Lista de Códigos -->
+            <aside class="lg:col-span-4 bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex flex-col 
+                          h-auto max-h-[420px] lg:max-h-none lg:h-[calc(100vh-140px)] 
+                          lg:sticky lg:top-24 order-1">
                 
-                <div class="flex flex-wrap gap-1.5" id="categoryFilters">
-                    <button data-filter="all" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-blue-900 text-white">Todos</button>
-                    <button data-filter="medico" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Médicos</button>
-                    <button data-filter="seguridad" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Seguridad</button>
-                    <button data-filter="evacuacion" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Evacuación</button>
+                <!-- Buscador y Filtro -->
+                <div class="space-y-3 pb-4 border-b border-slate-100">
+                    <div class="relative">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+                        <input type="text" id="searchInput" placeholder="Buscar código, participante o evento..." 
+                            class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-1.5" id="categoryFilters">
+                        <button data-filter="all" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-blue-900 text-white">Todos</button>
+                        <button data-filter="medico" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Médicos</button>
+                        <button data-filter="seguridad" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Seguridad</button>
+                        <button data-filter="evacuacion" class="filter-btn text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Evacuación</button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Lista de Códigos -->
-            <div id="codeList" class="overflow-y-auto flex-grow divide-y divide-slate-100 mt-2 custom-scrollbar">
-                <!-- Se genera dinámicamente con JS -->
-            </div>
-        </aside>
+                <!-- Lista de Códigos -->
+                <div id="codeList" class="overflow-y-auto flex-grow divide-y divide-slate-100 mt-2 custom-scrollbar">
+                    <!-- Se genera dinámicamente con JS -->
+                </div>
+            </aside>
 
-        <!-- Panel de Detalle del Código Seleccionado -->
-        <section class="lg:col-span-8 bg-white rounded-xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between min-h-[500px]">
-            <div id="codeDetailContainer">
-                <!-- Detalle se carga dinámicamente con JS -->
-            </div>
-        </section>
+            <!-- Panel de Detalle del Código Seleccionado -->
+            <section class="lg:col-span-8 bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 order-2">
+                <div id="codeDetailContainer">
+                    <!-- Detalle se carga dinámicamente con JS -->
+                </div>
+            </section>
 
+        </div>
     </main>
 
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
         <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
-            Plataforma de Consulta Rápida — Protocolos Internos del Hospital San Ángel Inn Sur
+            Plataforma de Consulta Rápida — Protocolos Internos del Hospital San Ángel Inn Sur • Carpeta Naranja
         </div>
     </footer>
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Datos extraídos del documento Carpeta_Naranja.pdf
+        // Datos actualizados y completados a partir del PDF Carpeta_Naranja.pdf
         const codigosData = [
             {
                 id: "oro",
@@ -106,10 +111,10 @@
                 colorHeader: "from-amber-500 to-yellow-600",
                 icono: "baby",
                 lider: "Coordinador Médico de Cuidados Intensivos",
-                participantes: ["Médicos de Terapia Intensiva", "Médicos de Ginecología y Obstetricia", "Anestesiología", "Pediatría", "Enfermería (3)", "Supervisor Enfermería", "Laboratorio", "Imagenología", "Quirófano", "Medicina Respiratoria", "Admisión", "Camilleros", "Vigilancia"],
-                antes: ["Revisión continua de Cajas Mater con material completo.", "Capacitación continua del personal.", "Simulacros continuos para áreas de oportunidad."],
-                durante: ["Integración del Equipo de Respuesta Inmediata Obstétrica (ERIO) en ≤ 3 minutos.", "Atención inmediata acorde al protocolo de Triage Obstétrico.", "Estabilización y minimización de daño."],
-                despues: ["Reporte de seguimiento de Código Oro.", "Análisis de atención y resultados.", "Implementación de acciones de mejora."]
+                participantes: ["Médicos de Terapia Intensiva", "Médicos de Ginecología y Obstetricia", "Médicos de Anestesiología", "Médicos Pediatras", "Personal de Enfermería (3)", "Supervisor de Enfermería", "Personal de Laboratorio", "Personal de Imagenología", "Personal de Quirófano", "Personal de Med. Respiratoria", "Personal de Admisión", "Camilleros", "Vigilancia"],
+                antes: ["Revisión continua de Cajas Mater con material completo.", "Capacitación continua del personal para correcta identificación de emergencias obstétricas.", "Simulacros continuos para identificación de áreas de oportunidad."],
+                durante: ["Integración del Equipo de Respuesta Inmediata Obstétrica (ERIO) en un periodo de tiempo no mayor a 3 minutos.", "Los integrantes del ERIO otorgan atención a la paciente obstetra, establecen las acciones individuales y colectivas necesarias para minimizar el daño y estabilizar a la paciente.", "El equipo multidisciplinario actúa acorde al protocolo de Triage Obstétrico, Código Oro y Equipo de Respuesta Inmediata Obstétrica."],
+                despues: ["Realizar el reporte de seguimiento de Código Oro.", "Realizar el análisis de la atención y resultados del evento.", "Implementar acciones de mejora de acuerdo a las áreas de oportunidad detectadas."]
             },
             {
                 id: "rosa",
@@ -121,9 +126,9 @@
                 icono: "user-x",
                 lider: "Coordinación de Pediatría",
                 participantes: ["Dirección de Infraestructura y Servicios", "Enfermera responsable del paciente", "Vigilancia", "Relaciones Públicas"],
-                antes: ["No dejar al menor sin supervisión ni a cargo de desconocidos.", "Capacitación y simulacros continuos."],
-                durante: ["Cierre inmediato de puertas de acceso y restricción al hospital.", "Voceo especificando género/edad (H, M, RN).", "Recorrido e inspección minuciosa (cuartos, baños, sépticos, bolsos grandes).", "Revisión de cámaras CCTV.", "Reporte al MP si no se localiza en los primeros 10 min."],
-                despues: ["Evaluación médica al menor localizado.", "Entrega formal a familiares con identificación oficial (INE).", "Si no es localizado, pase del procedimiento a Relaciones Públicas."]
+                antes: ["No dejar al recién nacido o paciente pediátrico sin supervisión.", "No dejar al menor a cargo de ninguna persona desconocida.", "Capacitación continua del personal.", "Simulacros continuos para identificación de áreas de oportunidad."],
+                durante: ["Se cierran de inmediato las puertas de acceso.", "El personal de enfermería y vigilancia realizarán un recorrido por todas las instalaciones, registrando el total de personas localizadas en cada área y mostrando identificación oficial.", "Se busca en cuartos, sépticos, baños, cajas, tinas, personas con bolsos grandes, chamarras o gabardinas y personas sospechosas.", "El acceso al hospital será restringido y solo se dará acceso en caso de emergencia.", "Los padres del menor extraviado deberán permanecer en el interior de la habitación.", "El supervisor de vigilancia revisará las cámaras del CCTV.", "En caso de ser encontrado el menor dentro de los primeros 10 minutos, se dará aviso al Ministerio Público."],
+                despues: ["En caso de ser encontrado el menor, deberá ser evaluado por el personal médico.", "En caso de no ser encontrado, se deberá pasar el procedimiento a la Secretaría de Relaciones Públicas.", "Después de la evaluación médica será entregado al familiar responsable con previa identificación oficial (INE u otra)."]
             },
             {
                 id: "morado",
@@ -135,9 +140,9 @@
                 icono: "frown",
                 lider: "Dirección de Infraestructura y Servicios",
                 participantes: ["Vigilancia", "Relaciones Públicas", "Cuerpo de Gobierno", "Seguridad Hospitalaria"],
-                antes: ["Informar a vigilancia al detectar pacientes o visitantes potencialmente agresivos.", "Capacitación continua."],
-                durante: ["Acudir de inmediato al punto de activación.", "Tratar de calmar, negociar y no desafiar al agresor.", "Invitar a una zona aparte.", "Contención física en equipo solo si es estrictamente necesario para defensa.", "Solicitar apoyo de Seguridad Pública mediante vigilancia."],
-                despues: ["Monitoreo constante del área y de las personas involucradas."]
+                antes: ["En caso de detectar algún paciente o visitante potencialmente agresivo informar al área de vigilancia.", "Capacitación continua del personal.", "Simulacros continuos para identificación de áreas de oportunidad."],
+                durante: ["Acudir de manera inmediata al punto donde se activó el código.", "En caso de solo existir agresión verbal, tratar de calmar la situación e invitar al paciente a una zona aparte.", "No desafiar ni contradecir al paciente. En su lugar, tratar de negociar.", "Tener una actitud abierta acerca de lo que está mal o debería hacerse.", "Si la intervención requiere actuación física, se solicitará ayuda al resto de profesionales.", "El profesional sanitario nunca puede responder a una agresión verbal o física, aunque sí puede adoptar medidas de contención para defenderse.", "Si se necesita el apoyo de la Secretaría de Seguridad Pública se dará aviso al área de vigilancia."],
+                despues: ["Se mantendrá un monitoreo constante del área y de las personas involucradas."]
             },
             {
                 id: "azul",
@@ -147,11 +152,25 @@
                 colorBadge: "bg-blue-100 text-blue-800 border-blue-300",
                 colorHeader: "from-blue-600 to-cyan-700",
                 icono: "heart-pulse",
-                lider: "Médico de Urgencias / Hospitalización / Terapia Intensiva",
-                participantes: ["Médicos y Enfermería de Urgencias", "Hospitalización y Terapia Intensiva", "Camilleros", "Técnico de Med. Respiratoria", "Técnico de Laboratorio"],
-                antes: ["Garantizar insumos para atención de paro.", "Valorar pulso y respiración durante 10 segundos.", "Solicitar carro rojo e iniciar compresiones si no responde/no respira."],
-                durante: ["RCP de alta calidad.", "Cardioversión o desfibrilación según indicación.", "Acceso IV/IO y administración de medicamentos.", "Manejo avanzado de vía aérea y búsqueda de causas reversibles."],
-                despues: ["Cuidados postparo si hay retorno de circulación espontánea (oxigenación, ECG, temperatura).", "Traslado a Cuidados Críticos o trámites de defunción."]
+                lider: "Médico de Urgencias / Médico de Hospitalización / Coordinador de Terapia Intensiva",
+                participantes: ["Médicos de Urgencias", "Médicos de Terapia Intensiva", "Médicos de Hospitalización", "Enfermería de Urgencias", "Enfermería de Terapia Intensiva", "Enfermería de Hospitalización", "Camilleros", "Técnico de Medicina Respiratoria", "Técnico de Laboratorio"],
+                antes: ["El hospital cuenta con los insumos necesarios para la atención de pacientes en paro.", "Identifique un posible paro.", "Realice valoración de pulso y respiración durante 10 segundos.", "Active el código Azul y solicite el carro rojo si el paciente no respira o no responde.", "Si no tiene pulso y no respira inicie compresiones torácicas mientras llega el resto del equipo.", "Capacitación continua del personal.", "Simulacros continuos."],
+                durante: ["Inicie el RCP de calidad.", "Realizar descarga para cardioversión si está indicada.", "Realizar descarga para desfibrilar si está indicada.", "Tener acceso IV/IO disponible.", "Ministrar medicación si está indicado.", "Realizar manejo avanzado de la vía aérea o dispositivo subglótico si está indicado.", "Buscar causas reversibles del paro cardiorrespiratorio."],
+                despues: ["Si hay retorno de la circulación espontánea realizar cuidados postparo.", "Optimizar la oxigenación y circulación.", "Tratar la hipotensión arterial.", "Realizar ECG.", "Realizar reperfusión coronaria si está indicada.", "Iniciar control de la temperatura.", "Trasladar a cuidados críticos avanzados.", "Si fallece realizar trámites de defunción."]
+            },
+            {
+                id: "sepsis",
+                nombre: "Código Sepsis",
+                subtitulo: "Atención paciente con Sepsis",
+                categoria: "medico",
+                colorBadge: "bg-emerald-100 text-emerald-800 border-emerald-300",
+                colorHeader: "from-emerald-600 to-teal-700",
+                icono: "activity",
+                lider: "Médico de Urgencias / Médico Tratante",
+                participantes: ["Médicos de Urgencias", "Enfermería", "Laboratorio", "Terapia Intensiva"],
+                antes: ["Capacitación continua en detección temprana de sepsis.", "Disponibilidad de protocolos e insumos para reanimación inicial."],
+                durante: ["Activación inmediata del código ante sospecha de sepsis.", "Toma prioritaria de cultivos y laboratorios.", "Inicio temprano de reanimación con cristaloides y antibióticos de amplio espectro según protocolo institucional."],
+                despues: ["Seguimiento estrecho de respuesta al tratamiento.", "Reevaluación continua y ajuste terapéutico.", "Registro y análisis del caso."]
             },
             {
                 id: "amarillo",
@@ -184,11 +203,11 @@
             {
                 id: "naranja",
                 nombre: "Código Naranja",
-                subtitulo: "Arribo Masivo de Pacientes a Urgencias",
+                subtitulo: "Arribo Masivo de Víctimas",
                 categoria: "medico",
                 colorBadge: "bg-orange-100 text-orange-800 border-orange-300",
                 colorHeader: "from-orange-500 to-red-600",
-                icono: "users font-bold",
+                icono: "users",
                 lider: "Coordinador o Médico de Urgencias de Turno",
                 participantes: ["Urgencias", "Admisión", "Camilleros", "Terapia Intensiva", "Vigilancia", "Hospitalización", "Almacén General", "Laboratorio", "Imagenología"],
                 antes: ["Recibir notificación previa de arribo masivo.", "Capacitación en Triage y manejo de contingencias masivas."],
@@ -252,9 +271,9 @@
                 despues: ["Análisis de infraestructura para confirmar condiciones óptimas antes de reanudar."]
             },
             {
-                id: "plata",
-                nombre: "Código Plata",
-                subtitulo: "Agresión de persona con arma de fuego",
+                id: "plateado",
+                nombre: "Código Plateado",
+                subtitulo: "Violencia armada",
                 categoria: "seguridad",
                 colorBadge: "bg-slate-200 text-slate-800 border-slate-400",
                 colorHeader: "from-slate-500 to-slate-700",
@@ -268,7 +287,7 @@
             {
                 id: "ambar",
                 nombre: "Código Ámbar",
-                subtitulo: "Extravío o pérdida de un paciente Hospitalizado",
+                subtitulo: "Paciente perdido / extraviado",
                 categoria: "seguridad",
                 colorBadge: "bg-amber-100 text-amber-900 border-amber-300",
                 colorHeader: "from-amber-400 to-orange-500",
@@ -282,7 +301,7 @@
             {
                 id: "blanco",
                 nombre: "Código Blanco",
-                subtitulo: "Asistencia de Caída de Paciente",
+                subtitulo: "Caída de paciente",
                 categoria: "medico",
                 colorBadge: "bg-slate-100 text-slate-700 border-slate-300",
                 colorHeader: "from-slate-400 to-slate-600",
@@ -291,7 +310,7 @@
                 participantes: ["Enfermera responsable", "Camillero", "Relaciones Públicas", "Vigilancia"],
                 antes: ["Educación a paciente/familiar sobre protocolo de caídas.", "Mantenimiento de mobiliario."],
                 durante: ["Atención inmediata en el punto del evento.", "Valoración médica general.", "Traslado a Imagenología para radiografías/tomografía si se requiere.", "Notificación a médico tratante."],
-                despues: ["Reporte en plataforma Intramed (www.hsais.intramed.mx).", "Análisis de causas y revaloración del riesgo de caída."]
+                despues: ["Reporte en plataforma Intramed.", "Análisis de causas y revaloración del riesgo de caída."]
             },
             {
                 id: "magenta",
@@ -403,7 +422,7 @@
                 participantes: ["Médico de Guardia / Urgencias", "Enfermería", "Camillero"],
                 antes: ["Procedimientos de orden, limpieza y seguridad laboral vigentes."],
                 durante: ["Acudir de inmediato al punto del accidente.", "Valoración integral y traslado seguro del colaborador a Urgencias."],
-                despues: ["Reporte oficial de accidente laboral en Intramed (www.hsais.intramed.mx).", "Análisis de causalidad y medidas preventivas."]
+                despues: ["Reporte oficial de accidente laboral en Intramed.", "Análisis de causalidad y medidas preventivas."]
             }
         ];
 
@@ -452,7 +471,8 @@
                 const matchesFilter = activeFilter === 'all' || item.categoria === activeFilter;
                 const matchesSearch = item.nombre.toLowerCase().includes(searchQuery) || 
                                       item.subtitulo.toLowerCase().includes(searchQuery) ||
-                                      item.lider.toLowerCase().includes(searchQuery);
+                                      item.lider.toLowerCase().includes(searchQuery) ||
+                                      item.participantes.some(p => p.toLowerCase().includes(searchQuery));
                 return matchesFilter && matchesSearch;
             });
 
@@ -478,6 +498,11 @@
                     selectedCodeId = item.id;
                     renderCodeList();
                     renderCodeDetail(item.id);
+                    
+                    // En móvil, hacer scroll suave hacia el detalle
+                    if (window.innerWidth < 1024) {
+                        document.getElementById('codeDetailContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
                 };
 
                 card.innerHTML = `
