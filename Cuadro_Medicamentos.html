@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuadro Básico de Medicamentos | Hospital San Ángel Inn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --primary: #0ea5e9;
+  --primary-dark: #0284c7;
+  --green: #10b981;
+  --green-bg: #d1fae5;
+  --yellow: #f59e0b;
+  --yellow-bg: #fef3c7;
+  --red: #ef4444;
+  --red-bg: #fee2e2;
+  --orange: #f97316;
+  --orange-bg: #ffedd5;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
+  --radius: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+.container { max-width: 1280px; margin: 0 auto; padding: 0 16px; }
+
+/* Header */
+header {
+  background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0ea5e9 100%);
+  color: white;
+  padding: 32px 0 28px;
+  margin-bottom: 24px;
+}
+header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.025em;
+}
+header p { opacity: 0.9; font-size: 0.95rem; max-width: 720px; }
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+  font-size: 0.875rem;
+}
+.meta-item {
+  background: rgba(255,255,255,0.15);
+  padding: 6px 14px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+.meta-item strong { font-weight: 600; }
+
+/* Legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+  padding: 16px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.badge-low { background: var(--green-bg); color: #065f46; }
+.badge-med { background: var(--yellow-bg); color: #92400e; }
+.badge-high { background: var(--red-bg); color: #991b1b; }
+.badge-ctrl { background: #fce7f3; color: #9d174d; }
+.badge-lasa { background: #e0e7ff; color: #3730a3; }
+.badge-ref { background: #cffafe; color: #155e75; }
+.badge-foto { background: #fef9c3; color: #854d0e; }
+.badge-multi { background: #f3e8ff; color: #6b21a8; }
+
+/* Search & Tabs */
+.controls {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  padding: 12px 0 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.search-box {
+  position: relative;
+  margin-bottom: 14px;
+}
+.search-box input {
+  width: 100%;
+  padding: 14px 16px 14px 46px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 1rem;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-box input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(14,165,233,0.2);
+}
+.search-box svg {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  width: 20px;
+  height: 20px;
+}
+.results-count {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex-shrink: 0;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--muted);
+}
+.tab:hover { border-color: var(--primary); color: var(--primary); }
+.tab.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(14,165,233,0.3);
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 18px;
+  padding-bottom: 48px;
+}
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; }
+  header h1 { font-size: 1.4rem; }
+}
+
+/* Card */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+.card-header {
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--border);
+  background: #f8fafc;
+}
+.card-header h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.card-header .commercial {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+.card-body { padding: 14px 18px; flex: 1; }
+.field {
+  margin-bottom: 10px;
+  font-size: 0.875rem;
+}
+.field:last-child { margin-bottom: 0; }
+.field-label {
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+.field-value { color: var(--text); }
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+.card-footer {
+  padding: 10px 18px;
+  background: #f1f5f9;
+  font-size: 0.8rem;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Empty */
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+}
+.empty svg { width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.4; }
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 24px 16px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  background: var(--card);
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>Cuadro Básico de Medicamentos</h1>
+    <p>Listado institucional completo del Hospital San Ángel Inn (Operadora San Ángel Inn Sur S.A. de C.V.). Documento controlado – Agosto 2026. Código: HSAS-FOR-CFA-005.</p>
+    <div class="meta">
+      <div class="meta-item">Total de presentaciones: <strong id="totalCount">0</strong></div>
+      <div class="meta-item">Fuente: Cuadro Básico Institucional 2025/2026</div>
+      <div class="meta-item">Av. México No. 2, Col. Tizapán, Álvaro Obregón, CDMX</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="legend">
+    <div class="legend-item"><span class="badge badge-low">Bajo riesgo</span> Libre venta / uso general</div>
+    <div class="legend-item"><span class="badge badge-med">Riesgo medio</span> Receta / LASA / Alto alerta</div>
+    <div class="legend-item"><span class="badge badge-high">Alto riesgo</span> Medicamento de alto riesgo</div>
+    <div class="legend-item"><span class="badge badge-ctrl">Controlado</span> Sujeto a control especial / psicotrópico / estupefaciente</div>
+    <div class="legend-item"><span class="badge badge-lasa">LASA</span> Look-Alike Sound-Alike</div>
+    <div class="legend-item"><span class="badge badge-ref">Refrigerado</span></div>
+    <div class="legend-item"><span class="badge badge-foto">Fotosensible</span></div>
+  </div>
+
+  <div class="controls">
+    <div class="search-box">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input type="text" id="searchInput" placeholder="Buscar por nombre genérico, comercial, principio activo, indicación..." autocomplete="off">
+    </div>
+    <div class="results-count" id="resultsCount">Mostrando todos los medicamentos</div>
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-filter="all">Todos</button>
+      <button class="tab" data-filter="low">Bajo riesgo</button>
+      <button class="tab" data-filter="med">Riesgo medio / Receta</button>
+      <button class="tab" data-filter="high">Alto riesgo / Controlados</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<footer>
+  Documento controlado. Prohibida su reproducción parcial o total no autorizada.<br>
+  Operadora San Ángel Inn Sur S.A. de C.V. · Lic. Sanitaria 17-AM-09-010-0001 · Tel. 5550-5050
+</footer>
+
+<script>
+const medicamentos = [
+  // ========== PÁGINA 1 ==========
+  {id:1, gen:"Neomicina / Bacitracina / Polimixina", com:"Bactroban 15g 2% Ungüento", conc:"0.02", pres:"CJ", cont:"15g", ind:"Antibiótico tópico / Prevención de infecciones cutáneas", flags:["multidosis"], riesgo:"low"},
+  {id:2, gen:"Ácido acetilsalicílico", com:"Aspirina Protect 100mg Tab C/28", conc:"100mg", pres:"CJ", cont:"28 Tab", ind:"Antiagregante plaquetario", flags:[], riesgo:"low"},
+  {id:3, gen:"Ácido fólico", com:"Acfol 5mg Tab C/30", conc:"5mg", pres:"CJ", cont:"30 Tab", ind:"Vitamina / Antianémico", flags:[], riesgo:"low"},
+  {id:4, gen:"Ácido tranexámico", com:"Exacyl 500mg/5ml Sol Iny", conc:"500mg/5ml", pres:"AMP", cont:"5mL", ind:"Antifibrinolítico / Antihemorrágico", flags:[], riesgo:"med"},
+  {id:5, gen:"Ácido valproico", com:"Depakene 250mg/5ml Sol Oral", conc:"250mg/5ml", pres:"FRA", cont:"120mL", ind:"Anticonvulsivante", flags:["multidosis"], riesgo:"med"},
+  {id:6, gen:"Adenosina", com:"Adenocor 6mg/2ml Sol Iny", conc:"6mg/2ml", pres:"AMP", cont:"2mL", ind:"Antiarrítmico", flags:["rojo"], riesgo:"high"},
+  {id:7, gen:"Adrenalina / Epinefrina", com:"Adrenalina 1mg/1ml Sol Iny", conc:"1mg/1ml", pres:"AMP", cont:"1mL", ind:"Vasoconstrictor / Antishock", flags:["rojo"], riesgo:"high"},
+  {id:8, gen:"Água inyectable", com:"Agua Inyectable 10ml Sol", conc:"10ml", pres:"AMP", cont:"10mL", ind:"Diluyente / Vehículo", flags:[], riesgo:"low"},
+  {id:9, gen:"Álbumina humana", com:"Albúmina Humana 20% 50ml", conc:"20%", pres:"FRA", cont:"50mL", ind:"Expansor plasmático", flags:["refrigerado"], riesgo:"med"},
+  {id:10, gen:"Albendazol", com:"Zentel 400mg Tab C/1", conc:"400mg", pres:"CJ", cont:"1 Tab", ind:"Antiparasitario", flags:[], riesgo:"low"},
+  {id:11, gen:"Ácido acetilsalicílico", com:"Aspirina 500mg Tab C/20", conc:"500mg", pres:"CJ", cont:"20 Tab", ind:"Analgésico / Antipirético / Antiinflamatorio", flags:[], riesgo:"low"},
+  {id:12, gen:"Ácido fólico", com:"Ácido Fólico 5mg Tab", conc:"5mg", pres:"CJ", cont:"30 Tab", ind:"Vitamina del complejo B", flags:[], riesgo:"low"},
+  {id:13, gen:"Ácido tranexámico", com:"Tranexámico 500mg/5ml", conc:"500mg/5ml", pres:"AMP", cont:"5mL", ind:"Antihemorrágico", flags:[], riesgo:"med"},
+  {id:14, gen:"Amikacina", com:"Amikacina 500mg/2ml Sol Iny AMSA", conc:"500mg", pres:"AMP", cont:"2mL", ind:"Antibiótico aminoglucósido", flags:["lasa"], riesgo:"med"},
+  {id:15, gen:"Aminoácidos / Lípidos / Glucosa / Electrolitos", com:"Kabiven Central 1400 kcal 1540ml", conc:"1400kcal", pres:"PZA", cont:"1540mL", ind:"Nutrición parenteral", flags:["rojo"], riesgo:"high"},
+  {id:16, gen:"Amiodarona", com:"Amiodarona 200mg Tab C/20", conc:"200mg", pres:"CJ", cont:"20 Tab", ind:"Antiarrítmico", flags:[], riesgo:"med"},
+  {id:17, gen:"Amiodarona", com:"Amiodarona 150mg/3ml Iny Pisa", conc:"150mg/3ml", pres:"AMP", cont:"3mL", ind:"Antiarrítmico", flags:["fotosensible"], riesgo:"high"},
+  {id:18, gen:"Amlodipino", com:"Amlodipino 5mg Tab C/10 Avivia", conc:"5mg", pres:"CJ", cont:"10 Tab", ind:"Antihipertensivo (bloqueador de canales de calcio)", flags:["lasa"], riesgo:"med"},
+  {id:19, gen:"Amoxicilina", com:"Amoxicilina 500mg/5ml 75ml Susp AMSA", conc:"500mg/5ml", pres:"JAR", cont:"75mL", ind:"Antibiótico (derivado de penicilinas)", flags:[], riesgo:"low"},
+  {id:20, gen:"Amoxicilina / Ácido clavulánico", com:"Augmentin 500/125mg Tab C/20 Glaxo", conc:"500/125mg", pres:"CJ", cont:"20 Tab", ind:"Antibiótico (penicilinas)", flags:[], riesgo:"low"},
+  {id:21, gen:"Ampicilina", com:"Ampicilina 1g/5ml Sol Iny AMSA", conc:"1g/2ml", pres:"AMP", cont:"5mL", ind:"Antibiótico (penicilinas amplio espectro)", flags:[], riesgo:"low"},
+  {id:22, gen:"Ampicilina", com:"Ampicilina Meprizina 500mg/2ml S Iny", conc:"500mg", pres:"AMP", cont:"2mL", ind:"Antibiótico (penicilinas amplio espectro)", flags:[], riesgo:"low"},
+  {id:23, gen:"Anidulafungina", com:"Equaltha 100mg Sol Iny Pfizer", conc:"100mg", pres:"AMP", cont:"30mL", ind:"Antimicótico", flags:["refrigerado"], riesgo:"med"},
+  {id:24, gen:"Apixabán", com:"Eliquis 2.5mg Tab C/20 Pfizer", conc:"2.5mg", pres:"CJ", cont:"20 Tab", ind:"Antitrombótico", flags:[], riesgo:"med"},
+  {id:25, gen:"Atorvastatina", com:"Atorvastatina 40mg Tab C/10 Mavi", conc:"40mg", pres:"CJ", cont:"10 Tab", ind:"Hipolipemiante", flags:[], riesgo:"low"},
+  {id:26, gen:"Atropina", com:"Atropina Amixteria 1mg/1ml Siny Stern Ph", conc:"1mg/1ml", pres:"AMP", cont:"1mL", ind:"Anticolinérgico, antiespasmódico y reductor de secreciones", flags:[], riesgo:"med"},
+  {id:27, gen:"Azitromicina", com:"Macrozit 500mg Tab C/3 Liomont", conc:"500mg", pres:"CJ", cont:"3 Tab", ind:"Antibiótico macrólido", flags:[], riesgo:"low"},
+  {id:28, gen:"Bencidamina", com:"Lonol Nebul 30ml Sol Fco Sanfer", conc:"0.15g", pres:"FRA", cont:"30mL", ind:"Analgésico local", flags:["multidosis"], riesgo:"low"},
+  {id:29, gen:"Besilato de atracurio", com:"Relatrac 50mg/5ml Sol Iny Pisa", conc:"50mg/5ml", pres:"AMP", cont:"5mL", ind:"Relajante muscular", flags:["refrigerado"], riesgo:"high"},
+  {id:30, gen:"Betametasona", com:"Diprospan Hypack 5mg/2mg 1ml Sol Iny", conc:"1mg", pres:"AMP", cont:"1mL", ind:"Corticoesteroide", flags:["lasa"], riesgo:"med"},
+  {id:31, gen:"Betametasona", com:"Celestone Soluspan Hypak 2.71/3mg/1ml", conc:"2.71/3mg/ml", pres:"AMP", cont:"1mL", ind:"Corticoesteroide", flags:["lasa"], riesgo:"med"},
+  {id:32, gen:"Bicarbonato de sodio", com:"Bicarnat 7.5% 10ml Sol Iny Pisa", conc:"7.5g/100ml", pres:"AMP", cont:"10mL", ind:"Electrolito concentrado", flags:["rojo"], riesgo:"high"},
+  {id:33, gen:"Bicarbonato de sodio", com:"Bicarnat 7.5% 50ml Sol Iny Pisa", conc:"7.5g/100ml", pres:"FRM", cont:"50mL", ind:"Electrolito concentrado", flags:["rojo"], riesgo:"high"},
+  {id:34, gen:"Bicarbonato de sodio, cloruro de sodio y potasio", com:"Nulytely Nat 109.6g Sob Asofarma", conc:"105g", pres:"SOB", cont:"105g", ind:"Laxante", flags:[], riesgo:"low"},
+  {id:35, gen:"Bisoprolol", com:"Concor 2.5mg Grag C/30 Merck", conc:"2.5mg", pres:"CJ", cont:"30 Tab", ind:"Beta-bloqueante / Antihipertensivo", flags:[], riesgo:"med"},
+  {id:36, gen:"Bisulfito sódico de menadiona", com:"K-50 5ml Sol Iny Valeant", conc:"50mg", pres:"AMP", cont:"5mL", ind:"Vitamina liposoluble, antihemorrágico y antifibrinolítico", flags:["fotosensible"], riesgo:"med"},
+  {id:37, gen:"Bromuro de ipratropio / Salbutamol", com:"Combivent Neb 0.5/2.5mg 2.5ml Amp Boehringer", conc:"0.5/2.5mg/2.5ml", pres:"AMP", cont:"2.5mL", ind:"Broncodilatador", flags:[], riesgo:"med"},
+  {id:38, gen:"Bromuro de ipratropio / Salbutamol", com:"Combivent Resp 1.68mg/8.77mg/ml Boehringer", conc:"1.68mg/8.77ml", pres:"CJ", cont:"1mL", ind:"Broncodilatador", flags:[], riesgo:"med"},
+  {id:39, gen:"Bromuro de rocuronio", com:"Lufcuren Rocuronio 50mg/5ml Siny Pisa", conc:"50mg/5ml", pres:"AMP", cont:"5mL", ind:"Relajante muscular", flags:["refrigerado"], riesgo:"high"},
+  {id:40, gen:"Bromuro de vecuronio", com:"Nodescron 4mg Sol Iny Pisa", conc:"4mg", pres:"FRM", cont:"1mL", ind:"Relajante muscular", flags:[], riesgo:"high"},
+
+  // ========== CONTINUACIÓN (páginas 2-12) - TODAS LAS ENTRADAS ==========
+  {id:41, gen:"Budesonida", com:"Libonide Budesonida 250mcg/2ml Amp Pisa", conc:"0.125mg/ml / 0.25mg", pres:"AMP", cont:"2mL", ind:"Glucocorticoide / Antiasmático", flags:[], riesgo:"med"},
+  {id:42, gen:"Bumetanida", com:"Miccil 0.5mg/2ml Sol Iny Senosiain", conc:"0.5mg/2ml", pres:"AMP", cont:"2mL", ind:"Diurético", flags:[], riesgo:"med"},
+  {id:43, gen:"Bupivacaína", com:"Buvacaina 50mg/10ml Sol Iny Pisa", conc:"50mg/10ml", pres:"AMP", cont:"10mL", ind:"Anestésico local (anestesia espinal)", flags:["lasa"], riesgo:"high"},
+  {id:44, gen:"Bupivacaína", com:"Buvacaina Pesada 15mg/3ml Sol Iny Pisa", conc:"15mg/3ml", pres:"AMP", cont:"3mL", ind:"Anestésico local (anestesia espinal)", flags:["lasa"], riesgo:"high"},
+  {id:45, gen:"Buprenorfina", com:"Brospina 0.3mg/ml Sol Iny Pisa", conc:"0.3mg/ml", pres:"AMP", cont:"1mL", ind:"Analgésico opioide", flags:["fotosensible","lasa","controlado"], riesgo:"high"},
+  {id:46, gen:"Buprenorfina", com:"Soloro 7 5mg Parche C/2 Grunenthal", conc:"5mg", pres:"CJ", cont:"2 parches", ind:"Opiáceo", flags:["lasa","controlado"], riesgo:"high"},
+  {id:47, gen:"Butilhioscina", com:"Butilhioscina 20mg Sol Iny AMSA", conc:"20mg", pres:"AMP", cont:"1mL", ind:"Antiespasmódico", flags:["lasa"], riesgo:"med"},
+  {id:48, gen:"Butilhioscina / Metamizol", com:"Butilhio/Metami Busconet 20/250mg Iny", conc:"20mg/2.5g", pres:"AMP", cont:"5mL", ind:"Antiespasmódico / Analgésico", flags:[], riesgo:"med"},
+  {id:49, gen:"Captopril", com:"Captopril Brucap 25mg Tab/30 Bruluart", conc:"25mg", pres:"CJ", cont:"30 Tab", ind:"Antihipertensivo (IECA)", flags:[], riesgo:"med"},
+  {id:50, gen:"Carbetocina", com:"Lonactene RT 100mcg/ml Sol Iny Ferring", conc:"100mcg/1ml", pres:"AMP", cont:"1mL", ind:"Estimulante de contracciones uterinas", flags:[], riesgo:"high"},
+  {id:51, gen:"Carboximaltosa férrica", com:"Renegy 500mg/10ml Sol Iny Takeda", conc:"50mg/ml", pres:"FRA", cont:"10mL", ind:"Anemia ferropénica", flags:[], riesgo:"med"},
+  {id:52, gen:"Caspofungina", com:"Cancidas 50mg Sol Iny MSD", conc:"50mg", pres:"AMP", cont:"5mL", ind:"Antimicótico", flags:["refrigerado"], riesgo:"med"},
+  {id:53, gen:"Cefalexina", com:"Cefalexina 500mg 20/Cap AMSA", conc:"500mg", pres:"CJ", cont:"20 Cap", ind:"Antibiótico (cefalosporina de primera generación)", flags:[], riesgo:"low"},
+  {id:54, gen:"Cefalotina", com:"Cefalotina Falot 1g Sol Iny Pisa", conc:"1g", pres:"FRM", cont:"5mL", ind:"Antibiótico (cefalosporina de primera generación)", flags:["lasa"], riesgo:"med"},
+  {id:55, gen:"Cefepima", com:"Imation Cefepime 1g Sol Iny Pisa", conc:"1g", pres:"AMP", cont:"10mL", ind:"Antibiótico (cefalosporina de cuarta generación)", flags:[], riesgo:"med"},
+  {id:56, gen:"Cefixima", com:"Biomics 400mg Tab C/6 Senosiain", conc:"400mg", pres:"CJ", cont:"6 Tab", ind:"Antibiótico (cefalosporina de tercera generación)", flags:[], riesgo:"low"},
+  {id:57, gen:"Cefotaxima", com:"Cefotaxima IV Soliny 1g Fco AMSA", conc:"1g", pres:"FRM", cont:"10mL", ind:"Antibiótico (cefalosporina de tercera generación)", flags:["lasa"], riesgo:"med"},
+  {id:58, gen:"Ceftazidima", com:"Ceftazidima 1g Sol Iny AMSA", conc:"1g", pres:"FRM", cont:"3mL", ind:"Antibiótico (cefalosporina de tercera generación)", flags:["lasa"], riesgo:"med"},
+  {id:59, gen:"Ceftriaxona", com:"Ceftriaxona 1g IV Sol Iny Pisa", conc:"1g", pres:"FRM", cont:"10mL", ind:"Antibiótico (cefalosporina de tercera generación)", flags:["lasa"], riesgo:"med"},
+  {id:60, gen:"Cefuroxima", com:"Cefuracet 500mg Tab C/10 Siegfried", conc:"500mg", pres:"CJ", cont:"10 Tab", ind:"Antibiótico (cefalosporina de segunda generación)", flags:["lasa"], riesgo:"med"},
+  {id:61, gen:"Cefuroxima", com:"Fucerox Cefuroxima 750mg/5ml Iny Pisa", conc:"750mg", pres:"AMP", cont:"5mL", ind:"Antibiótico (cefalosporina de segunda generación)", flags:["lasa"], riesgo:"med"},
+  {id:62, gen:"Celecoxib", com:"Celebrex 200mg Cap C/10 Pfizer", conc:"200mg", pres:"CJ", cont:"10 Tab", ind:"AINES", flags:[], riesgo:"med"},
+  {id:63, gen:"Ciprofloxacino", com:"Ciprobac 400mg/200ml Sol Iny Pisa", conc:"400mg/200ml", pres:"FRA", cont:"100mL", ind:"Antibiótico (fluoroquinolona)", flags:[], riesgo:"med"},
+  {id:64, gen:"Ciprofloxacino", com:"Ciprofloxacino 500mg Tab C/14 AMSA", conc:"500mg", pres:"CJ", cont:"14 Tab", ind:"Antibiótico (fluoroquinolona)", flags:["lasa"], riesgo:"med"},
+  {id:65, gen:"Cisaprida", com:"Unamol 1mg/ml 60ml Susp Fco Senosiain", conc:"1mg/ml", pres:"FRA", cont:"60mL", ind:"Procinético", flags:["lasa","multidosis"], riesgo:"med"},
+  {id:66, gen:"Cisatracurio", com:"Bensitrak 20mg/10ml Sol Iny Pisa", conc:"20mg/10ml", pres:"AMP", cont:"10mL", ind:"Relajante muscular", flags:["refrigerado"], riesgo:"high"},
+  {id:67, gen:"Citicolina", com:"Somazina 1g/4ml Sol Iny Ferrer", conc:"1g", pres:"AMP", cont:"5mL", ind:"Nootropico, estimulante nervioso y vasodilatador cerebral", flags:[], riesgo:"med"},
+  {id:68, gen:"Citrato de cafeína", com:"Peyona 20mg/1ml Sol Iny Chesi", conc:"20mg", pres:"AMP", cont:"1mL", ind:"Apnea del recién nacido", flags:[], riesgo:"high"},
+  {id:69, gen:"Citrato de sodio / Lauril sulfoacetato de sodio", com:"Microlax Enema 90mg/9mg/ml 5ml J&J", conc:"90mg/9mg/ml", pres:"PZA", cont:"5mL", ind:"Laxante", flags:[], riesgo:"low"},
+  {id:70, gen:"Claritromicina", com:"Klaricid 500mg Sol Iny Abbott", conc:"500mg", pres:"AMP", cont:"10mL", ind:"Antibiótico (macrólido)", flags:[], riesgo:"med"},
+  {id:71, gen:"Claritromicina", com:"Klaricid OD 500mg Tab C/10 Abbott", conc:"500mg", pres:"CJ", cont:"10 Tab", ind:"Antibiótico (macrólido)", flags:[], riesgo:"low"},
+  {id:72, gen:"Clindamicina", com:"Clindamicina 300mg Cap/16 Maver", conc:"300mg", pres:"CJ", cont:"16 Tab", ind:"Antibiótico (lincosaminas)", flags:[], riesgo:"low"},
+  {id:73, gen:"Clindamicina", com:"Clindamicina 300mg/2ml Sol Iny AMSA", conc:"300mg/2ml", pres:"AMP", cont:"2mL", ind:"Antibiótico (lincosaminas)", flags:[], riesgo:"med"},
+  {id:74, gen:"Clindamicina", com:"Clindamicina 600mg/4ml C-5 Iny AMSA", conc:"600mg/4ml", pres:"AMP", cont:"4mL", ind:"Antibiótico (lincosaminas)", flags:[], riesgo:"med"},
+  {id:75, gen:"Clonazepam", com:"Kriadex 2.5mg/1ml Fco Gts Psicofarma", conc:"2.5mg/1ml", pres:"FRA", cont:"Multidosis", ind:"Benzodiacepina (ansiolítico)", flags:["lasa","controlado"], riesgo:"high"},
+  {id:76, gen:"Clonidina", com:"Epiclodina 150mcg/ml Sol Iny Pisa", conc:"150mcg/ml", pres:"AMP", cont:"1mL", ind:"Antihipertensivo", flags:[], riesgo:"high"},
+  {id:77, gen:"Clonixinato de lisina", com:"Clonixinato Lisina 100mg/2ml Iny AMSA", conc:"100mg/2ml", pres:"AMP", cont:"2mL", ind:"Analgésico (AINES)", flags:["lasa"], riesgo:"med"},
+  {id:78, gen:"Clonixinato de lisina", com:"Dorixina 250mg Tab C/10 Siegfried", conc:"250mg", pres:"CJ", cont:"10 Tab", ind:"Analgésico (AINES)", flags:["lasa"], riesgo:"med"},
+  {id:79, gen:"Clonixinato de lisina", com:"Dorixina Relax 125mg/5mg Comp C/20", conc:"125mg/5mg", pres:"CJ", cont:"20 Comp", ind:"Analgésico (AINES)", flags:[], riesgo:"med"},
+  {id:80, gen:"Clonixinato de lisina", com:"Clonixinato Lisina Lonixer 125mg T/10", conc:"125mg", pres:"CJ", cont:"10 Tab", ind:"Analgésico (AINES)", flags:[], riesgo:"med"},
+  {id:81, gen:"Clonixinato de lisina / Pargeverina", com:"Plidan Comp 10/125mg Grag C/20", conc:"10/125mg", pres:"CJ", cont:"20 Tab", ind:"Analgésico / Antiespasmódico", flags:[], riesgo:"med"},
+  {id:82, gen:"Clopidogrel", com:"Clopidogrel 75mg Tab C/28 Novag", conc:"75mg", pres:"CJ", cont:"28 Tab", ind:"Antiagregante plaquetario", flags:[], riesgo:"med"},
+  {id:83, gen:"Cloranfenicol", com:"Cloranfenicol 15ml Fco Gts Sons", conc:"5mg/ml", pres:"FRM", cont:"15mL", ind:"Antibiótico (anfenicoles)", flags:["multidosis"], riesgo:"med"},
+  {id:84, gen:"Clorhexidina", com:"Perioxidin Colutorio 500ml Fco Digrimex", conc:"0.12%", pres:"FRA", cont:"500mL", ind:"Antiséptico", flags:["multidosis"], riesgo:"low"},
+  {id:85, gen:"Cloropiramina", com:"Avapena 20mg/2ml Sol Iny Sandoz", conc:"20mg/2ml", pres:"AMP", cont:"2mL", ind:"Antihistamínico", flags:[], riesgo:"med"},
+  {id:86, gen:"Cloruro de potasio", com:"Kelefusin 1.49g/5ml Amp", conc:"1.49g/5ml", pres:"AMP", cont:"5mL", ind:"Electrolito concentrado", flags:["rojo"], riesgo:"high"},
+  {id:87, gen:"Cloruro de sodio", com:"Cloruro Sodio 17.7%/10ml Iny Pisa", conc:"17.7%/10ml", pres:"AMP", cont:"10mL", ind:"Electrolito concentrado", flags:["rojo"], riesgo:"high"},
+  {id:88, gen:"Cloruro de suxametonio", com:"Uxicolin 40mg/2ml Sol Iny Pisa", conc:"40mg/2ml", pres:"AMP", cont:"2mL", ind:"Relajante muscular", flags:["refrigerado"], riesgo:"high"},
+  {id:89, gen:"Colágeno", com:"Fibroquel 1.5ml Sol Iny Aspid", conc:"4mL", pres:"FRM", cont:"4mL", ind:"Regenerador tisular", flags:["refrigerado"], riesgo:"med"},
+  {id:90, gen:"Complejo B / Dexametasona / Lidocaína", com:"Combesteral Sol Iny Pisa", conc:"100mg;100mg;5mg;30mg", pres:"AMP", cont:"2mL", ind:"Antineurítico", flags:[], riesgo:"med"},
+  {id:91, gen:"Desflurano", com:"Suprane Desflurano 240ml Frasco Baxter", conc:"100ml", pres:"FRA", cont:"100mL", ind:"Anestésico general", flags:["multidosis"], riesgo:"high"},
+  {id:92, gen:"Dexametasona", com:"Alin Depot 4mg/2ml Sol Iny Chinoin", conc:"2mg/ml", pres:"AMP", cont:"2mL", ind:"Corticoesteroide", flags:["lasa"], riesgo:"med"},
+  {id:93, gen:"Dexametasona", com:"Dexametasona 8mg/2ml Iny AMSA", conc:"8mg/2ml", pres:"AMP", cont:"2mL", ind:"Glucocorticoide", flags:["fotosensible","lasa"], riesgo:"med"},
+  {id:94, gen:"Dexketoprofeno", com:"Stadium 25mg Tab C/10 Sanfer", conc:"25mg", pres:"CJ", cont:"10 Tab", ind:"AINES", flags:["lasa"], riesgo:"med"},
+  {id:95, gen:"Dexketoprofeno", com:"Stadium 50mg/2ml Sol Iny Sanfer", conc:"50mg/2ml", pres:"AMP", cont:"2mL", ind:"AINES", flags:["fotosensible","lasa"], riesgo:"med"},
+  {id:96, gen:"Dexmedetomidina", com:"Krunamina SI 200mcg/2ml Sol Iny Pisa", conc:"200mcg/2ml", pres:"AMP", cont:"2mL", ind:"Sedación", flags:["fotosensible"], riesgo:"high"},
+  {id:97, gen:"Diazepam", com:"Relazepam 10mg/2ml Sol Iny Pisa", conc:"10mg/2ml", pres:"AMP", cont:"2mL", ind:"Benzodiacepina", flags:["fotosensible","controlado"], riesgo:"high"},
+  {id:98, gen:"Diclofenaco", com:"Diclofenaco Mafena 60g Gel Tubo Maver", conc:"1.16%", pres:"CJ", cont:"60g", ind:"Analgésico (AINES)", flags:["multidosis"], riesgo:"low"},
+  {id:99, gen:"Diclofenaco", com:"Diclofenaco 75mg/3ml Sol Iny AMSA", conc:"75mg/3ml", pres:"AMP", cont:"3mL", ind:"Analgésico (AINES)", flags:[], riesgo:"med"},
+  {id:100, gen:"Diclofenaco", com:"Voltaren 75mg/3ml Sol Iny Novartis", conc:"75mg", pres:"AMP", cont:"3mL", ind:"Analgésico (AINES)", flags:[], riesgo:"med"},
+  {id:101, gen:"Diclofenaco", com:"Diclofenaco Ariflam 100mg LP Tab C/20", conc:"100mg", pres:"CJ", cont:"20 Tab", ind:"AINES", flags:[], riesgo:"med"},
+  {id:102, gen:"Difenidol", com:"Difenidol 40mg/2ml Sol Iny AMSA", conc:"40mg", pres:"AMP", cont:"2mL", ind:"Antivertiginoso y antiemético", flags:[], riesgo:"med"},
+  {id:103, gen:"Difenhidramina", com:"Difenhidramina 100mg/10ml Iny Kener", conc:"10mg/ml", pres:"FRM", cont:"10mL", ind:"Antihistamínico", flags:[], riesgo:"med"},
+  {id:104, gen:"Digoxina", com:"Digoxina 0.5mg/2ml Sol Iny Pisa", conc:"0.5mg", pres:"AMP", cont:"2mL", ind:"Digitálico antiarrítmico", flags:["rojo","lasa"], riesgo:"high"},
+  {id:105, gen:"Dimeticona / Magaldrato", com:"Riopan Gel 80mg/10mg 10ml Sob C/10 Takeda", conc:"80mg/10mg/1ml", pres:"CJ", cont:"10mL", ind:"Antiácido / Antiflatulento", flags:[], riesgo:"low"},
+  {id:106, gen:"Diosmectita", com:"Iprikene 3g Sob C/10 Mayoly", conc:"3g", pres:"CJ", cont:"10 Sobres", ind:"Antidiarreico", flags:[], riesgo:"low"},
+  {id:107, gen:"Dobutamina", com:"Dobutamina 250mg/20ml Sol Iny Pisa", conc:"250mg/20ml", pres:"FRM", cont:"20mL", ind:"Inotrópico cardíaco", flags:["rojo","fotosensible","lasa"], riesgo:"high"},
+  {id:108, gen:"Dopamina", com:"Dopamina Inotropisa 200mg/5ml Iny", conc:"200mg/5ml", pres:"AMP", cont:"5mL", ind:"Estimulante cardíaco / Vasoconstrictor", flags:["rojo","fotosensible","lasa"], riesgo:"high"},
+  {id:109, gen:"Electrolitos orales", com:"Electrolit Ped Manzana 500ml Pisa", conc:"75mEq", pres:"FRA", cont:"500mL", ind:"Deshidratación", flags:[], riesgo:"low"},
+  {id:110, gen:"Enalapril", com:"Enalapril 10mg Tab C/30 Ultra", conc:"10mg", pres:"CJ", cont:"30 Tab", ind:"Antihipertensivo", flags:[], riesgo:"med"},
+  {id:111, gen:"Enoxaparina", com:"Enoxaparina Bolentax 80mg/0.8ml Iny", conc:"80mg/0.8ml", pres:"PZA", cont:"0.8mL", ind:"Anticoagulante", flags:["rojo"], riesgo:"high"},
+  {id:112, gen:"Enoxaparina", com:"Enoxaparina Bolentax 40mg/0.4ml Iny", conc:"40mg/0.4ml", pres:"PZA", cont:"0.4mL", ind:"Anticoagulante", flags:["rojo"], riesgo:"high"},
+  {id:113, gen:"Enoxaparina", com:"Enoxaparina Bolentax 60mg/0.6ml Iny", conc:"60mg/0.6ml", pres:"PZA", cont:"0.6mL", ind:"Anticoagulante", flags:["rojo"], riesgo:"high"},
+  {id:114, gen:"Enoxaparina", com:"Enoxaparina Bolentax 20mg/0.2ml Iny", conc:"20mg/0.2ml", pres:"PZA", cont:"0.2mL", ind:"Anticoagulante", flags:["rojo"], riesgo:"high"},
+  {id:115, gen:"Ergometrina", com:"Ergometrina 0.2mg/ml Sol Iny Pisa", conc:"0.2mg", pres:"AMP", cont:"1mL", ind:"Antihemorrágico postparto", flags:["refrigerado","controlado"], riesgo:"high"},
+  {id:116, gen:"Ertapenem", com:"Invanz 1gr Sol Iny MSD", conc:"1g", pres:"AMP", cont:"3.2mL", ind:"Antibiótico (carbapenémico)", flags:["lasa"], riesgo:"med"},
+  {id:117, gen:"Esmolol", com:"Esmolol Tifesolp 2.5gr/10ml Sol Iny", conc:"2.5g", pres:"AMP", cont:"10mL", ind:"Beta-bloqueante selectivo / Antiarrítmico de acción corta", flags:["rojo"], riesgo:"high"},
+  {id:118, gen:"Esomeprazol", com:"Nexium 40mg Sol Iny Astra", conc:"40mg", pres:"AMP", cont:"10mL", ind:"Inhibidor de la bomba de protones", flags:["lasa"], riesgo:"med"},
+  {id:119, gen:"Espironolactona", com:"Aldactone A 25mg Tab C/30 Pfizer", conc:"25mg", pres:"CJ", cont:"30 Tab", ind:"Diurético", flags:[], riesgo:"med"},
+  {id:120, gen:"Etamsilato", com:"Dicynone 250mg/2ml Sol Iny Grunenthal", conc:"250mg/2ml", pres:"AMP", cont:"2mL", ind:"Antihemorrágico", flags:[], riesgo:"med"},
+  {id:121, gen:"Etamsilato", com:"Dicynone 500mg Comp C/20 Grunenthal", conc:"500mg", pres:"CJ", cont:"20 Tab", ind:"Antihemorrágico", flags:[], riesgo:"med"},
+  {id:122, gen:"Etomidato", com:"Endatal 20mg/10ml Sol Iny Pisa", conc:"20mg/10ml", pres:"AMP", cont:"10mL", ind:"Hipnótico / Sedante / Anestésico", flags:["controlado"], riesgo:"high"},
+  {id:123, gen:"Faboterápico polivalente antialacrán", com:"Alacramyn 5ml Sol Iny Silanes", conc:"1.8mg", pres:"PZA", cont:"5mL", ind:"Antiveneno de alacrán", flags:[], riesgo:"high"},
+  {id:124, gen:"Fenazopiridina", com:"Pirimir 100mg Tab C/24 Sanofi AV", conc:"100mg", pres:"CJ", cont:"24 Tab", ind:"Analgésico local del tracto urinario", flags:[], riesgo:"low"},
+  {id:125, gen:"Fenitoína", com:"Fenitoína 250mg/5ml Sol Iny Pisa", conc:"250mg/5ml", pres:"CJ", cont:"5mL", ind:"Anticonvulsivante", flags:["fotosensible"], riesgo:"high"},
+  {id:126, gen:"Fentanilo", com:"Fenodid 0.5mg/10ml Sol Iny Pisa", conc:"0.5mg/10ml", pres:"AMP", cont:"10mL", ind:"Anestésico (opioide)", flags:["controlado"], riesgo:"high"},
+  {id:127, gen:"Fentanilo", com:"Fenodid 0.25mg/5ml Sol Iny Pisa", conc:"0.25mg/5ml", pres:"AMP", cont:"5mL", ind:"Anestésico (opioide)", flags:["controlado"], riesgo:"high"},
+  {id:128, gen:"Fibrinógeno", com:"Tisseel Lyo 4ml Sol Baxter", conc:"3000 UIK", pres:"FRA", cont:"4mL", ind:"Adhesivo tisular", flags:[], riesgo:"high"},
+  {id:129, gen:"Fluconazol", com:"Fluconazol 2mg/ml 50ml Sol Iny Pisa", conc:"100mg/50ml", pres:"FRA", cont:"50mL", ind:"Antifúngico", flags:[], riesgo:"med"},
+  {id:130, gen:"Flumazenil", com:"Antadona 0.5mg/5ml Iny Pisa", conc:"0.5mg/5ml", pres:"AMP", cont:"5mL", ind:"Antagonista de benzodiacepinas / Reversión de sedación", flags:["controlado"], riesgo:"high"},
+  {id:131, gen:"Fondaparinux", com:"Arixtra 2.5mg/0.5ml Sol Iny Aspen", conc:"2.5mg/0.5ml", pres:"PZA", cont:"0.5mL", ind:"Antitrombótico / Anticoagulante", flags:["rojo"], riesgo:"high"},
+  {id:132, gen:"Fórmula láctea", com:"Leche Enfamil Pro Select Etapa 1 59ml", conc:"20kcal", pres:"FRA", cont:"59mL", ind:"Fórmula láctea (leche)", flags:[], riesgo:"low"},
+  {id:133, gen:"Fórmula láctea", com:"Leche Liq. Enfamil Confort 59ml", conc:"20kcal", pres:"PZA", cont:"59mL", ind:"Fórmula láctea (leche)", flags:[], riesgo:"low"},
+  {id:134, gen:"Fosfato de potasio", com:"Fosfato de Potasio 10ml Amp", conc:"10ml", pres:"AMP", cont:"10mL", ind:"Electrolito concentrado", flags:["rojo"], riesgo:"high"},
+  {id:135, gen:"Fosfato de sodio", com:"Fosfanema Solución Enema 133ml", conc:"16g/6g/100ml", pres:"FRA", cont:"133mL", ind:"Laxante", flags:[], riesgo:"med"},
+  {id:136, gen:"Fosfomicina", com:"Fosfocil 1g IV Sol Iny Senosiain", conc:"1g", pres:"AMP", cont:"10mL", ind:"Antibiótico fosfónico", flags:[], riesgo:"med"},
+  {id:137, gen:"Fructosa / L-Glutamina / Maltodextrina / Sacarosa / Soya", com:"Alitraq 76gr Sob Abbott", conc:"76g", pres:"SOB", cont:"76g", ind:"Alimentación enteral", flags:[], riesgo:"low"},
+  {id:138, gen:"Furosemida", com:"Furosemida Henexal 20mg/2ml Iny Pisa", conc:"20mg", pres:"AMP", cont:"2mL", ind:"Diurético", flags:["fotosensible"], riesgo:"med"},
+  {id:139, gen:"Furosemida", com:"Furosemida Diurmessel 40mg Tab/20 Bio", conc:"40mg", pres:"CJ", cont:"20 Tab", ind:"Diurético", flags:["lasa"], riesgo:"med"},
+  {id:140, gen:"Gentamicina", com:"Gentamicina Genkova 80mg/2ml Iny Sons", conc:"80mg/2ml", pres:"AMP", cont:"2mL", ind:"Antibiótico (aminoglucósido)", flags:["lasa"], riesgo:"med"},
+  {id:141, gen:"Glicerol", com:"Senosiain AD Supositorio C/10 Senosiain", conc:"2636mg", pres:"CJ", cont:"10 Sup", ind:"Laxante", flags:[], riesgo:"low"},
+  {id:142, gen:"Gluconato de calcio", com:"Gluconato de Calcio 10%/10ml Iny Pisa", conc:"10%/10ml", pres:"AMP", cont:"10mL", ind:"Electrolito concentrado", flags:["rojo"], riesgo:"high"},
+  {id:143, gen:"Gluconato de potasio", com:"Corpotasin GK 4.68g Sob C/10 Armstrong", conc:"4.68g", pres:"CJ", cont:"10 Sob", ind:"Electrolitos orales", flags:[], riesgo:"med"},
+  {id:144, gen:"Glucosa", com:"Solución DX-50 Dextrosa 50% 50ml Iny", conc:"50g/100ml", pres:"FRM", cont:"50mL", ind:"Electrolito / Hipoglucemia", flags:[], riesgo:"high"},
+  {id:145, gen:"Haloperidol", com:"Haloperidol Haloperil 2mg/ml 15ml Gts", conc:"2mg/ml", pres:"FRA", cont:"15mL", ind:"Antipsicótico", flags:["lasa","multidosis"], riesgo:"high"},
+  {id:146, gen:"Haloperidol", com:"Haloperidol 5mg/ml Sol Iny Pisa", conc:"5mg/ml", pres:"AMP", cont:"1mL", ind:"Antipsicótico", flags:["lasa"], riesgo:"high"},
+  {id:147, gen:"Heparina", com:"Inhepar 1000 UI/ml 10ml Sol Iny Pisa", conc:"1000 UI/ml", pres:"AMP", cont:"10mL", ind:"Anticoagulante", flags:["rojo"], riesgo:"high"},
+  {id:148, gen:"Heparina", com:"Heparina 5000 UI 10ml Sol Iny Pisa", conc:"5000 UI/ml", pres:"AMP", cont:"10mL", ind:"Anticoagulante", flags:["rojo"], riesgo:"high"},
+  {id:149, gen:"Heparina", com:"Inhepar 1000 UI/ml 1ml Sol Iny Pisa", conc:"1000 UI/ml", pres:"FRM", cont:"1mL", ind:"Anticoagulante", flags:[], riesgo:"high"},
+  {id:150, gen:"Hidralazina", com:"Hidralazina 20mg/ml Iny Alvaris Ph", conc:"20mg", pres:"AMP", cont:"1mL", ind:"Antihipertensivo (vasodilatador periférico)", flags:[], riesgo:"high"},
+  {id:151, gen:"Hidrocortisona", com:"Hidrocortisona 100mg Sol Iny Pisa", conc:"100mg", pres:"FRM", cont:"3mL", ind:"Glucocorticoide", flags:["lasa"], riesgo:"med"},
+  {id:152, gen:"Hidrocortisona", com:"Hidrocortisona 500mg Sol Iny Bruluart", conc:"500mg", pres:"FRM", cont:"5mL", ind:"Glucocorticoide", flags:[], riesgo:"med"},
+  {id:153, gen:"Hidróxido de magnesio", com:"Leche de Magnesia 360ml Fco Quimfarma", conc:"8.5g", pres:"FRA", cont:"360mL", ind:"Antiácido", flags:["multidosis"], riesgo:"low"},
+  {id:154, gen:"Hipromelosa", com:"Meticel Oft 0.5% 10ml Fco Sophia", conc:"0.5%", pres:"FRA", cont:"10mL", ind:"Lubricante ocular", flags:["multidosis"], riesgo:"low"},
+  {id:155, gen:"Ibuprofeno", com:"Ibuprofeno Dolprin 2g/100ml 120ml Fco", conc:"2g/100ml", pres:"FRA", cont:"100mL", ind:"Analgésico (AINES)", flags:["multidosis"], riesgo:"low"},
+  {id:156, gen:"Ibuprofeno", com:"Ibuprofeno 600mg Cap/10 Collins", conc:"600mg", pres:"CJ", cont:"10 Tab", ind:"Analgésico (AINES)", flags:[], riesgo:"low"},
+  {id:157, gen:"Ibuprofeno", com:"Ibuprofeno Gelubrin 400mg Cap/10", conc:"400mg", pres:"CAP", cont:"10 Cap", ind:"Analgésico (AINES)", flags:[], riesgo:"low"},
+  {id:158, gen:"Imipenem / Cilastatina", com:"Imipenem/Cilastatina 500mg/500mg Iny", conc:"500mg", pres:"FRM", cont:"2mL", ind:"Antibiótico carbapenémico", flags:[], riesgo:"high"},
+  {id:159, gen:"Indometacina", com:"Indometacina Artaxol 100mg Supos C/15", conc:"100mg", pres:"CJ", cont:"15 Sup", ind:"Analgésico (AINES)", flags:[], riesgo:"med"},
+  {id:160, gen:"Inmunoglobulina humana antitetánica", com:"Tetanogamma P 250 UI/ml Sol Iny Behring", conc:"250 UI", pres:"PZA", cont:"1mL", ind:"Profilaxis de tétanos", flags:["refrigerado"], riesgo:"med"},
+  {id:161, gen:"Insulina", com:"Insulina Humana R 100UI/10ml AMSA", conc:"100 UI/ml", pres:"FRM", cont:"10mL", ind:"Hipoglucemiante", flags:["rojo","refrigerado"], riesgo:"high"},
+  {id:162, gen:"Insulina glargina", com:"Galactus 100 UI 10ml Pisa", conc:"100 UI", pres:"FRM", cont:"10mL", ind:"Hipoglucemiante", flags:["rojo","refrigerado"], riesgo:"high"},
+  {id:163, gen:"Ipratropio, bromuro", com:"Atrovent 20mcg/10ml Aer Fco Boehringer", conc:"20mcg", pres:"CJ", cont:"10mL", ind:"Broncodilatador", flags:[], riesgo:"med"},
+  {id:164, gen:"Isosorbida, dinitrato", com:"Isorbid Subl 5mg Tab C/40 Armstrong", conc:"5mg", pres:"CJ", cont:"40 Tab", ind:"Vasodilatador", flags:[], riesgo:"med"},
+  {id:165, gen:"Itoprida", com:"Dagla 50mg Tab C/30 Takeda", conc:"50mg", pres:"CJ", cont:"30 Tab", ind:"Procinético", flags:[], riesgo:"med"},
+  {id:166, gen:"Ketanserina", com:"Sufrexal Gel 2% 78g Tubo Janssen", conc:"2%", pres:"CJ", cont:"78g", ind:"Cicatrizante", flags:["multidosis"], riesgo:"low"},
+  {id:167, gen:"Ketoprofeno", com:"Ketoprofeno Arthril 100mg Cap/15 Sons", conc:"100mg", pres:"CJ", cont:"15 Cap", ind:"Analgésico (AINES)", flags:["lasa"], riesgo:"med"},
+  {id:168, gen:"Ketoprofeno", com:"Profenid IM 100mg/2ml Iny Sanofi AV", conc:"100mg/2ml", pres:"AMP", cont:"2mL", ind:"Analgésico (AINES)", flags:["lasa"], riesgo:"med"},
+  {id:169, gen:"Ketoprofeno", com:"Ketoprofeno 100mg/2ml Sol Iny Kener", conc:"100mg/2ml", pres:"AMP", cont:"2mL", ind:"Analgésico (AINES)", flags:["lasa"], riesgo:"med"},
+  {id:170, gen:"Ketorolaco", com:"Ketorolaco 30mg Sol Iny AMSA", conc:"30mg", pres:"AMP", cont:"1mL", ind:"Analgésico (AINES)", flags:["lasa"], riesgo:"med"},
+  {id:171, gen:"Ketorolaco", com:"Ketorolaco Subling 30mg Tab C/6 AMSA", conc:"30mg", pres:"CJ", cont:"10 Tab", ind:"Analgésico (AINES)", flags:[], riesgo:"med"},
+  {id:172, gen:"Ketorolaco", com:"Ketorolaco 10mg Tab CJ/10 Avivia", conc:"10mg", pres:"CJ", cont:"10 Tab", ind:"Analgésico (AINES)", flags:["lasa"], riesgo:"med"},
+  {id:173, gen:"Labetalol", com:"Agebetamex Labetalol 100mg/20ml Iny Kern", conc:"100mg/20ml", pres:"FRM", cont:"20mL", ind:"Antihipertensivo", flags:["rojo"], riesgo:"high"},
+  {id:174, gen:"Lactulosa", com:"Lactulax 66.66g 250ml Jbe Fco Senosiain", conc:"66.66g", pres:"FRA", cont:"250mL", ind:"Laxante", flags:["multidosis"], riesgo:"low"},
+  {id:175, gen:"Lactulosa", com:"Lactulax 125ml Jbe Fco Senosiain", conc:"10g/15ml", pres:"FRA", cont:"125mL", ind:"Laxante", flags:["multidosis"], riesgo:"low"},
+  {id:176, gen:"Levetiracetam", com:"Keppra 500mg/5ml Sol Iny UCB", conc:"100mg/5ml", pres:"FRA", cont:"5mL", ind:"Anticonvulsivante", flags:[], riesgo:"med"},
+  {id:177, gen:"Levofloxacino", com:"Levofloxacino Fluoning 500mg Iny Pis", conc:"500mg/100ml", pres:"FRM", cont:"100mL", ind:"Antibiótico (fluoroquinolona)", flags:["lasa"], riesgo:"med"},
+  {id:178, gen:"Levofloxacino", com:"Levofloxacino 750mg Tab C/7 AMSA", conc:"750mg", pres:"CJ", cont:"7 Cap", ind:"Antibiótico (fluoroquinolona)", flags:["lasa"], riesgo:"med"},
+  {id:179, gen:"Levofloxacino", com:"Levofloxacino Fluoning 750mg Iny Pis", conc:"500mg/100ml", pres:"AMP", cont:"100mL", ind:"Antibiótico (fluoroquinolona)", flags:["lasa"], riesgo:"med"},
+  {id:180, gen:"Levofloxacino", com:"Levofloxacino 500mg Tab C/7 AMSA", conc:"500mg", pres:"CJ", cont:"7 Tab", ind:"Antibiótico (fluoroquinolona)", flags:["lasa"], riesgo:"med"},
+  {id:181, gen:"Lidocaína", com:"Lidocaína 5% 35g Ung Tubo Alpharma", conc:"5%", pres:"PZA", cont:"35g", ind:"Anestésico local", flags:["multidosis"], riesgo:"med"},
+  {id:182, gen:"Lidocaína", com:"Pisacaína Spray 10g/100ml 115ml Fco", conc:"10g", pres:"FRA", cont:"115mL", ind:"Anestésico local", flags:["multidosis"], riesgo:"med"},
+  {id:183, gen:"Lidocaína", com:"Pisacaína 2% 10ml Sol Iny Pisa", conc:"2%", pres:"AMP", cont:"10mL", ind:"Anestésico local", flags:["lasa"], riesgo:"med"},
+  {id:184, gen:"Lidocaína", com:"Lidocaína Pisacaína 2% 50ml Iny Pisa", conc:"2g/100ml", pres:"FRA", cont:"50mL", ind:"Anestésico local", flags:["lasa"], riesgo:"med"},
+  {id:185, gen:"Lidocaína con epinefrina", com:"Lidocaína c/Epinefrina 2% 50ml Iny", conc:"2g/100ml", pres:"FRM", cont:"50mL", ind:"Anestésico local", flags:[], riesgo:"med"},
+  {id:186, gen:"Linezolid", com:"Linezolid Lezopisa 600mg/300ml Iny", conc:"600mg/300ml", pres:"AMP", cont:"300mL", ind:"Antibiótico (oxazolidinona)", flags:["fotosensible"], riesgo:"med"},
+  {id:187, gen:"Loperamida", com:"Loperamida Lop 2mg Tab/12 Sons", conc:"2mg", pres:"CJ", cont:"12 Tab", ind:"Antidiarreico", flags:["lasa"], riesgo:"low"},
+  {id:188, gen:"Loratadina", com:"Loratadina Laritol 10mg Tab/10 Maver", conc:"10mg", pres:"CJ", cont:"12 Tab", ind:"Antihistamínico", flags:["lasa"], riesgo:"low"},
+  {id:189, gen:"L-Ornitina / L-Aspartato", com:"Hepamerz 5g/10ml Sol Iny Merz", conc:"5g", pres:"AMP", cont:"10mL", ind:"Esteatosis hepática", flags:["fotosensible"], riesgo:"med"},
+  {id:190, gen:"Losartán", com:"Losartán 50mg Comp C/30 AMSA", conc:"50mg", pres:"CJ", cont:"30 Tab", ind:"Antihipertensivo", flags:[], riesgo:"med"},
+  {id:191, gen:"Meloxicam", com:"Meloxicam Flexiver 15mg Tab/10 Maver", conc:"15mg", pres:"CJ", cont:"10 Tab", ind:"AINES", flags:[], riesgo:"med"},
+  {id:192, gen:"Meloxicam / Metocarbamol", com:"Meloxicam/Metocarba 15/215mg C10 Raam", conc:"15/215mg", pres:"CJ", cont:"20 Tab", ind:"Analgésico (AINE) / Relajante muscular", flags:[], riesgo:"med"},
+  {id:193, gen:"Meropenem", com:"Meropenem 1g/20ml Sol Iny Pisa", conc:"1g", pres:"FAM", cont:"10mL", ind:"Antibiótico (carbapenémico)", flags:["lasa"], riesgo:"high"},
+  {id:194, gen:"Meropenem", com:"Meropenem 500mg Sol Iny Kenner", conc:"500mg", pres:"FRM", cont:"10mL", ind:"Antibiótico (carbapenémico)", flags:["lasa"], riesgo:"high"},
+  {id:195, gen:"Mesalazina", com:"Salofalk 500mg Grag C/40 Schwabe", conc:"500mg", pres:"CJ", cont:"40 Tab", ind:"Antiinflamatorios intestinales", flags:[], riesgo:"med"},
+  {id:196, gen:"Metamizol", com:"Metamizol Pirinovag 500mg Tab C/10", conc:"500mg", pres:"CJ", cont:"10 Tab", ind:"Analgésico (AINES)", flags:["lasa"], riesgo:"med"},
+  {id:197, gen:"Metamizol sódico", com:"Metamizol Sódico Alnex 1g/2ml Sol Iny", conc:"1g/2ml", pres:"AMP", cont:"2mL", ind:"Analgésico (AINES)", flags:["lasa"], riesgo:"med"},
+  {id:198, gen:"Metildopa", com:"Aldomet 250mg Tab C/50 Aspen", conc:"250mg", pres:"CJ", cont:"50 Tab", ind:"Antihipertensivo", flags:[], riesgo:"med"},
+  {id:199, gen:"Metilprednisolona", com:"Metilprednisolona 500mg Sol Iny Danke", conc:"500mg", pres:"FAM", cont:"10mL", ind:"Glucocorticoide", flags:["fotosensible","multidosis"], riesgo:"med"},
+  {id:200, gen:"Metilprednisolona", com:"Metilprednisolona 40mg IM Susp Iny", conc:"40mg/1ml", pres:"CJ", cont:"2mL", ind:"Glucocorticoide", flags:[], riesgo:"med"},
+  {id:201, gen:"Metoclopramida", com:"Carnotprim 10mg Comp C/20 Carnot", conc:"10mg", pres:"CJ", cont:"20 Tab", ind:"Antiemético / Procinético", flags:[], riesgo:"med"},
+  {id:202, gen:"Metoclopramida", com:"Metoclopramida 10mg Sol Iny AMSA", conc:"10mg", pres:"AMP", cont:"2mL", ind:"Antiemético / Procinético", flags:[], riesgo:"med"},
+  {id:203, gen:"Metoprolol", com:"Metoprolol Niprosol 100mg Tab/20 Brul", conc:"100mg", pres:"CJ", cont:"20 Tab", ind:"Antihipertensivo (beta-bloqueador)", flags:["lasa"], riesgo:"med"},
+  {id:204, gen:"Metoxiflurano", com:"Penthromax Sol Inhal 99.9% 3ml Stendall", conc:"99.9%", pres:"FRA", cont:"3mL", ind:"Anestésico", flags:[], riesgo:"high"},
+  {id:205, gen:"Metronidazol", com:"Otrozol 500mg/100ml Sol Iny Pisa", conc:"500mg", pres:"FRA", cont:"100mL", ind:"Antibiótico / Antiparasitario (nitromidazol)", flags:["lasa"], riesgo:"med"},
+  {id:206, gen:"Metronidazol", com:"Metronidazol 500mg Tab/30 Alpharma", conc:"500mg", pres:"CJ", cont:"30 Tab", ind:"Antibiótico / Antiparasitario (nitromidazol)", flags:["lasa"], riesgo:"low"},
+  {id:207, gen:"Midazolam", com:"Relacum 15mg/3ml Sol Iny Pisa", conc:"15mg/3ml", pres:"AMP", cont:"3mL", ind:"Benzodiacepina (inductor anestésico)", flags:["controlado"], riesgo:"high"},
+  {id:208, gen:"Midazolam", com:"Relacum 50mg/10ml Sol Iny Pisa", conc:"50mg/10ml", pres:"AMP", cont:"10mL", ind:"Benzodiacepina (inductor anestésico)", flags:["controlado"], riesgo:"high"},
+  {id:209, gen:"Midazolam", com:"Relacum 5mg/5ml Sol Iny Pisa", conc:"5mg/5ml", pres:"AMP", cont:"5mL", ind:"Benzodiacepina (inductor anestésico)", flags:["controlado"], riesgo:"high"},
+  {id:210, gen:"Milrinona", com:"Milrinona Caldronat 1mg/1ml Iny Kener", conc:"1mg/1ml", pres:"AMP", cont:"10mL", ind:"Vasodilatador", flags:["rojo"], riesgo:"high"},
+  {id:211, gen:"Misoprostol", com:"Misoprostol Cyrux 200mcg Tab C/28", conc:"200mcg", pres:"CJ", cont:"28 Tab", ind:"Antiulceroso / Inductor de actividad uterina", flags:[], riesgo:"high"},
+  {id:212, gen:"Morfina", com:"Graten 10mg/10ml Sol Iny Pisa", conc:"10mg/10ml", pres:"AMP", cont:"10mL", ind:"Analgésico opioide / Anestésico", flags:["fotosensible","controlado"], riesgo:"high"},
+  {id:213, gen:"Morfina", com:"Graten 2.5mg/2.5ml Sol Iny Pisa", conc:"2.5mg/2.5ml", pres:"AMP", cont:"2.5mL", ind:"Analgésico opioide / Anestésico", flags:["fotosensible","controlado"], riesgo:"high"},
+  {id:214, gen:"Moxifloxacino", com:"Pixiriv 400mg Sol Iny Pisa", conc:"400mg/250ml", pres:"PZA", cont:"250mL", ind:"Antibiótico (fluoroquinolona)", flags:[], riesgo:"med"},
+  {id:215, gen:"Mupirocina", com:"Bactroban 15g 2% Ung Tubo Glaxo", conc:"2%", pres:"CJ", cont:"15g", ind:"Antibiótico (inhibe síntesis de RNA y proteínas bacterianas)", flags:["multidosis"], riesgo:"low"},
+  {id:216, gen:"Naloxona", com:"Lefebre 0.4mg/1ml Sol Iny Pisa", conc:"0.4mg/1ml", pres:"AMP", cont:"1mL", ind:"Antagonista opioide", flags:[], riesgo:"high"},
+  {id:217, gen:"Naproxeno", com:"Naproxeno Novaxen 250mg Tab/30 Novag", conc:"250mg", pres:"CJ", cont:"10 Tab", ind:"Analgésico (AINE)", flags:[], riesgo:"low"},
+  {id:218, gen:"Neomicina / Bacitracina / Polimixina", com:"Nebapol 30g Ungüento Tubo Armstrong", conc:"500000U/40000U/0.35g/100g", pres:"CJ", cont:"30g", ind:"Antibiótico tópico / Prevención de infecciones cutáneas", flags:["multidosis"], riesgo:"low"},
+  {id:219, gen:"Neostigmina", com:"Prostigmine 0.5mg/1ml Sol Iny Grossman", conc:"0.5mg/1ml", pres:"AMP", cont:"1mL", ind:"Tx. miastenia gravis / Reversión agentes bloqueadores neuromusculares no despolarizantes", flags:[], riesgo:"high"},
+  {id:220, gen:"Nifedipino", com:"Nifedipino 30mg Comp C/30 Avivia", conc:"30mg", pres:"CJ", cont:"30 Tab", ind:"Antihipertensivo (bloqueador de canales de calcio)", flags:["lasa"], riesgo:"med"},
+  {id:221, gen:"Nifedipino", com:"Nifedipino 10mg Cap C/20 Gelpharma", conc:"10mg", pres:"CJ", cont:"20 Tab", ind:"Antihipertensivo (bloqueador de canales de calcio)", flags:[], riesgo:"med"},
+  {id:222, gen:"Nistatina", com:"Micostatin 30 Dosis Susp Fco RB Health", conc:"100000 UI/ml", pres:"FRA", cont:"30 dosis", ind:"Antimicótico", flags:["multidosis"], riesgo:"low"},
+  {id:223, gen:"Nitrofurantoína", com:"Furacin Pomada 85g Tubo Siegfried", conc:"0.2g/100g", pres:"CJ", cont:"85g", ind:"Antibiótico tópico / Prevención de infecciones cutáneas", flags:["multidosis"], riesgo:"low"},
+  {id:224, gen:"Nitroglicerina", com:"Angiopohl Nitroglicerina 1mg/ml 50ml Iny", conc:"1mg/ml", pres:"FRM", cont:"50mL", ind:"Vasodilatador para múltiples afecciones cardíacas", flags:["rojo","refrigerado","fotosensible"], riesgo:"high"},
+  {id:225, gen:"Norepinefrina", com:"Pridam 4mg/4ml Sol Iny Pisa", conc:"4mg/4ml", pres:"AMP", cont:"4mL", ind:"Vasoconstrictor", flags:["rojo","fotosensible"], riesgo:"high"},
+  {id:226, gen:"Olanzapina", com:"Zyprexa 5mg Tab C/14 Lilly", conc:"5mg", pres:"CJ", cont:"14 Tab", ind:"Antipsicótico", flags:["lasa"], riesgo:"high"},
+  {id:227, gen:"Olanzapina", com:"Zyprexa IM 10mg Sol Iny Lilly", conc:"10mg", pres:"FRM", cont:"2mL", ind:"Antipsicótico", flags:["lasa"], riesgo:"high"},
+  {id:228, gen:"Olanzapina", com:"Zyprexa Zydis 5mg Tab C/14 Lilly", conc:"5mg dispersable", pres:"CJ", cont:"14 Tab", ind:"Antipsicótico", flags:["lasa"], riesgo:"high"},
+  {id:229, gen:"Oligoelementos", com:"Tracefusin 20ml Sol Iny Pisa", conc:"55mg", pres:"AMP", cont:"20mL", ind:"Nutrición parenteral", flags:["fotosensible"], riesgo:"med"},
+  {id:230, gen:"Omeprazol", com:"Inhibitron Infusión 40mg Sol Iny Liomont", conc:"40mg", pres:"FRA", cont:"5mL", ind:"Inhibidor de la bomba de protones", flags:["lasa"], riesgo:"med"},
+  {id:231, gen:"Omeprazol", com:"Omeprazol Novolexin 40mg Tab 7 Rayere", conc:"40mg", pres:"CJ", cont:"7 Tab", ind:"Inhibidor de la bomba de protones", flags:["lasa"], riesgo:"low"},
+  {id:232, gen:"Omeprazol", com:"Omeprazol 40mg/10ml Sol Iny Pisa", conc:"40mg/10ml", pres:"FRM", cont:"10mL", ind:"Inhibidor de la bomba de protones", flags:["lasa"], riesgo:"med"},
+  {id:233, gen:"Ondansetrón", com:"Ondansetrón Indansen 8mg/4ml Iny Mavi", conc:"8mg/4ml", pres:"AMP", cont:"4mL", ind:"Antiemético", flags:[], riesgo:"med"},
+  {id:234, gen:"Oseltamivir", com:"Oseltamivir Seltaferon 75mg Cap C/10", conc:"75mg", pres:"CJ", cont:"10 Tab", ind:"Antiviral", flags:[], riesgo:"med"},
+  {id:235, gen:"Óxido de zinc", com:"Pasta de Lassar 110g Tubo Andromaco", conc:"25%", pres:"CJ", cont:"110g", ind:"Afecciones dérmicas", flags:["multidosis"], riesgo:"low"},
+  {id:236, gen:"Oximetazolina / Glicerina", com:"Oximetazolina/Glic Collifrin 20ml Fco", conc:"50mg/100ml", pres:"FRA", cont:"20mL", ind:"Lubricante nasal", flags:["multidosis"], riesgo:"low"},
+  {id:237, gen:"Oxitocina", com:"Oxitopisa 5UI/1ml Sol Iny Pisa", conc:"5 UI/1ml", pres:"AMP", cont:"1mL", ind:"Auxiliar en la inducción del trabajo de parto", flags:["refrigerado"], riesgo:"high"},
+  {id:238, gen:"Palonosetrón", com:"Onicit 0.075mg/1.5ml Sol Iny MSD", conc:"0.075mg/1.5ml", pres:"FRA", cont:"1.5mL", ind:"Antiemético", flags:[], riesgo:"med"},
+  {id:239, gen:"Pantoprazol", com:"Pantoprazol Supacid 40mg Iny Pisa", conc:"40mg", pres:"PZA", cont:"10mL", ind:"Inhibidor de la bomba de protones", flags:["lasa"], riesgo:"med"},
+  {id:240, gen:"Pantoprazol", com:"Pantoprazol Popram 40mg Tab/14 AMSA", conc:"40mg", pres:"CJ", cont:"14 Tab", ind:"Inhibidor de la bomba de protones", flags:["lasa"], riesgo:"low"},
+  {id:241, gen:"Paracetamol", com:"Tempra 100mg/30ml Ped Fco Gotas RB Health", conc:"100mg/ml", pres:"FRA", cont:"15mL", ind:"Antipirético / Analgésico", flags:["multidosis"], riesgo:"low"},
+  {id:242, gen:"Paracetamol", com:"Paracetamol Wamindel 3.2g 120ml Fco", conc:"3.2g", pres:"FRA", cont:"120mL", ind:"Antipirético / Analgésico", flags:["multidosis"], riesgo:"low"},
+  {id:243, gen:"Paracetamol", com:"Paracetamol Portem 500mg Tab/10 Brulu", conc:"500mg", pres:"CJ", cont:"10 Tab", ind:"Antipirético / Analgésico", flags:[], riesgo:"low"},
+  {id:244, gen:"Paracetamol", com:"Paracetamol 300mg Supositorio C/3", conc:"300mg", pres:"CJ", cont:"3 Sup", ind:"Antipirético / Analgésico", flags:[], riesgo:"low"},
+  {id:245, gen:"Paracetamol", com:"Tylex 750mg Tab C/40 Janssen", conc:"750mg", pres:"CJ", cont:"40 Tab", ind:"Antipirético / Analgésico", flags:[], riesgo:"low"},
+  {id:246, gen:"Paracetamol", com:"Salpifar 1g/100ml Sol Iny Pisa", conc:"1g/100ml", pres:"FRA", cont:"100mL", ind:"Antipirético / Analgésico", flags:[], riesgo:"med"},
+  {id:247, gen:"Paracetamol", com:"Salpifar 500mg/50ml Sol Iny Pisa", conc:"500mg/50ml", pres:"PZA", cont:"50mL", ind:"Antipirético / Analgésico", flags:["rojo"], riesgo:"med"},
+  {id:248, gen:"Parecoxib", com:"Dynastat 40mg/2ml Sol Iny Pfizer", conc:"40mg/2ml", pres:"AMP", cont:"2mL", ind:"Analgésico (AINES)", flags:[], riesgo:"med"},
+  {id:249, gen:"Piperacilina / Tazobactam", com:"Piperacilina/Tazobactam 4g/0.5g Pisa", conc:"4g/0.5g", pres:"AMP", cont:"20mL", ind:"Antibiótico (penicilinas amplio espectro)", flags:[], riesgo:"high"},
+  {id:250, gen:"Plantago ovata", com:"Plantaben Eferv 5g Sob C/30 Takeda", conc:"3.5g", pres:"CJ", cont:"5g", ind:"Laxante", flags:[], riesgo:"low"},
+  {id:251, gen:"Plantago psyllium", com:"Metamucil Natural Pvo 210g Fco Procter", conc:"49.15g", pres:"FRA", cont:"210g", ind:"Laxante", flags:["multidosis"], riesgo:"low"},
+  {id:252, gen:"Polietilenglicol", com:"Contumax 255gr Polvo Sob C/15 Asofarma", conc:"17g", pres:"CJ", cont:"10 Sob", ind:"Laxante", flags:[], riesgo:"low"},
+  {id:253, gen:"Prednisona", com:"Prednisona 50mg Tab C/20 AMSA", conc:"50mg", pres:"TAB", cont:"20 Tab", ind:"Corticoesteroide", flags:[], riesgo:"med"},
+  {id:254, gen:"Pregabalina", com:"Pregabalina 75mg Cap C/14 Ultra", conc:"75mg", pres:"CJ", cont:"14 Caps", ind:"Anticonvulsivante / Analgésico en dolor neuropático", flags:[], riesgo:"med"},
+  {id:255, gen:"Probióticos", com:"Bio Gaia 5ml Gotas Probióticas", conc:"0.19ml (1.6kcal)", pres:"CJ", cont:"5mL", ind:"Suplemento alimenticio", flags:["multidosis"], riesgo:"low"},
+  {id:256, gen:"Progesterona", com:"Geslutin 200mg Cap C/15 Asofarma", conc:"200mg", pres:"CJ", cont:"15 Cap", ind:"Hormona femenina", flags:[], riesgo:"med"},
+  {id:257, gen:"Propofol", com:"Recofol 200mg/20ml Sol Iny Pisa", conc:"20ml", pres:"AMP", cont:"20mL", ind:"Anestésico general", flags:[], riesgo:"high"},
+  {id:258, gen:"Propofol", com:"Recofol 1g/100ml Sol Iny Pisa", conc:"1000mg", pres:"FRM", cont:"100mL", ind:"Anestésico general", flags:[], riesgo:"high"},
+  {id:259, gen:"Propranolol", com:"Inderalici 10mg Tab C/50 Astra", conc:"10mg", pres:"CJ", cont:"50 Tab", ind:"Antagonista beta-adrenérgicos", flags:[], riesgo:"med"},
+  {id:260, gen:"Protamina", com:"Protamina 71.5mg/5ml Sol Iny Pisa", conc:"71.5mg/5ml", pres:"AMP", cont:"5mL", ind:"Antídoto de heparina (HBPM)", flags:["refrigerado"], riesgo:"high"},
+  {id:261, gen:"Quetiapina", com:"Quetiapina 25mg Tab C/30 Psicofarma", conc:"25mg", pres:"CJ", cont:"30 Tab", ind:"Antipsicótico", flags:["lasa"], riesgo:"high"},
+  {id:262, gen:"Racecadotrilo", com:"Hidrasec 100mg Cap C/9 Ferrer", conc:"100mg", pres:"CJ", cont:"10 Cap", ind:"Antidiarreico", flags:[], riesgo:"low"},
+  {id:263, gen:"Racecadotrilo", com:"Hidrasec 10mg Sob C/18 Ferrer", conc:"10mg", pres:"CJ", cont:"18 Sob", ind:"Antidiarreico", flags:[], riesgo:"low"},
+  {id:264, gen:"Racecadotrilo", com:"Hidrasec 30mg Sob C/18 Ferrer", conc:"30mg", pres:"CJ", cont:"18 Sob", ind:"Antidiarreico", flags:[], riesgo:"low"},
+  {id:265, gen:"Rifaximina", com:"Flonorm 200mg Tab CJ/12 Alfasigma", conc:"200mg", pres:"CJ", cont:"12 Tab", ind:"Antibiótico (rifaximina)", flags:[], riesgo:"med"},
+  {id:266, gen:"Rifaximina", com:"Flonorm 550mg Tab C/14 Alfasigma", conc:"550mg", pres:"CJ", cont:"14 Tab", ind:"Antibiótico (rifaximina)", flags:[], riesgo:"med"},
+  {id:267, gen:"Ropivacaína", com:"Ropiconest 2mg Sol Iny Pisa", conc:"2mg/20ml", pres:"AMP", cont:"20mL", ind:"Anestésico local (anestesia espinal)", flags:["lasa"], riesgo:"high"},
+  {id:268, gen:"Ropivacaína", com:"Ropiconest 7.5mg Sol Iny Pisa", conc:"7.5mg/1ml", pres:"AMP", cont:"20mL", ind:"Anestésico local (anestesia espinal)", flags:["lasa"], riesgo:"high"},
+  {id:269, gen:"Sacarato de óxido férrico", com:"Venoferrum 100mg/5ml Sol Iny Takeda", conc:"50mg/2ml", pres:"AMP", cont:"2mL", ind:"Anemias ferropénicas", flags:[], riesgo:"med"},
+  {id:270, gen:"Salbutamol", com:"Ventolin 5mg/10ml Sol Fco Glaxo", conc:"5mg", pres:"CJ", cont:"10mL", ind:"Broncodilatador", flags:["multidosis"], riesgo:"med"},
+  {id:271, gen:"Salbutamol", com:"Salbutamol 13.5g 200 Dosis Fco F Hisp", conc:"200 dosis", pres:"FRA", cont:"18g", ind:"Broncodilatador", flags:["multidosis"], riesgo:"med"},
+  {id:272, gen:"Senósidos", com:"Senósidos AB 8.6mg Tab/20 Novag", conc:"8.6mg", pres:"CJ", cont:"20 Tab", ind:"Laxante", flags:[], riesgo:"low"},
+  {id:273, gen:"Sevoflurano", com:"Svofast Sevoflurano 250ml Frasco Baxter", conc:"100ml", pres:"FRA", cont:"100mL", ind:"Anestésico general", flags:["multidosis"], riesgo:"high"},
+  {id:274, gen:"Sildenafil", com:"Sildenafil 50mg Tab C/4 Ultra", conc:"50mg", pres:"CJ", cont:"4 Tab", ind:"Hipertensión pulmonar en RN - niños", flags:[], riesgo:"med"},
+  {id:275, gen:"Solución cloruro de sodio 0.9%", com:"Fisiológica 50ml ABB1306A Baxter", conc:"0.9%", pres:"BOL", cont:"50mL", ind:"Soluciones electrolíticas y sustitutos del plasma", flags:[], riesgo:"low"},
+  {id:276, gen:"Solución glucosada al 5%", com:"Sol Dextrosa 10% 500ml ABB0163B Baxter", conc:"10%", pres:"BOL", cont:"500mL", ind:"Soluciones electrolíticas y sustitutos del plasma", flags:[], riesgo:"low"},
+  {id:277, gen:"Solución glucosada al 5%", com:"Sol Dextrosa 5% 250ml ABB0062A Baxter", conc:"5%", pres:"BOL", cont:"250mL", ind:"Soluciones electrolíticas y sustitutos del plasma", flags:[], riesgo:"low"},
+  {id:278, gen:"Solución glucosada al 5%", com:"Sol Glucosada 5% 100ml 4000392 Pisa", conc:"5%", pres:"PZA", cont:"100mL", ind:"Soluciones electrolíticas y sustitutos del plasma", flags:[], riesgo:"low"},
+  {id:279, gen:"Sucralfato", com:"Unival 1gr/5ml 230ml Susp Fco Senosiain", conc:"1g/5ml", pres:"FRA", cont:"230mL", ind:"Antiácido", flags:["lasa","multidosis"], riesgo:"low"},
+  {id:280, gen:"Sugammadex sodio", com:"Bridion 100mg/ml 2ml Sol Iny Schering P", conc:"100mg/ml / 2ml", pres:"FRM", cont:"2mL", ind:"Antagonista de relajantes musculares", flags:[], riesgo:"high"},
+  {id:281, gen:"Sugammadex sodio", com:"Sugammadex Revibre 200mg/2ml Iny Euro", conc:"200mg", pres:"FRM", cont:"2mL", ind:"Antagonista de relajantes musculares", flags:[], riesgo:"high"},
+  {id:282, gen:"Sulfadiazina de plata", com:"Argentafil 1% 30gr Crema Valeant", conc:"1%", pres:"CJ", cont:"30g", ind:"Cicatrizante", flags:["multidosis"], riesgo:"low"},
+  {id:283, gen:"Sulfato de magnesio", com:"Magnefusin 1g/10ml Sol Iny Pisa", conc:"1g/10ml", pres:"AMP", cont:"10mL", ind:"Electrolito concentrado", flags:["rojo"], riesgo:"high"},
+  {id:284, gen:"Suplemento alimenticio", com:"Glutapak R 15g Pvo Sob Victus", conc:"60kcal", pres:"SOB", cont:"15g", ind:"Nutrición enteral", flags:["multidosis"], riesgo:"low"},
+  {id:285, gen:"Suplemento alimenticio", com:"Ensure 237ml Fresa Abbott", conc:"1kcal/ml", pres:"FRA", cont:"237mL", ind:"Nutrición enteral", flags:[], riesgo:"low"},
+  {id:286, gen:"Suplemento alimenticio", com:"Multivitamínico AD Lafhalx 5ml Iny", conc:"3300 UI Vit A", pres:"AMP", cont:"5mL", ind:"Vitaminas parenterales", flags:["fotosensible"], riesgo:"med"},
+  {id:287, gen:"Suplemento alimenticio", com:"Nepro HP 237ml Vainilla Abbott", conc:"1.83kcal/ml", pres:"LAT", cont:"237mL", ind:"Nutrición enteral", flags:[], riesgo:"low"},
+  {id:288, gen:"Suplemento alimenticio", com:"Supportan Capuchino Fco 200ml Fresenius", conc:"300kcal", pres:"PZA", cont:"200mL", ind:"Nutrición enteral", flags:[], riesgo:"low"},
+  {id:289, gen:"Suplemento alimenticio", com:"Supportan Drink Frutas Tropicales 200ml", conc:"300kcal", pres:"FRA", cont:"200mL", ind:"Nutrición enteral", flags:[], riesgo:"low"},
+  {id:290, gen:"Suplemento alimenticio", com:"Supra 4mg Tabletas C/30", conc:"4mg", pres:"CJ", cont:"30 Tab", ind:"Antidiarreico", flags:[], riesgo:"low"},
+  {id:291, gen:"Suplemento alimenticio", com:"Vitafusin Multivitamínico 5ml Iny Pisa", conc:"3300 UI Vit A", pres:"PZA", cont:"5mL", ind:"Vitaminas parenterales", flags:["fotosensible"], riesgo:"med"},
+  {id:292, gen:"Surfactante pulmonar", com:"Curosurf 240mg/3ml Susp Chiesi", conc:"240mg", pres:"AMP", cont:"3mL", ind:"Fosfolípidos de pulmón porcino", flags:["refrigerado"], riesgo:"high"},
+  {id:293, gen:"Tamsulosina", com:"Tamsulosina Fedpros 0.4mg Cap/20 Ram", conc:"0.4mg", pres:"CJ", cont:"20 Tab", ind:"Bloqueante alfa-adrenérgico", flags:[], riesgo:"med"},
+  {id:294, gen:"Tenecteplasa", com:"Metalyse 50mg IV Sol Iny Boehringer", conc:"50mg", pres:"FRA", cont:"10mL", ind:"Antiagregante / Fibrinolítico", flags:[], riesgo:"high"},
+  {id:295, gen:"Terlipresina", com:"Glypressin 1mg/5ml Sol Iny Ferring", conc:"1mg", pres:"CJ", cont:"5mL", ind:"Sangrado esofágico / Síndrome hepatorrenal", flags:["rojo"], riesgo:"high"},
+  {id:296, gen:"Tetracaína", com:"Ponti Ofteno 10ml Fco Gotas Sophia", conc:"10ml", pres:"FRA", cont:"10mL", ind:"Anestésico local", flags:["multidosis"], riesgo:"med"},
+  {id:297, gen:"Tizanidina", com:"Sirdalud 2mg Tab C/20 Novartis", conc:"2mg", pres:"CJ", cont:"20 Tab", ind:"Relajante muscular", flags:[], riesgo:"med"},
+  {id:298, gen:"Tramadol", com:"Pisazol Tramadol 100mg/2ml Sol Iny Pisa", conc:"100mg", pres:"AMP", cont:"2mL", ind:"Analgésico opioide", flags:["controlado"], riesgo:"high"},
+  {id:299, gen:"Tramadol", com:"Tradol 50mg Sol Iny Grunenthal", conc:"50mg", pres:"AMP", cont:"1mL", ind:"Analgésico opioide", flags:["controlado"], riesgo:"high"},
+  {id:300, gen:"Trimebutina", com:"Libertrim 100mg Comp C/20 Carnot", conc:"100mg", pres:"CJ", cont:"20 Cap", ind:"Antiemético / Antiespasmódico", flags:["lasa"], riesgo:"med"},
+  {id:301, gen:"Trimebutina", com:"Libertrim 50mg/5ml Sol Iny Carnot", conc:"50mg/5ml", pres:"AMP", cont:"5mL", ind:"Antiemético / Antiespasmódico", flags:["refrigerado","fotosensible","lasa"], riesgo:"med"},
+  {id:302, gen:"Trimebutina / Simeticona", com:"Libertrim SII 200mg/75mg Comp C/24", conc:"200mg/75mg", pres:"CJ", cont:"24 Comp", ind:"Antiemético / Antiespasmódico", flags:[], riesgo:"med"},
+  {id:303, gen:"Trimetoprima / Sulfametoxazol", com:"Pisatrina 160/800mg Sol Iny Pisa", conc:"160/80mg", pres:"AMP", cont:"3mL", ind:"Antibiótico (sulfonamida)", flags:["lasa"], riesgo:"med"},
+  {id:304, gen:"Triticum vulgare / Gentamicina", com:"Italdermol 4g Gasas C/10 Italmex", conc:"150mg", pres:"CJ", cont:"4g", ind:"Regenerador tisular", flags:[], riesgo:"low"},
+  {id:305, gen:"Vancomicina", com:"Vancocin CP 1g Sol Iny Sandoz", conc:"1g", pres:"FRM", cont:"20mL", ind:"Antibiótico (glicopéptidos)", flags:["multidosis"], riesgo:"high"},
+  {id:306, gen:"Vasopresina", com:"Arterina 20 UI/ml Sol Iny Pisa", conc:"20 UI/ml", pres:"FRM", cont:"1mL", ind:"Vasoconstrictor", flags:["rojo","refrigerado"], riesgo:"high"},
+  {id:307, gen:"Vitamina K (Fitomenadiona)", com:"Fitomenadiona 10mg/ml Sol Iny Pisa", conc:"10mg", pres:"AMP", cont:"1mL", ind:"Antihemorrágico", flags:["fotosensible"], riesgo:"med"},
+  {id:308, gen:"Vitamina K (Fitomenadiona)", com:"Fitomenadiona 2mg/0.2ml Sol Iny Pisa", conc:"2mg/0.2ml", pres:"AMP", cont:"0.2mL", ind:"Antihemorrágico", flags:["fotosensible"], riesgo:"med"}
+];
+
+// Ordenar alfabéticamente por nombre genérico
+medicamentos.sort((a, b) => a.gen.localeCompare(b.gen, 'es'));
+
+// Estado
+let currentFilter = 'all';
+let searchTerm = '';
+
+// Elementos DOM
+const grid = document.getElementById('grid');
+const searchInput = document.getElementById('searchInput');
+const resultsCount = document.getElementById('resultsCount');
+const totalCount = document.getElementById('totalCount');
+const tabs = document.querySelectorAll('.tab');
+
+totalCount.textContent = medicamentos.length;
+
+function getRiesgoBadge(riesgo, flags) {
+  let html = '';
+  if (flags.includes('controlado')) {
+    html += '<span class="badge badge-ctrl">Controlado</span>';
+  }
+  if (riesgo === 'high') {
+    html += '<span class="badge badge-high">Alto riesgo</span>';
+  } else if (riesgo === 'med') {
+    html += '<span class="badge badge-med">Riesgo medio</span>';
+  } else {
+    html += '<span class="badge badge-low">Bajo riesgo</span>';
+  }
+  if (flags.includes('lasa')) html += '<span class="badge badge-lasa">LASA</span>';
+  if (flags.includes('refrigerado')) html += '<span class="badge badge-ref">Refrigerado</span>';
+  if (flags.includes('fotosensible')) html += '<span class="badge badge-foto">Fotosensible</span>';
+  if (flags.includes('multidosis')) html += '<span class="badge badge-multi">Multidosis</span>';
+  if (flags.includes('rojo')) html += '<span class="badge badge-high">Alerta Roja</span>';
+  return html;
+}
+
+function matchesFilter(med) {
+  if (currentFilter === 'all') return true;
+  if (currentFilter === 'low') return med.riesgo === 'low' && !med.flags.includes('controlado');
+  if (currentFilter === 'med') return med.riesgo === 'med' && !med.flags.includes('controlado');
+  if (currentFilter === 'high') return med.riesgo === 'high' || med.flags.includes('controlado');
+  return true;
+}
+
+function matchesSearch(med) {
+  if (!searchTerm) return true;
+  const term = searchTerm.toLowerCase();
+  const fields = [
+    med.gen, med.com, med.conc, med.pres, med.cont, med.ind,
+    ...(med.flags || [])
+  ].join(' ').toLowerCase();
+  return fields.includes(term);
+}
+
+function render() {
+  const filtered = medicamentos.filter(m => matchesFilter(m) && matchesSearch(m));
+  
+  resultsCount.textContent = filtered.length === medicamentos.length
+    ? `Mostrando todos los ${medicamentos.length} medicamentos`
+    : `${filtered.length} resultado${filtered.length !== 1 ? 's' : ''} encontrado${filtered.length !== 1 ? 's' : ''}`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <p>No se encontraron medicamentos con los criterios actuales.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(med => `
+    <article class="card">
+      <div class="card-header">
+        <h3>${med.gen}</h3>
+        <div class="commercial">${med.com}</div>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <div class="field-label">Concentración / Dosis</div>
+          <div class="field-value">${med.conc}</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Presentación</div>
+          <div class="field-value">${med.pres} · Contenido: ${med.cont}</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Indicación terapéutica</div>
+          <div class="field-value">${med.ind}</div>
+        </div>
+        <div class="badges">
+          ${getRiesgoBadge(med.riesgo, med.flags)}
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>ID: ${med.id}</span>
+        <span>Cuadro Básico 2026</span>
+      </div>
+    </article>
+  `).join('');
+}
+
+// Eventos
+searchInput.addEventListener('input', (e) => {
+  searchTerm = e.target.value.trim();
+  render();
+});
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentFilter = tab.dataset.filter;
+    render();
+  });
+});
+
+// Inicial
+render();
+</script>
+</body>
+</html>
