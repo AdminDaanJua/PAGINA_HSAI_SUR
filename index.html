@@ -1,38 +1,10 @@
-<!--
-================================================================================
-  PORTAL WEB INTERNO - HOSPITAL SAN ÁNGEL INN SUR (VERSIÓN MEJORADA 2026)
-================================================================================
-  Principales Mejoras Realizadas:
-  
-  1. Diseño Visual & UX Moderno:
-     - Paleta de color optimizada con azul médico profundo (Slate/Navy) e hiper-legible.
-     - Fondo claro/sutil en degradado con tarjetas elevadas (Glassmorphism & Soft Shadows).
-     - Tipografía Inter/System optimizada para alta legibilidad.
-     
-  2. Buscador de Extensiones y Filtros Dinámicos:
-     - Buscador flotante con indicador de coincidencias e íconos interactivos.
-     - Acción instantánea de "Copiar Extensión" con feedback visual y Toast moderno.
-     
-  3. Carruseles Interactivos y Fluidos:
-     - Carrusel de Comunicados con controles touch/hover, autoplay inteligente e integración con Modal Zoom.
-     - Carrusel vertical de Noticias y Avisos en tiempo real con indicador dinámico.
-     - Módulo de Higiene de Manos interactivo con pasos numerados, barra de progreso fluida y temporizador.
-     
-  4. Bloc de Notas Personal y Herramientas:
-     - Persistencia de datos local en tiempo real con localStorage y contador de caracteres.
-     
-  5. Responsividad y Micro-interacciones:
-     - Layout 100% adaptable mediante CSS Grid / Flexbox (Mobile, Tablet, Desktop).
-     - Efectos Hover en botones, cards interactivas y animaciones fluidas CSS/JS.
-================================================================================
--->
 <!DOCTYPE html><html lang="es"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Portal Web Interno - Hospital San Ángel Inn Sur (Halloween Edition)</title>
-<!-- Tailwind CSS CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
-<!-- FontAwesome Lucide-style icons via CDN -->
+<title>Portal Web Interno - Hospital San Ángel Inn Sur (Christmas Edition 2026)</title>
+<!-- Tailwind CSS CDN con plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- FontAwesome Icons via CDN -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script>
     tailwind.config = {
@@ -40,18 +12,19 @@
         extend: {
           colors: {
             hsai: {
-              50: '#fff7ed',
-              100: '#ffedd5',
-              200: '#fed7aa',
-              500: '#f97316',
-              700: '#ea580c',
-              800: '#c2410c',
-              900: '#7c2d12',
-              dark: '#09090d',
-              accent: '#a855f7',
-              violet: '#7c3aed',
-              card: '#13131a',
-              border: 'rgba(249, 115, 22, 0.22)'
+              50: '#fef2f2',
+              100: '#fee2e2',
+              200: '#fecaca',
+              500: '#dc2626', // Crimson Festive Red
+              600: '#b91c1c',
+              700: '#991b1b',
+              800: '#7f1d1d',
+              pine: '#15803d',
+              pineDark: '#166534',
+              gold: '#d97706',
+              goldWarm: '#f59e0b',
+              goldLight: '#fef3c7',
+              border: 'rgba(220, 38, 38, 0.18)'
             }
           }
         }
@@ -63,19 +36,20 @@
 
     body {
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      background-color: #08080c;
+      background-color: #f8fafc;
       background-image: 
-        radial-gradient(ellipse at 15% 20%, rgba(124, 58, 237, 0.12) 0%, transparent 45%),
-        radial-gradient(ellipse at 85% 75%, rgba(249, 115, 22, 0.09) 0%, transparent 45%),
-        radial-gradient(rgba(249, 115, 22, 0.1) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 28px 28px;
-      color: #f1f5f9;
+        radial-gradient(ellipse at 10% 10%, rgba(220, 38, 38, 0.05) 0%, transparent 45%),
+        radial-gradient(ellipse at 90% 15%, rgba(21, 128, 61, 0.06) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 80%, rgba(245, 158, 11, 0.06) 0%, transparent 55%),
+        radial-gradient(rgba(148, 163, 184, 0.18) 1.2px, transparent 1.2px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 28px 28px;
+      color: #1e293b;
       overflow-x: hidden;
       position: relative;
     }
 
     /* Contenedor de fondo animado e inmune a clics */
-    .spooky-ambient-layer {
+    .holiday-ambient-layer {
       position: fixed;
       inset: 0;
       pointer-events: none;
@@ -83,743 +57,659 @@
       overflow: hidden;
     }
 
-    /* Telarañas en esquinas - Tamaño moderado */
-    .web-corner {
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      opacity: 0.38;
+    /* Guirnalda de Luces Navideñas Superiores (String Lights) */
+    .string-lights-bar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 20px;
+      display: flex;
+      justify-content: space-around;
       pointer-events: none;
-      transition: opacity 0.3s ease;
-      filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.25));
+      z-index: 45;
+      background: linear-gradient(180deg, rgba(254, 242, 242, 0.9) 0%, transparent 100%);
+      border-bottom: 1px dashed rgba(220, 38, 38, 0.2);
     }
-    .web-tl { top: 0; left: 0; }
-    .web-tr { top: 0; right: 0; transform: scaleX(-1); }
-    .web-bl { bottom: 0; left: 0; transform: scaleY(-1); }
-    .web-br { bottom: 0; right: 0; transform: scale(-1, -1); }
-
-    /* Animación de araña colgante */
-    @keyframes spiderDropSwing {
-      0%, 100% { transform: translateY(0) rotate(3deg); }
-      50% { transform: translateY(28px) rotate(-5deg); }
+    .holiday-bulb {
+      width: 10px;
+      height: 14px;
+      border-radius: 50% 50% 65% 65%;
+      position: relative;
+      animation: bulbGlow 2.2s infinite alternate ease-in-out;
     }
-    .spider-pendant {
+    .holiday-bulb::before {
+      content: '';
       position: absolute;
-      top: 60px;
-      right: 48px;
-      animation: spiderDropSwing 6s ease-in-out infinite;
-      transform-origin: top center;
+      top: -3px;
+      left: 3px;
+      width: 4px;
+      height: 3px;
+      background: #475569;
+      border-radius: 2px;
+    }
+    .bulb-red { background: #ef4444; box-shadow: 0 0 8px #ef4444, 0 0 16px rgba(239, 68, 68, 0.5); animation-delay: 0s; }
+    .bulb-gold { background: #f59e0b; box-shadow: 0 0 8px #f59e0b, 0 0 16px rgba(245, 158, 11, 0.5); animation-delay: 0.5s; }
+    .bulb-green { background: #16a34a; box-shadow: 0 0 8px #16a34a, 0 0 16px rgba(22, 163, 74, 0.5); animation-delay: 1.1s; }
+    .bulb-blue { background: #0284c7; box-shadow: 0 0 8px #0284c7, 0 0 16px rgba(2, 132, 199, 0.5); animation-delay: 1.6s; }
+
+    @keyframes bulbGlow {
+      0% { opacity: 0.65; transform: scale(0.95); filter: brightness(0.9); }
+      100% { opacity: 1; transform: scale(1.08); filter: brightness(1.25); }
     }
 
-    /* Murciélagos en vuelo - Tamaño mediano (50px - 70px) */
-    @keyframes batFlyTrajectory1 {
+    /* Animación de Copos de Nieve Festivos Claros */
+    @keyframes snowFall {
       0% {
-        transform: translate(-100px, 18vh) scale(0.9) rotate(5deg);
+        transform: translateY(-25px) translateX(0);
         opacity: 0;
       }
-      10% { opacity: 0.75; }
-      50% {
-        transform: translate(50vw, 10vh) scale(1.05) rotate(-4deg);
-        opacity: 0.85;
-      }
-      90% { opacity: 0.75; }
-      100% {
-        transform: translate(105vw, 24vh) scale(0.95) rotate(8deg);
-        opacity: 0;
-      }
-    }
-
-    @keyframes batFlyTrajectory2 {
-      0% {
-        transform: translate(105vw, 55vh) scale(1) rotate(-8deg);
-        opacity: 0;
-      }
-      15% { opacity: 0.8; }
-      55% {
-        transform: translate(45vw, 68vh) scale(1.15) rotate(6deg);
-        opacity: 0.9;
-      }
-      85% { opacity: 0.8; }
-      100% {
-        transform: translate(-120px, 48vh) scale(0.9) rotate(-10deg);
-        opacity: 0;
-      }
-    }
-
-    @keyframes batFlyTrajectory3 {
-      0% {
-        transform: translate(-80px, 82vh) scale(0.8) rotate(3deg);
-        opacity: 0;
-      }
-      15% { opacity: 0.7; }
-      50% {
-        transform: translate(60vw, 75vh) scale(0.95) rotate(-6deg);
+      15% {
         opacity: 0.8;
       }
-      90% { opacity: 0.7; }
+      85% {
+        opacity: 0.75;
+      }
       100% {
-        transform: translate(105vw, 65vh) scale(0.85) rotate(4deg);
+        transform: translateY(105vh) translateX(40px);
         opacity: 0;
       }
     }
 
-    .animated-bat-1 {
+    .snowflake {
       position: absolute;
-      width: 64px;
-      height: 38px;
-      animation: batFlyTrajectory1 14s linear infinite;
+      top: -25px;
+      color: #93c5fd;
+      text-shadow: 0 0 6px rgba(186, 230, 253, 0.9), 0 0 10px rgba(255, 255, 255, 0.9);
+      pointer-events: none;
+      user-select: none;
+      animation: snowFall linear infinite;
     }
 
-    .animated-bat-2 {
-      position: absolute;
-      width: 72px;
-      height: 42px;
-      animation: batFlyTrajectory2 18s linear infinite;
-      animation-delay: 5s;
-    }
-
-    .animated-bat-3 {
-      position: absolute;
-      width: 52px;
-      height: 32px;
-      animation: batFlyTrajectory3 16s linear infinite;
-      animation-delay: 9s;
-    }
-
-    /* Aleteo de alas de murciélago */
-    @keyframes wingFlap {
-      0%, 100% { transform: scaleY(1); }
-      50% { transform: scaleY(0.45); }
-    }
-    .bat-wings {
-      transform-origin: center;
-      animation: wingFlap 0.28s ease-in-out infinite;
-    }
-
-    /* Fantasmas flotantes - Tamaño mediano (55px - 75px) */
-    @keyframes ghostDrift1 {
+    /* Santa en Trineo cruzando majestuosamente por encima de los módulos */
+    @keyframes santaFlight {
       0% {
-        transform: translate(8vw, 85vh) scale(0.9);
+        transform: translate(-450px, 12vh) scale(0.95) rotate(-2deg);
         opacity: 0;
       }
-      15% { opacity: 0.65; }
+      6% {
+        opacity: 1;
+      }
       50% {
-        transform: translate(14vw, 45vh) scale(1) rotate(5deg);
-        opacity: 0.75;
+        transform: translate(50vw, 15vh) scale(1.08) rotate(1deg);
+        opacity: 1;
       }
-      85% { opacity: 0.6; }
+      94% {
+        opacity: 1;
+      }
       100% {
-        transform: translate(10vw, 12vh) scale(0.95) rotate(-4deg);
+        transform: translate(110vw, 20vh) scale(0.98) rotate(3deg);
         opacity: 0;
       }
     }
 
-    @keyframes ghostDrift2 {
-      0% {
-        transform: translate(82vw, 88vh) scale(0.95);
-        opacity: 0;
-      }
-      20% { opacity: 0.6; }
-      55% {
-        transform: translate(76vw, 40vh) scale(1.08) rotate(-6deg);
-        opacity: 0.75;
-      }
-      85% { opacity: 0.55; }
-      100% {
-        transform: translate(85vw, 15vh) scale(0.9) rotate(4deg);
-        opacity: 0;
-      }
+    /* Capa flotante con z-index superior a todos los módulos y tarjetas (z-index: 70) */
+    .santa-sky-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 70;
+      overflow: hidden;
     }
 
-    @keyframes etherealWobble {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(3deg); }
-    }
-
-    .animated-ghost-1 {
+    .santa-sleigh-container {
       position: absolute;
-      width: 60px;
-      height: 75px;
-      animation: ghostDrift1 22s ease-in-out infinite;
-      filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.45));
+      width: 460px;
+      height: 140px;
+      animation: santaFlight 26s ease-in-out infinite;
+      filter: drop-shadow(0 8px 24px rgba(239, 68, 68, 0.45)) drop-shadow(0 0 20px rgba(251, 191, 36, 0.8));
+      pointer-events: none;
     }
 
-    .animated-ghost-2 {
+    /* Muñecos de Nieve Decorativos Alegres */
+    @keyframes snowmanBobLeft {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-7px) rotate(2deg); }
+    }
+    @keyframes snowmanBobRight {
+      0%, 100% { transform: translateY(0) rotate(2deg); }
+      50% { transform: translateY(-9px) rotate(-2deg); }
+    }
+
+    .decorative-snowman-left {
       position: absolute;
-      width: 65px;
-      height: 80px;
-      animation: ghostDrift2 26s ease-in-out infinite;
-      animation-delay: 11s;
-      filter: drop-shadow(0 0 14px rgba(249, 115, 22, 0.35));
+      bottom: 50px;
+      left: 15px;
+      width: 82px;
+      height: 110px;
+      opacity: 0.85;
+      animation: snowmanBobLeft 6s ease-in-out infinite;
+      filter: drop-shadow(0 6px 14px rgba(148, 163, 184, 0.4));
     }
 
-    /* Calabazas luminosas flotantes tenues */
-    @keyframes pumpkinBob1 {
-      0%, 100% { transform: translateY(0) rotate(-3deg); }
-      50% { transform: translateY(-16px) rotate(4deg); }
-    }
-    .floating-pumpkin-1 {
+    .decorative-snowman-right {
       position: absolute;
-      top: 32%;
-      right: 3%;
-      width: 58px;
-      height: 52px;
-      opacity: 0.35;
-      animation: pumpkinBob1 7s ease-in-out infinite;
-      filter: drop-shadow(0 0 15px rgba(249, 115, 22, 0.5));
+      top: 38%;
+      right: 18px;
+      width: 78px;
+      height: 105px;
+      opacity: 0.8;
+      animation: snowmanBobRight 7s ease-in-out infinite;
+      filter: drop-shadow(0 6px 14px rgba(148, 163, 184, 0.35));
     }
 
-    .floating-pumpkin-2 {
+    /* Ramas de pino estilizadas en esquinas */
+    .pine-corner-left {
       position: absolute;
-      bottom: 22%;
-      left: 2%;
-      width: 54px;
-      height: 48px;
-      opacity: 0.32;
-      animation: pumpkinBob1 8.5s ease-in-out infinite reverse;
-      filter: drop-shadow(0 0 15px rgba(234, 88, 12, 0.45));
+      bottom: 0;
+      left: 0;
+      width: 130px;
+      height: 130px;
+      opacity: 0.55;
+      pointer-events: none;
     }
-
-    /* Brasas y destellos mágicos que ascienden */
-    @keyframes emberRise {
-      0% {
-        transform: translateY(100vh) translateX(0) scale(0.8);
-        opacity: 0;
-      }
-      20% { opacity: 0.8; }
-      80% { opacity: 0.8; }
-      100% {
-        transform: translateY(-10vh) translateX(25px) scale(1.2);
-        opacity: 0;
-      }
-    }
-
-    .ember-particle {
+    .pine-corner-right {
       position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle, #fbbf24 20%, #f97316 70%, transparent 100%);
-      box-shadow: 0 0 8px #f97316, 0 0 14px #ea580c;
-      animation: emberRise linear infinite;
+      bottom: 0;
+      right: 0;
+      width: 130px;
+      height: 130px;
+      opacity: 0.55;
+      pointer-events: none;
+      transform: scaleX(-1);
     }
 
-    /* Tarjetas Elevadas con Estilo Halloween Sofisticado */
+    /* Tarjetas Blancas Luminosas Navideñas (Clean White + Festive Red/Gold/Green Trims) */
     .hsai-card {
-      background: rgba(19, 19, 26, 0.88);
-      border: 1px solid rgba(249, 115, 22, 0.22);
-      border-radius: 1rem;
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6), 0 0 12px -2px rgba(249, 115, 22, 0.08);
-      backdrop-filter: blur(12px);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: #ffffff;
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      border-top: 3px solid #dc2626;
+      border-radius: 1.1rem;
+      box-shadow: 0 10px 25px -4px rgba(220, 38, 38, 0.07), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       z-index: 10;
     }
 
     .hsai-card:hover {
-      box-shadow: 0 14px 28px -4px rgba(0, 0, 0, 0.8), 0 0 20px -2px rgba(249, 115, 22, 0.25);
-      border-color: rgba(249, 115, 22, 0.45);
+      box-shadow: 0 16px 32px -4px rgba(220, 38, 38, 0.14), 0 8px 18px -4px rgba(21, 128, 61, 0.08);
+      border-color: rgba(220, 38, 38, 0.35);
       transform: translateY(-2px);
     }
 
-    /* Scrollbars elegantes Halloween */
+    /* Scrollbars elegantes en tonos navideños claros */
     ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
     }
     ::-webkit-scrollbar-track {
-      background: #111116;
-      border-radius: 4px;
+      background: #f1f5f9;
+      border-radius: 6px;
     }
     ::-webkit-scrollbar-thumb {
-      background: #332338;
-      border-radius: 4px;
-      border: 1px solid rgba(249, 115, 22, 0.2);
+      background: #cbd5e1;
+      border-radius: 6px;
+      border: 1px solid #ffffff;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #f97316;
+      background: #dc2626;
     }
 
-    /* Barra de progreso interactiva */
     .progress-bar-fill {
-      transition: width 0.1s linear;
-    }
-
-    .highlight-match {
-      background-color: #7c2d12;
-      color: #fed7aa;
-      padding: 0 3px;
-      border-radius: 3px;
-      font-weight: 600;
+      transition: width 0.15s linear;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .animated-bat-1, .animated-bat-2, .animated-bat-3,
-      .animated-ghost-1, .animated-ghost-2,
-      .spider-pendant, .floating-pumpkin-1, .floating-pumpkin-2,
-      .ember-particle, .bat-wings {
+      .snowflake, .santa-sleigh-container, .decorative-snowman-left, .decorative-snowman-right, .holiday-bulb {
         animation: none !important;
       }
     }
   </style>
-</head>
-<body class="min-h-screen flex flex-col">
-<!-- CAPA DE AMBIENTE HALLOWEEN: TELARAÑAS EN LAS ESQUINAS Y ELEMENTOS FLOTANTES DE TAMAÑO MEDIANO -->
-<div class="spooky-ambient-layer">
-<!-- Telarañas de esquina de tamaño moderado (SVG limpio, semitransparente) -->
-<!-- Superior Izquierda -->
-<svg class="web-corner web-tl" fill="none" stroke="currentColor" viewBox="0 0 180 180">
-<path d="M0,0 L180,0 C160,50 130,100 0,180 Z" fill="rgba(168, 85, 247, 0.03)"></path>
-<!-- Radios -->
-<line stroke="rgba(249, 115, 22, 0.45)" stroke-width="1.4" x1="0" x2="180" y1="0" y2="0"></line>
-<line stroke="rgba(203, 213, 225, 0.35)" stroke-width="1.2" x1="0" x2="165" y1="0" y2="45"></line>
-<line stroke="rgba(203, 213, 225, 0.35)" stroke-width="1.2" x1="0" x2="135" y1="0" y2="90"></line>
-<line stroke="rgba(203, 213, 225, 0.35)" stroke-width="1.2" x1="0" x2="90" y1="0" y2="135"></line>
-<line stroke="rgba(203, 213, 225, 0.35)" stroke-width="1.2" x1="0" x2="45" y1="0" y2="165"></line>
-<line stroke="rgba(249, 115, 22, 0.45)" stroke-width="1.4" x1="0" x2="0" y1="0" y2="180"></line>
-<!-- Conectores concéntricos -->
-<path d="M40,0 Q36,12 28,28 Q12,36 0,40" fill="none" stroke="rgba(203, 213, 225, 0.4)" stroke-width="1"></path>
-<path d="M80,0 Q72,25 56,56 Q25,72 0,80" fill="none" stroke="rgba(249, 115, 22, 0.35)" stroke-width="1.1"></path>
-<path d="M120,0 Q108,38 84,84 Q38,108 0,120" fill="none" stroke="rgba(203, 213, 225, 0.4)" stroke-width="1.1"></path>
-<path d="M160,0 Q144,52 112,112 Q52,144 0,160" fill="none" stroke="rgba(249, 115, 22, 0.38)" stroke-width="1.2"></path>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" data-snapdom="injected-import"></head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-800">
+<!-- GUIRNALDA DE LUCES NAVIDEÑAS SUPERIOR -->
+<div class="string-lights-bar">
+<div class="holiday-bulb bulb-red"></div>
+<div class="holiday-bulb bulb-gold"></div>
+<div class="holiday-bulb bulb-green"></div>
+<div class="holiday-bulb bulb-blue"></div>
+<div class="holiday-bulb bulb-red"></div>
+<div class="holiday-bulb bulb-gold"></div>
+<div class="holiday-bulb bulb-green"></div>
+<div class="holiday-bulb bulb-blue"></div>
+<div class="holiday-bulb bulb-red"></div>
+<div class="holiday-bulb bulb-gold"></div>
+<div class="holiday-bulb bulb-green"></div>
+<div class="holiday-bulb bulb-blue"></div>
+<div class="holiday-bulb bulb-gold"></div>
+<div class="holiday-bulb bulb-red"></div>
+<div class="holiday-bulb bulb-green"></div>
+<div class="holiday-bulb bulb-blue"></div>
+<div class="holiday-bulb bulb-red"></div>
+<div class="holiday-bulb bulb-gold"></div>
+<div class="holiday-bulb bulb-green"></div>
+<div class="holiday-bulb bulb-blue"></div>
+</div>
+<!-- CAPA ELEVADA DE SANTA EN TRINEO (Z-INDEX 70: Vuela por encima de módulos y tarjetas sin bloquear clics) -->
+<div class="santa-sky-overlay">
+<div class="santa-sleigh-container"><svg class="w-full h-full drop-shadow-xl" fill="none" viewBox="0 0 340 90"><g filter="drop-shadow(0 0 10px #fde047)" id="magical-dust-trail"><circle cx="5" cy="52" fill="#fef08a" opacity="0.95" r="3"><animate attributeName="opacity" dur="1s" repeatCount="indefinite" values="0.3;1;0.3"></animate></circle><circle cx="-15" cy="55" fill="#fbbf24" opacity="0.9" r="4"><animate attributeName="opacity" dur="1.2s" repeatCount="indefinite" values="0.5;1;0.5"></animate></circle><circle cx="-32" cy="50" fill="#ffffff" opacity="0.95" r="2.5"></circle><path d="M-8 45 L-6 40 L-4 45 L1 47 L-4 49 L-6 54 L-8 49 L-13 47 Z" fill="#fde047" opacity="0.95"><animate attributeName="transform" dur="3s" from="0 -6 47" repeatCount="indefinite" to="360 -6 47" type="rotate"></animate></path><path d="M-22 36 L-20 32 L-18 36 L-14 38 L-18 40 L-20 44 L-22 40 L-26 38 Z" fill="#ffffff" opacity="0.95"></path><circle cx="-42" cy="53" fill="#f59e0b" opacity="0.85" r="2.2"></circle><circle cx="-60" cy="46" fill="#fde047" opacity="0.7" r="3"><animate attributeName="opacity" dur="1.5s" repeatCount="indefinite" values="0.2;0.9;0.2"></animate></circle></g><g transform="translate(265, 18)"><path d="M22 6 C24 2 28 1 32 3 M23 5 C22 1 20 0 18 2 M25 3 C27 0 29 -2 33 -1" stroke="#b45309" stroke-linecap="round" stroke-width="2.2"></path><path d="M12 12 C16 8 24 10 26 15 C28 17 31 18 31 21 C31 23 27 24 23 22 C19 25 15 26 12 22 Z" fill="#92400e"></path><circle cx="31" cy="20" fill="#ef4444" filter="drop-shadow(0 0 6px #ef4444)" r="3.2"></circle><circle cx="21" cy="14" fill="#ffffff" r="1.4"></circle><ellipse cx="6" cy="24" fill="#92400e" rx="14" ry="9"></ellipse><path d="M-4 28 L-14 38 M2 29 L-6 42 M12 28 L20 40 M16 28 L28 36" stroke="#78350f" stroke-linecap="round" stroke-width="2.8"></path><path d="M-8 23 C-2 23 8 23 16 22" stroke="#f59e0b" stroke-dasharray="2 2" stroke-width="1.6"></path><circle cx="0" cy="23" fill="#fde047" r="1.8"></circle><circle cx="8" cy="23" fill="#fde047" r="1.8"></circle></g><g transform="translate(195, 21)"><path d="M21 5 C23 1 27 0 31 2 M22 4 C21 0 19 -1 17 1 M24 2 C26 -1 28 -3 32 -2" stroke="#b45309" stroke-linecap="round" stroke-width="2.2"></path><path d="M12 11 C16 7 24 9 26 14 C28 16 31 17 31 20 C31 22 27 23 23 21 C19 24 15 25 12 21 Z" fill="#92400e"></path><circle cx="30" cy="19" fill="#f59e0b" filter="drop-shadow(0 0 4px #f59e0b)" r="2.2"></circle><circle cx="21" cy="13" fill="#ffffff" r="1.4"></circle><ellipse cx="6" cy="23" fill="#92400e" rx="13.5" ry="8.5"></ellipse><path d="M-4 27 L-14 37 M2 28 L-6 41 M12 27 L20 39 M16 27 L27 35" stroke="#78350f" stroke-linecap="round" stroke-width="2.8"></path><path d="M-8 22 C-2 22 8 22 16 21" stroke="#f59e0b" stroke-dasharray="2 2" stroke-width="1.6"></path><circle cx="0" cy="22" fill="#fde047" r="1.8"></circle><circle cx="8" cy="22" fill="#fde047" r="1.8"></circle></g><g transform="translate(125, 24)"><path d="M20 5 C22 1 26 0 30 2 M21 4 C20 0 18 -1 16 1" stroke="#b45309" stroke-linecap="round" stroke-width="2"></path><path d="M11 11 C15 7 23 9 25 14 C27 16 30 17 30 20 C30 22 26 23 22 21 C18 24 14 25 11 21 Z" fill="#92400e"></path><circle cx="20" cy="13" fill="#ffffff" r="1.3"></circle><ellipse cx="5" cy="23" fill="#92400e" rx="13" ry="8"></ellipse><path d="M-5 27 L-14 36 M1 28 L-6 40 M11 27 L18 39 M15 27 L26 35" stroke="#78350f" stroke-linecap="round" stroke-width="2.8"></path><path d="M-8 22 C-2 22 8 22 16 21" stroke="#f59e0b" stroke-dasharray="2 2" stroke-width="1.6"></path><circle cx="0" cy="22" fill="#fde047" r="1.8"></circle><circle cx="7" cy="22" fill="#fde047" r="1.8"></circle></g><path d="M48 34 Q85 32 130 34 M48 34 Q125 30 198 31 M48 34 Q170 28 268 28" filter="drop-shadow(0 0 3px #f59e0b)" stroke="#fbbf24" stroke-dasharray="3 2" stroke-width="1.6"></path><g transform="translate(10, 18)"><path d="M0 48 Q35 48 58 48 Q68 48 72 38 Q74 34 68 34" fill="none" filter="drop-shadow(0 0 4px #fbbf24)" stroke="#f59e0b" stroke-linecap="round" stroke-width="3.5"></path><line stroke="#d97706" stroke-width="2.2" x1="16" x2="20" y1="48" y2="40"></line><line stroke="#d97706" stroke-width="2.2" x1="44" x2="42" y1="48" y2="40"></line><path d="M4 36 C8 24 22 22 36 24 C44 25 56 22 62 38 C52 42 16 42 4 36 Z" fill="#dc2626" stroke="#fbbf24" stroke-width="2.2"></path><circle cx="16" cy="24" fill="#15803d" r="11" stroke="#fef08a" stroke-width="1.5"></circle><path d="M12 15 Q16 11 20 15" stroke="#fef08a" stroke-width="2.2"></path><ellipse cx="36" cy="24" fill="#b91c1c" rx="9" ry="10"></ellipse><line stroke="#1e293b" stroke-width="3" x1="28" x2="44" y1="26" y2="26"></line><rect fill="#f59e0b" height="3" width="4" x="34" y="24.5"></rect><circle cx="37" cy="13" fill="#fed7aa" r="5.5"></circle><path d="M33 13 C32 20 42 20 41 13 Z" fill="#ffffff"></path><circle cx="38" cy="12.5" fill="#ef4444" r="1.5"></circle><path d="M32 9 C35 3 44 4 44 9 Z" fill="#dc2626"></path><rect fill="#ffffff" height="2.5" rx="1.2" width="12" x="31.5" y="8"></rect><circle cx="45" cy="9" fill="#ffffff" r="2.4"></circle><path d="M40 22 C46 18 50 14 49 10" stroke="#dc2626" stroke-linecap="round" stroke-width="3.8"></path><circle cx="49" cy="9" fill="#ffffff" r="2.8"></circle></g></svg></div>
+</div>
+<!-- CAPA DE AMBIENTE NAVIDEÑO (FONDO CLARO, NIEVE, MUÑECOS Y RAMAS) -->
+<div class="holiday-ambient-layer"><div class="snowflake" style="left: 2%; font-size: 28px; animation-duration: 9.5s; animation-delay: 0.5s; color: rgb(186, 230, 253);">❄</div><div class="snowflake" style="left: 6%; font-size: 32px; animation-duration: 8.5s; animation-delay: 2.2s; color: #ffffff;">❅</div><div class="snowflake" style="left: 12%; font-size: 20px; animation-duration: 13s; animation-delay: 4.2s; color: #fde047;">✨</div><div class="snowflake" style="left: 18%; font-size: 26px; animation-duration: 10s; animation-delay: 1.8s; color: #93c5fd;">❆</div><div class="snowflake" style="left: 26%; font-size: 14px; animation-duration: 16s; animation-delay: 3.5s; color: #60a5fa;">❄</div><div class="snowflake" style="left: 35%; font-size: 30px; animation-duration: 11s; animation-delay: 0.2s; color: #ffffff;">❅</div><div class="snowflake" style="left: 42%; font-size: 18px; animation-duration: 14.5s; animation-delay: 5s; color: #fde047;">✨</div><div class="snowflake" style="left: 50%; font-size: 32px; animation-duration: 9s; animation-delay: 1.2s; color: #bae6fd;">❆</div><div class="snowflake" style="left: 58%; font-size: 22px; animation-duration: 12s; animation-delay: 3.8s; color: #ffffff;">❄</div><div class="snowflake" style="left: 66%; font-size: 28px; animation-duration: 10.5s; animation-delay: 2.8s; color: #93c5fd;">❅</div><div class="snowflake" style="left: 73%; font-size: 16px; animation-duration: 15s; animation-delay: 6s; color: #fde047;">✨</div><div class="snowflake" style="left: 81%; font-size: 32px; animation-duration: 8.8s; animation-delay: 0.9s; color: #ffffff;">❆</div><div class="snowflake" style="left: 89%; font-size: 20px; animation-duration: 13.5s; animation-delay: 4.8s; color: #bae6fd;">❄</div><div class="snowflake" style="left: 95%; font-size: 26px; animation-duration: 11.2s; animation-delay: 2.1s; color: #ffffff;">❅</div>
+<!-- COPOS DE NIEVE CAYENDO -->
+<div class="snowflake" style="left: 4%; font-size: 19px; animation-duration: 11s; animation-delay: 0s;">❄</div>
+<div class="snowflake" style="left: 9%; font-size: 12px; animation-duration: 15s; animation-delay: 3s; color: #60a5fa;">•</div>
+<div class="snowflake" style="left: 16%; font-size: 23px; animation-duration: 12s; animation-delay: 1.5s;">❅</div>
+<div class="snowflake" style="left: 23%; font-size: 14px; animation-duration: 17s; animation-delay: 5s;">•</div>
+<div class="snowflake" style="left: 31%; font-size: 21px; animation-duration: 11.5s; animation-delay: 1s;">❆</div>
+<div class="snowflake" style="left: 39%; font-size: 13px; animation-duration: 14s; animation-delay: 4.5s;">•</div>
+<div class="snowflake" style="left: 46%; font-size: 25px; animation-duration: 13s; animation-delay: 2.5s;">❄</div>
+<div class="snowflake" style="left: 54%; font-size: 15px; animation-duration: 16s; animation-delay: 6s;">•</div>
+<div class="snowflake" style="left: 62%; font-size: 20px; animation-duration: 12.5s; animation-delay: 0.8s;">❅</div>
+<div class="snowflake" style="left: 70%; font-size: 13px; animation-duration: 18s; animation-delay: 4s;">•</div>
+<div class="snowflake" style="left: 77%; font-size: 24px; animation-duration: 13.5s; animation-delay: 2s;">❆</div>
+<div class="snowflake" style="left: 85%; font-size: 15px; animation-duration: 15.5s; animation-delay: 5.5s;">•</div>
+<div class="snowflake" style="left: 92%; font-size: 22px; animation-duration: 11s; animation-delay: 1.2s;">❄</div>
+<div class="snowflake" style="left: 97%; font-size: 18px; animation-duration: 14s; animation-delay: 3.2s;">❅</div>
+<!-- MUÑECO DE NIEVE 1 (Lateral Izquierdo Inferior) -->
+<div class="decorative-snowman-left" style="width: 150px; height: 200px;">
+<svg class="w-full h-full" fill="none" viewBox="0 0 80 110">
+<ellipse cx="40" cy="102" fill="rgba(148, 163, 184, 0.4)" rx="28" ry="6"></ellipse>
+<circle cx="40" cy="80" fill="#ffffff" r="24" stroke="#cbd5e1" stroke-width="1.8"></circle>
+<ellipse cx="34" cy="74" fill="#f8fafc" opacity="0.9" rx="18" ry="16"></ellipse>
+<circle cx="40" cy="50" fill="#ffffff" r="17" stroke="#cbd5e1" stroke-width="1.8"></circle>
+<!-- Botones de carbón -->
+<circle cx="40" cy="46" fill="#1e293b" r="2.2"></circle>
+<circle cx="40" cy="54" fill="#1e293b" r="2.2"></circle>
+<circle cx="40" cy="74" fill="#1e293b" r="2.4"></circle>
+<circle cx="40" cy="84" fill="#1e293b" r="2.4"></circle>
+<!-- Bufanda roja brillante con flecos dorados -->
+<path d="M25 40 Q40 46 55 40 Q40 48 25 40 Z" fill="#dc2626" stroke="#b91c1c" stroke-width="1"></path>
+<path d="M44 42 L48 64 L41 65 L38 43 Z" fill="#dc2626"></path>
+<line stroke="#f59e0b" stroke-width="2.5" x1="41" x2="48" y1="64" y2="64"></line>
+<!-- Ramitas -->
+<path d="M23 48 L8 40 M12 42 L11 36" stroke="#92400e" stroke-linecap="round" stroke-width="2.2"></path>
+<path d="M57 48 L72 38 M67 40 L69 34" stroke="#92400e" stroke-linecap="round" stroke-width="2.2"></path>
+<!-- Cabeza sonriente -->
+<circle cx="40" cy="26" fill="#ffffff" r="13" stroke="#cbd5e1" stroke-width="1.8"></circle>
+<circle cx="35" cy="23" fill="#0f172a" r="2"></circle>
+<circle cx="44" cy="23" fill="#0f172a" r="2"></circle>
+<polygon fill="#ea580c" points="39,26 49,28 39,29"></polygon>
+<circle cx="34" cy="31" fill="#334155" r="1.1"></circle>
+<circle cx="37" cy="33" fill="#334155" r="1.1"></circle>
+<circle cx="41" cy="33" fill="#334155" r="1.1"></circle>
+<circle cx="44" cy="31" fill="#334155" r="1.1"></circle>
+<!-- Sombrero de copa elegante -->
+<rect fill="#334155" height="3" rx="1.5" width="30" x="25" y="14"></rect>
+<rect fill="#1e293b" height="13" rx="1" width="20" x="30" y="2"></rect>
+<rect fill="#dc2626" height="3" width="20" x="30" y="11"></rect>
+<circle cx="40" cy="12.5" fill="#f59e0b" r="1.6"></circle>
 </svg>
-<!-- Superior Derecha con Araña oscilando -->
-<div class="web-corner web-tr">
-<svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 180 180">
-<line stroke="rgba(249, 115, 22, 0.45)" stroke-width="1.4" x1="0" x2="180" y1="0" y2="0"></line>
-<line stroke="rgba(203, 213, 225, 0.35)" stroke-width="1.2" x1="0" x2="165" y1="0" y2="45"></line>
-<line stroke="rgba(203, 213, 225, 0.35)" stroke-width="1.2" x1="0" x2="135" y1="0" y2="90"></line>
-<line stroke="rgba(203, 213, 225, 0.35)" stroke-width="1.2" x1="0" x2="90" y1="0" y2="135"></line>
-<line stroke="rgba(203, 213, 225, 0.35)" stroke-width="1.2" x1="0" x2="45" y1="0" y2="165"></line>
-<line stroke="rgba(249, 115, 22, 0.45)" stroke-width="1.4" x1="0" x2="0" y1="0" y2="180"></line>
-<path d="M40,0 Q36,12 28,28 Q12,36 0,40" fill="none" stroke="rgba(203, 213, 225, 0.4)" stroke-width="1"></path>
-<path d="M80,0 Q72,25 56,56 Q25,72 0,80" fill="none" stroke="rgba(249, 115, 22, 0.35)" stroke-width="1.1"></path>
-<path d="M120,0 Q108,38 84,84 Q38,108 0,120" fill="none" stroke="rgba(203, 213, 225, 0.4)" stroke-width="1.1"></path>
-<path d="M160,0 Q144,52 112,112 Q52,144 0,160" fill="none" stroke="rgba(249, 115, 22, 0.38)" stroke-width="1.2"></path>
+</div>
+<!-- MUÑECO DE NIEVE 2 (Lateral Derecho Intermedio) -->
+<div class="decorative-snowman-right" style="width: 140px; height: 190px;">
+<svg class="w-full h-full" fill="none" viewBox="0 0 80 110">
+<ellipse cx="40" cy="100" fill="rgba(148, 163, 184, 0.35)" rx="26" ry="6"></ellipse>
+<circle cx="40" cy="78" fill="#ffffff" r="22" stroke="#cbd5e1" stroke-width="1.8"></circle>
+<circle cx="40" cy="50" fill="#ffffff" r="16" stroke="#cbd5e1" stroke-width="1.8"></circle>
+<path d="M26 40 Q40 46 54 40 Q40 48 26 40 Z" fill="#15803d" stroke="#166534" stroke-width="1"></path>
+<path d="M43 42 L47 62 L40 63 L37 43 Z" fill="#15803d"></path>
+<line stroke="#f59e0b" stroke-width="2.5" x1="40" x2="47" y1="62" y2="62"></line>
+<circle cx="40" cy="47" fill="#15803d" r="2"></circle>
+<circle cx="40" cy="54" fill="#15803d" r="2"></circle>
+<circle cx="40" cy="74" fill="#15803d" r="2.2"></circle>
+<circle cx="40" cy="83" fill="#15803d" r="2.2"></circle>
+<path d="M24 49 L10 43 M14 45 L13 40" stroke="#92400e" stroke-linecap="round" stroke-width="2.2"></path>
+<path d="M56 49 L70 41 M65 43 L67 38" stroke="#92400e" stroke-linecap="round" stroke-width="2.2"></path>
+<circle cx="40" cy="27" fill="#ffffff" r="12" stroke="#cbd5e1" stroke-width="1.8"></circle>
+<circle cx="36" cy="24" fill="#0f172a" r="1.8"></circle>
+<circle cx="44" cy="24" fill="#0f172a" r="1.8"></circle>
+<polygon fill="#ea580c" points="39,27 48,29 39,30"></polygon>
+<!-- Gorro navideño de lana rojo -->
+<path d="M29 18 C30 8 50 8 51 18 Z" fill="#dc2626"></path>
+<rect fill="#f1f5f9" height="3" rx="1.5" width="24" x="28" y="16"></rect>
+<circle cx="40" cy="6" fill="#f8fafc" r="3.2" stroke="#cbd5e1"></circle>
 </svg>
-<!-- Hilo y Araña animada que sube y baja -->
-<div class="spider-pendant">
-<svg fill="none" height="42" viewBox="0 0 26 42" width="26">
-<line stroke="rgba(249, 115, 22, 0.6)" stroke-dasharray="2 2" stroke-width="1" x1="13" x2="13" y1="0" y2="24"></line>
-<ellipse cx="13" cy="29" fill="#1e1826" rx="6" ry="7" stroke="#f97316" stroke-width="1.2"></ellipse>
-<circle cx="13" cy="37" fill="#f97316" r="3.5"></circle>
-<!-- Patas -->
-<path d="M8 26 Q3 23 2 27 M8 29 Q2 29 1 33 M18 26 Q23 23 24 27 M18 29 Q24 29 25 33" stroke="#f97316" stroke-linecap="round" stroke-width="1"></path>
+</div>
+<!-- Ramas de Pino en esquinas inferiores -->
+<div class="pine-corner-left">
+<svg class="w-full h-full" fill="none" viewBox="0 0 140 140">
+<path d="M0 140 Q40 120 70 80 Q100 40 120 0" stroke="#78350f" stroke-linecap="round" stroke-width="3.5"></path>
+<path d="M20 130 L45 115 M30 135 L60 120 M50 105 L80 90 M65 85 L95 70 M80 65 L110 50 M95 45 L125 30" stroke="#15803d" stroke-linecap="round" stroke-width="3"></path>
+<path d="M15 125 L35 110 M40 100 L70 85 M55 80 L85 65 M75 60 L105 45" stroke="#16a34a" stroke-linecap="round" stroke-width="2.5"></path>
+<ellipse cx="65" cy="95" fill="#92400e" rx="7" ry="10" transform="rotate(25 65 95)"></ellipse>
+<circle cx="68" cy="90" fill="#ef4444" filter="drop-shadow(0 0 4px #ef4444)" r="3.5"></circle>
+<circle cx="50" cy="115" fill="#f59e0b" filter="drop-shadow(0 0 4px #f59e0b)" r="3"></circle>
+</svg>
+</div>
+<div class="pine-corner-right">
+<svg class="w-full h-full" fill="none" viewBox="0 0 140 140">
+<path d="M0 140 Q40 120 70 80 Q100 40 120 0" stroke="#78350f" stroke-linecap="round" stroke-width="3.5"></path>
+<path d="M20 130 L45 115 M30 135 L60 120 M50 105 L80 90 M65 85 L95 70 M80 65 L110 50 M95 45 L125 30" stroke="#15803d" stroke-linecap="round" stroke-width="3"></path>
+<path d="M15 125 L35 110 M40 100 L70 85 M55 80 L85 65 M75 60 L105 45" stroke="#16a34a" stroke-linecap="round" stroke-width="2.5"></path>
+<ellipse cx="65" cy="95" fill="#92400e" rx="7" ry="10" transform="rotate(25 65 95)"></ellipse>
+<circle cx="68" cy="90" fill="#dc2626" filter="drop-shadow(0 0 4px #dc2626)" r="3.5"></circle>
+<circle cx="50" cy="115" fill="#f59e0b" filter="drop-shadow(0 0 4px #f59e0b)" r="3"></circle>
 </svg>
 </div>
 </div>
-<!-- Inferior Izquierda -->
-<svg class="web-corner web-bl" fill="none" stroke="currentColor" viewBox="0 0 180 180">
-<line stroke="rgba(249, 115, 22, 0.3)" stroke-width="1.2" x1="0" x2="180" y1="0" y2="0"></line>
-<line stroke="rgba(203, 213, 225, 0.25)" stroke-width="1" x1="0" x2="135" y1="0" y2="90"></line>
-<line stroke="rgba(249, 115, 22, 0.3)" stroke-width="1.2" x1="0" x2="0" y1="0" y2="180"></line>
-<path d="M60,0 Q54,18 42,42 Q18,54 0,60" fill="none" stroke="rgba(203, 213, 225, 0.3)" stroke-width="1"></path>
-<path d="M120,0 Q108,38 84,84 Q38,108 0,120" fill="none" stroke="rgba(249, 115, 22, 0.25)" stroke-width="1"></path>
-</svg>
-<!-- Inferior Derecha -->
-<svg class="web-corner web-br" fill="none" stroke="currentColor" viewBox="0 0 180 180">
-<line stroke="rgba(249, 115, 22, 0.3)" stroke-width="1.2" x1="0" x2="180" y1="0" y2="0"></line>
-<line stroke="rgba(203, 213, 225, 0.25)" stroke-width="1" x1="0" x2="135" y1="0" y2="90"></line>
-<line stroke="rgba(249, 115, 22, 0.3)" stroke-width="1.2" x1="0" x2="0" y1="0" y2="180"></line>
-<path d="M60,0 Q54,18 42,42 Q18,54 0,60" fill="none" stroke="rgba(203, 213, 225, 0.3)" stroke-width="1"></path>
-<path d="M120,0 Q108,38 84,84 Q38,108 0,120" fill="none" stroke="rgba(249, 115, 22, 0.25)" stroke-width="1"></path>
-</svg>
-<!-- MURCIÉLAGOS ANIMADOS EN VUELO (TAMAÑO MEDIANO: 50-72px) -->
-<!-- Murciélago 1 (Vuelo de izquierda a derecha, altura media-alta) -->
-<div class="animated-bat-1">
-<svg class="w-full h-full bat-wings" fill="none" viewBox="0 0 100 60">
-<path d="M50 35 C42 20, 20 10, 2 24 C8 38, 24 38, 34 32 C38 42, 44 48, 50 48 C56 48, 62 42, 66 32 C76 38, 92 38, 98 24 C80 10, 58 20, 50 35 Z" fill="#f97316" opacity="0.85"></path>
-<path d="M50 32 C46 22, 28 14, 10 26 C16 34, 28 34, 36 29 C40 38, 45 42, 50 42 C55 42, 60 38, 64 29 C72 34, 84 34, 90 26 C72 14, 54 22, 50 32 Z" fill="#0f0f15"></path>
-<!-- Orejitas y ojos diminutos -->
-<polygon fill="#f97316" points="46,26 44,20 48,24"></polygon>
-<polygon fill="#f97316" points="54,26 56,20 52,24"></polygon>
-<circle cx="47" cy="28" fill="#fbbf24" r="1.2"></circle>
-<circle cx="53" cy="28" fill="#fbbf24" r="1.2"></circle>
-</svg>
-</div>
-<!-- Murciélago 2 (Vuelo de derecha a izquierda, altura baja-media) -->
-<div class="animated-bat-2">
-<svg class="w-full h-full bat-wings" fill="none" style="animation-duration: 0.24s;" viewBox="0 0 100 60">
-<path d="M50 35 C40 18, 16 12, 0 26 C8 40, 26 40, 35 34 C39 44, 45 50, 50 50 C55 50, 61 44, 65 34 C74 40, 92 40, 100 26 C84 12, 60 18, 50 35 Z" fill="#c084fc" opacity="0.85"></path>
-<path d="M50 32 C44 20, 24 16, 8 28 C15 36, 28 36, 36 31 C40 39, 45 44, 50 44 C55 44, 60 39, 64 31 C72 36, 85 36, 92 28 C76 16, 56 20, 50 32 Z" fill="#13131c"></path>
-<circle cx="47" cy="27" fill="#a855f7" r="1.3"></circle>
-<circle cx="53" cy="27" fill="#a855f7" r="1.3"></circle>
-</svg>
-</div>
-<!-- Murciélago 3 (Vuelo rápido de izquierda a derecha, plano profundo) -->
-<div class="animated-bat-3">
-<svg class="w-full h-full bat-wings" fill="none" style="animation-duration: 0.2s;" viewBox="0 0 100 60">
-<path d="M50 35 C42 20, 20 10, 2 24 C8 38, 24 38, 34 32 C38 42, 44 48, 50 48 C56 48, 62 42, 66 32 C76 38, 92 38, 98 24 C80 10, 58 20, 50 35 Z" fill="#fb923c" opacity="0.75"></path>
-</svg>
-</div>
-<!-- FANTASMAS ETÉREOS FLOTANTES (TAMAÑO MEDIANO: 60-75px) -->
-<!-- Fantasma 1 (Flotación violeta tenue izquierda) -->
-<div class="animated-ghost-1">
-<svg class="w-full h-full" fill="none" style="animation: etherealWobble 4s ease-in-out infinite;" viewBox="0 0 60 80">
-<path d="M30 4 C14 4 4 18 4 36 C4 54 10 72 14 74 C18 76 22 66 26 70 C30 74 34 74 38 70 C42 66 46 76 50 74 C54 72 56 54 56 36 C56 18 46 4 30 4 Z" fill="rgba(192, 132, 252, 0.18)" stroke="rgba(216, 180, 254, 0.55)" stroke-width="1.5"></path>
-<!-- Ojos y boca huecos misteriosos -->
-<ellipse cx="22" cy="28" fill="#7c3aed" rx="3.5" ry="5.5"></ellipse>
-<ellipse cx="38" cy="28" fill="#7c3aed" rx="3.5" ry="5.5"></ellipse>
-<ellipse cx="30" cy="42" fill="#7c3aed" opacity="0.8" rx="4" ry="6"></ellipse>
-<circle cx="21" cy="26" fill="#ffffff" r="1.2"></circle>
-<circle cx="37" cy="26" fill="#ffffff" r="1.2"></circle>
-</svg>
-</div>
-<!-- Fantasma 2 (Flotación ámbar/naranja tenue derecha) -->
-<div class="animated-ghost-2">
-<svg class="w-full h-full" fill="none" style="animation: etherealWobble 4.8s ease-in-out infinite reverse;" viewBox="0 0 60 80">
-<path d="M30 4 C14 4 4 18 4 36 C4 54 10 72 14 74 C18 76 22 66 26 70 C30 74 34 74 38 70 C42 66 46 76 50 74 C54 72 56 54 56 36 C56 18 46 4 30 4 Z" fill="rgba(249, 115, 22, 0.16)" stroke="rgba(253, 186, 116, 0.55)" stroke-width="1.5"></path>
-<ellipse cx="23" cy="27" fill="#c2410c" rx="3.5" ry="5"></ellipse>
-<ellipse cx="37" cy="27" fill="#c2410c" rx="3.5" ry="5"></ellipse>
-<ellipse cx="30" cy="43" fill="#c2410c" opacity="0.8" rx="3" ry="5"></ellipse>
-<circle cx="22" cy="25" fill="#ffedd5" r="1.2"></circle>
-<circle cx="36" cy="25" fill="#ffedd5" r="1.2"></circle>
-</svg>
-</div>
-<!-- CALABAZAS FLOTANTES MÍSTICAS DE TAMAÑO MEDIANO -->
-<div class="floating-pumpkin-1">
-<svg fill="none" viewBox="0 0 60 55">
-<path d="M30 6 C28 2 24 2 22 0 M30 8 C16 8 4 18 4 32 C4 46 16 52 30 52 C44 52 56 46 56 32 C56 18 44 8 30 8 Z" fill="rgba(234, 88, 12, 0.45)" stroke="#ea580c" stroke-width="1.4"></path>
-<path d="M22 8 C15 16 15 44 22 52 M38 8 C45 16 45 44 38 52" fill="none" stroke="#ea580c" stroke-width="1"></path>
-<!-- Cara iluminada en amarillo oro -->
-<polygon fill="#fde047" points="18,24 26,24 22,18"></polygon>
-<polygon fill="#fde047" points="34,24 42,24 38,18"></polygon>
-<polygon fill="#fde047" points="30,26 27,31 33,31"></polygon>
-<path d="M18 37 Q30 46 42 37 Q30 42 18 37 Z" fill="#fde047"></path>
-</svg>
-</div>
-<div class="floating-pumpkin-2">
-<svg fill="none" viewBox="0 0 60 55">
-<path d="M30 6 C28 2 24 2 22 0 M30 8 C16 8 4 18 4 32 C4 46 16 52 30 52 C44 52 56 46 56 32 C56 18 44 8 30 8 Z" fill="rgba(168, 85, 247, 0.35)" stroke="#a855f7" stroke-width="1.4"></path>
-<path d="M22 8 C15 16 15 44 22 52 M38 8 C45 16 45 44 38 52" fill="none" stroke="#a855f7" stroke-width="1"></path>
-<polygon fill="#fed7aa" points="18,24 26,24 22,18"></polygon>
-<polygon fill="#fed7aa" points="34,24 42,24 38,18"></polygon>
-<polygon fill="#fed7aa" points="30,26 27,31 33,31"></polygon>
-<path d="M18 37 Q30 46 42 37 Q30 42 18 37 Z" fill="#fed7aa"></path>
-</svg>
-</div>
-<!-- PARTÍCULAS DE BRASAS / FUEGO FATUO ASCENDENTES -->
-<div class="ember-particle" style="width: 7px; height: 7px; left: 15%; animation-duration: 9s; animation-delay: 1s;"></div>
-<div class="ember-particle" style="width: 5px; height: 5px; left: 32%; animation-duration: 12s; animation-delay: 3s;"></div>
-<div class="ember-particle" style="width: 8px; height: 8px; left: 48%; animation-duration: 10s; animation-delay: 0.5s;"></div>
-<div class="ember-particle" style="width: 6px; height: 6px; left: 68%; animation-duration: 13s; animation-delay: 4.5s;"></div>
-<div class="ember-particle" style="width: 9px; height: 9px; left: 88%; animation-duration: 11s; animation-delay: 2s;"></div>
-<div class="ground-fog-container"><div class="fog-layer-1"></div><div class="fog-layer-2"></div><div class="fog-layer-3"></div></div></div>
-<!-- Header Superior Principal con Estética Halloween Moderna -->
-<header class="bg-gradient-to-r from-hsai-dark via-[#14101e] to-hsai-dark text-white shadow-xl border-b-2 border-hsai-500 sticky top-0 z-40 relative backdrop-blur-md">
+<!-- Header Superior Blanco Perlado Luminoso con Ribete Navideño Rojo y Dorado -->
+<header class="bg-white/95 backdrop-blur-md shadow-md border-b-2 border-red-600 sticky top-0 z-40 relative"><div class="absolute left-4 -bottom-2 flex items-center gap-1 text-red-600 opacity-80 pointer-events-none text-xs"><i class="fa-solid fa-holly-berry"></i><i class="fa-solid fa-holly-berry text-amber-500"></i></div><div class="absolute right-4 -bottom-2 flex items-center gap-1 text-red-600 opacity-80 pointer-events-none text-xs"><i class="fa-solid fa-holly-berry text-amber-500"></i><i class="fa-solid fa-holly-berry"></i></div>
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-4">
 <div class="flex items-center gap-4">
-<div class="bg-white/95 p-1.5 rounded-xl shadow-md border border-orange-500/30 flex items-center justify-center">
-<img src="logo.jpg" alt="Hospital San Ángel Inn Sur" class="h-10 md:h-11 w-auto object-contain rounded-lg" onerror="this.onerror=null; this.src='https://via.placeholder.com/180x50/1c1917/f97316?text=HSAI+Sur';" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg">
+<div class="bg-slate-50 p-1.5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-center">
+<img alt="Hospital San Ángel Inn Sur" class="h-10 md:h-11 w-auto object-contain rounded-lg" onerror="this.onerror=null; this.src='https://via.placeholder.com/180x50/ffffff/c41e3a?text=HSAI+Sur';" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6Kw8jQbG9JCwKsnLZlm7TjFWFo-DcSLzWLshmxBqG_O5yXu_Xc6EaGC_SMsVFD6ZfWS9PESkYdaVSnStAjQUT7lXHjAjTvKnHJvaeqU4PDKMn6d1boaxvAR2CDoXwzW8VKK_GixJjsAKzCHP6WFcu_aM_Ahu3pTi6Oe-ZMc4WyGU6e7mx_z_zfDY6_ymhb4LvtIEI3M2E6rKngm2ruBySqsaIwC0QlJmVp9A_dbc">
 </div>
 <div>
-<h1 class="text-lg md:text-xl font-bold tracking-tight text-white flex items-center gap-2">
-            Portal Intranet
-            <span class="bg-gradient-to-r from-orange-600/40 to-purple-600/40 text-orange-200 text-xs px-2.5 py-0.5 rounded-full border border-orange-500/40 font-medium flex items-center gap-1.5 shadow-sm">
-<i class="fa-solid fa-moon text-[10px] text-amber-300"></i> HSAI Sur
-            </span>
-<span class="text-[11px] font-semibold text-purple-300 uppercase tracking-widest hidden md:inline-block border border-purple-500/30 px-2 py-0.5 rounded-md bg-purple-950/40">
-              Halloween '26
-            </span>
+<h1 class="text-lg md:text-xl font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
+          Portal Intranet
+          <span class="bg-red-50 text-red-700 text-xs px-2.5 py-0.5 rounded-full border border-red-200 font-bold flex items-center gap-1.5 shadow-sm">
+<i class="fa-solid fa-star text-[10px] text-amber-500"></i> HSAI Sur
+          </span>
+<span class="text-[11px] font-bold text-red-700 uppercase tracking-wider hidden md:inline-block border border-red-200 px-2.5 py-0.5 rounded-md bg-red-100/60 shadow-sm">
+<i class="fa-solid fa-holly-berry text-red-600 mr-1"></i> Navidad '26
+          </span>
 </h1>
-<p class="text-xs text-slate-300 hidden sm:block">Plataforma Digital de Información y Servicios Operativos</p>
+<p class="text-xs text-slate-500 font-medium hidden sm:block">Plataforma Digital de Información y Servicios Operativos</p>
 </div>
 </div>
-<div class="flex items-center gap-3 ml-auto sm:ml-0">
-<div class="bg-orange-500/10 border border-orange-500/30 px-3 py-1 rounded-lg text-xs text-orange-200 flex items-center gap-2">
-<i class="fa-solid fa-fire text-orange-400"></i>
-<span class="font-medium hidden sm:inline">Turno Nocturno Activo</span>
+<div class="flex items-center gap-3 ml-auto sm:ml-0"><button class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 transition shadow-sm text-xs font-semibold cursor-pointer" id="soundToggleBtn" onclick="toggleChristmasSound()"><i class="fa-solid fa-bell-slash text-amber-600" id="soundIcon"></i><span class="hidden md:inline font-bold">Campanas</span><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 text-slate-700" id="soundBadge">MUTE</span></button>
+<div class="bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-lg text-xs text-emerald-800 font-medium flex items-center gap-2 shadow-sm">
+<i class="fa-solid fa-snowflake text-emerald-600"></i>
+<span class="hidden sm:inline">Turno Activo • Temporada Navideña</span>
 </div>
-<div class="bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-lg border border-purple-500/30 text-xs text-slate-200 flex items-center gap-2 shadow-inner">
-<i class="fa-regular fa-clock text-orange-400"></i>
-<span class="font-mono font-semibold text-orange-200" id="liveClock">12:23:41</span>
+<div class="bg-slate-900 px-3.5 py-1.5 rounded-lg border border-amber-400 text-xs text-white flex items-center gap-2 shadow-sm">
+<i class="fa-regular fa-clock text-amber-400"></i>
+<span class="font-mono font-bold text-amber-300" id="liveClock">13:43:08</span>
 </div>
 </div>
 </div>
 </header>
-<!-- Layout Principal de Contenido (Z-index 20 para estar sobre el fondo interactivo) -->
+<!-- Layout Principal de Contenido (Z-index 20) -->
 <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-20">
 <!-- LATERAL IZQUIERDO (4 Columnas en Desktop) -->
 <aside class="lg:col-span-4 flex flex-col gap-6">
 <!-- Enlaces Rápidos -->
 <section class="hsai-card p-5">
-<h2 class="text-base font-bold text-white border-b border-white/10 pb-3 mb-3 flex items-center justify-between">
+<h2 class="text-base font-extrabold text-slate-900 border-b border-slate-100 pb-3 mb-3 flex items-center justify-between">
 <span class="flex items-center gap-2">
-<span class="w-7 h-7 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm border border-orange-500/30">
+<span class="w-7 h-7 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-sm border border-red-200 shadow-sm">
 <i class="fa-solid fa-compass"></i>
 </span>
-            Enlaces Operativos
-          </span>
-<span class="text-xs font-normal text-slate-400">Accesos directos</span>
+          Enlaces Operativos
+        </span>
+<span class="text-xs font-semibold text-slate-400">Accesos directos</span>
 </h2>
 <div class="grid grid-cols-1 gap-2">
-<a class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.04] hover:bg-orange-500/15 text-slate-200 hover:text-orange-300 font-medium text-sm transition group border border-white/5 hover:border-orange-500/40" href="https://hsai.intramed.mx/h-sur/" target="_blank">
+<a class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-red-50 text-slate-700 hover:text-red-700 font-semibold text-sm transition group border border-slate-200/80 hover:border-red-300 shadow-sm" href="https://hsai.intramed.mx/h-sur/" target="_blank">
 <span class="flex items-center gap-2.5">
-<i class="fa-solid fa-hospital-user text-orange-400 group-hover:scale-110 transition-transform"></i>
-              Intramed - HSAI SUR
-            </span>
-<i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-40 group-hover:opacity-100 transition"></i>
+<i class="fa-solid fa-hospital-user text-red-600 group-hover:scale-110 transition-transform"></i>
+            Intramed - HSAI SUR
+          </span>
+<i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 group-hover:text-red-600 transition"></i>
 </a>
-<a class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.04] hover:bg-purple-500/15 text-slate-200 hover:text-purple-300 font-medium text-sm transition group border border-white/5 hover:border-purple-500/40" href="https://hsai.atlassian.net/servicedesk/customer/portals" target="_blank">
+<a class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 font-semibold text-sm transition group border border-slate-200/80 hover:border-emerald-300 shadow-sm" href="https://hsai.atlassian.net/servicedesk/customer/portals" target="_blank">
 <span class="flex items-center gap-2.5">
-<i class="fa-solid fa-headset text-purple-400 group-hover:scale-110 transition-transform"></i>
-              Jira Service Desk
-            </span>
-<i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-40 group-hover:opacity-100 transition"></i>
+<i class="fa-solid fa-headset text-emerald-600 group-hover:scale-110 transition-transform"></i>
+            Jira Service Desk
+          </span>
+<i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 group-hover:text-emerald-600 transition"></i>
 </a>
-<a class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.04] hover:bg-teal-500/15 text-slate-200 hover:text-teal-300 font-medium text-sm transition group border border-white/5 hover:border-teal-500/40" href="https://apps.evacenter.com/login" target="_blank">
+<a class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-sky-700 font-semibold text-sm transition group border border-slate-200/80 hover:border-sky-300 shadow-sm" href="https://apps.evacenter.com/login" target="_blank">
 <span class="flex items-center gap-2.5">
-<i class="fa-solid fa-laptop-medical text-teal-400 group-hover:scale-110 transition-transform"></i>
-              Eden Med (PACS / RIS)
-            </span>
-<i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-40 group-hover:opacity-100 transition"></i>
+<i class="fa-solid fa-laptop-medical text-sky-600 group-hover:scale-110 transition-transform"></i>
+            Eden Med (PACS / RIS)
+          </span>
+<i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 group-hover:text-sky-600 transition"></i>
 </a>
-<a class="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.04] hover:bg-rose-500/15 text-slate-200 hover:text-rose-300 font-medium text-sm transition group border border-white/5 hover:border-rose-500/40" href="https://172.16.13.6:8443/lab/collection/#/login" target="_blank">
+<a class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-amber-50 text-slate-700 hover:text-amber-800 font-semibold text-sm transition group border border-slate-200/80 hover:border-amber-300 shadow-sm" href="https://172.16.13.6:8443/lab/collection/#/login" target="_blank">
 <span class="flex items-center gap-2.5">
-<i class="fa-solid fa-vial text-rose-400 group-hover:scale-110 transition-transform"></i>
-              Molulab (Extracciones)
-            </span>
-<i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-40 group-hover:opacity-100 transition"></i>
+<i class="fa-solid fa-vial text-amber-600 group-hover:scale-110 transition-transform"></i>
+            Molulab (Extracciones)
+          </span>
+<i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 group-hover:text-amber-600 transition"></i>
 </a>
 </div>
 </section>
-<!-- Noticias e Informes Rápidos -->
+<!-- Avisos Internos con Rotador -->
 <section class="hsai-card p-5">
-<h2 class="text-base font-bold text-white border-b border-white/10 pb-3 mb-3 flex items-center justify-between">
+<h2 class="text-base font-extrabold text-slate-900 border-b border-slate-100 pb-3 mb-3 flex items-center justify-between">
 <span class="flex items-center gap-2">
-<span class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm border border-amber-500/30">
+<span class="w-7 h-7 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-sm border border-amber-200 shadow-sm">
 <i class="fa-solid fa-bullhorn"></i>
 </span>
-            Avisos Internos
-          </span>
-<span class="text-xs bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded-full border border-orange-500/30 font-semibold" id="newsCounter">3/3</span>
+          Avisos Internos
+        </span>
+<span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full border border-red-200 font-bold" id="newsCounter">1/3</span>
 </h2>
-<div class="relative overflow-hidden min-h-[90px] flex items-center bg-black/40 rounded-xl p-3.5 border border-white/10 shadow-inner">
+<div class="relative overflow-hidden min-h-[90px] flex items-center bg-slate-50 rounded-xl p-3.5 border border-slate-200 shadow-inner">
 <div class="w-full transition-all duration-500" id="newsWrapper">
-        <div class="space-y-1.5">
-          <span class="bg-orange-500/20 text-orange-300 text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase border border-orange-500/30">Sistemas</span>
-          <p class="text-xs font-semibold text-slate-200 leading-snug">Mantén limpio tu espacio de trabajo y reporta incidencias a la ext. 30175.</p>
-        </div>
+      <div class="space-y-1.5">
+        <span class="bg-red-100 text-red-700 text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase border border-red-200">General</span>
+        <p class="text-xs font-semibold text-slate-800 leading-snug">¡Bienvenidos al portal institucional del Hospital San Ángel Inn Sur - Edición Navideña!</p>
       </div>
+    </div>
 </div>
 <div class="flex justify-end gap-1.5 mt-3">
-<button class="p-1.5 px-2.5 text-xs bg-white/10 hover:bg-orange-500/30 text-slate-300 hover:text-white rounded-lg transition border border-white/10" onclick="prevNews()"><i class="fa-solid fa-chevron-left"></i></button>
-<button class="p-1.5 px-2.5 text-xs bg-white/10 hover:bg-orange-500/30 text-slate-300 hover:text-white rounded-lg transition border border-white/10" onclick="nextNews()"><i class="fa-solid fa-chevron-right"></i></button>
+<button class="p-1.5 px-2.5 text-xs bg-slate-100 hover:bg-red-600 hover:text-white text-slate-700 rounded-lg transition border border-slate-200 font-bold" onclick="prevNews()"><i class="fa-solid fa-chevron-left"></i></button>
+<button class="p-1.5 px-2.5 text-xs bg-slate-100 hover:bg-red-600 hover:text-white text-slate-700 rounded-lg transition border border-slate-200 font-bold" onclick="nextNews()"><i class="fa-solid fa-chevron-right"></i></button>
 </div>
 </section>
 <!-- Higiene de Manos (Módulo Interactivo) -->
-<section class="hsai-card p-5 bg-gradient-to-br from-emerald-950/40 via-hsai-card to-purple-950/30 border-emerald-500/30 relative overflow-hidden" id="hygieneContainer">
+<section class="hsai-card p-5 !border-t-emerald-600" id="hygieneContainer">
 <div class="flex items-center gap-2.5 mb-3">
-<div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold border border-emerald-500/40 shadow-sm">
+<div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold border border-emerald-200 shadow-sm">
 <i class="fa-solid fa-hands-bubbles"></i>
 </div>
 <div>
-<h3 class="text-sm font-bold text-emerald-300">Seguridad del Paciente</h3>
-<p class="text-[11px] text-emerald-400/80 font-medium">Técnica Correcta de Higiene de Manos</p>
+<h3 class="text-sm font-extrabold text-emerald-800">Seguridad del Paciente</h3>
+<p class="text-[11px] text-emerald-600 font-semibold">Técnica Correcta de Higiene de Manos</p>
 </div>
 </div>
-<div class="relative min-h-[110px] bg-black/50 rounded-xl p-3.5 border border-emerald-500/20 shadow-inner">
+<div class="relative min-h-[110px] bg-emerald-50/50 rounded-xl p-3.5 border border-emerald-200 shadow-inner">
 <div id="hygieneCardContent">
-        <div class="flex items-start gap-3">
-          <span class="w-7 h-7 rounded-full bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">1</span>
-          <div>
-            <h4 class="text-xs font-bold text-emerald-200">Agua al rescate</h4>
-            <p class="text-[11px] text-slate-300 leading-tight mt-0.5">Moja tus manos con agua limpia y aplica suficiente jabón.</p>
-          </div>
+      <div class="flex items-start gap-3">
+        <span class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">2</span>
+        <div>
+          <h4 class="text-xs font-bold text-emerald-900">Súper espuma</h4>
+          <p class="text-[11px] text-slate-700 leading-tight mt-0.5">Frota las palmas entre sí para generar abundante espuma.</p>
         </div>
       </div>
+    </div>
 </div>
 <!-- Indicador de Progresión -->
 <div class="mt-3.5 space-y-2">
-<div class="w-full bg-slate-800/80 h-1.5 rounded-full overflow-hidden border border-white/5">
-<div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full w-0 progress-bar-fill shadow-[0_0_8px_rgba(16,185,129,0.5)]" id="hygieneProgressBar" style="width: 100%;"></div>
+<div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+<div class="bg-emerald-600 h-full w-0 progress-bar-fill shadow-sm" id="hygieneProgressBar" style="width: 100%;"></div>
 </div>
-<div class="flex justify-center gap-1.5 pt-1" id="stepDots"><span onclick="jumpHygieneStep(0)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-orange-500 w-4 shadow-[0_0_6px_#f97316]"></span><span onclick="jumpHygieneStep(1)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-slate-700"></span><span onclick="jumpHygieneStep(2)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-slate-700"></span><span onclick="jumpHygieneStep(3)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-slate-700"></span><span onclick="jumpHygieneStep(4)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-slate-700"></span><span onclick="jumpHygieneStep(5)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-slate-700"></span></div>
+<div class="flex justify-center gap-1.5 pt-1" id="stepDots"><span onclick="jumpHygieneStep(0)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-slate-300"></span><span onclick="jumpHygieneStep(1)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-emerald-600 w-4 shadow-sm"></span><span onclick="jumpHygieneStep(2)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-slate-300"></span><span onclick="jumpHygieneStep(3)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-slate-300"></span><span onclick="jumpHygieneStep(4)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-slate-300"></span><span onclick="jumpHygieneStep(5)" class="w-2 h-2 rounded-full cursor-pointer transition-all bg-slate-300"></span></div>
 </div>
 </section>
 <!-- Bloc de Notas Personal (con localStorage) -->
-<section class="hsai-card p-5">
-<h2 class="text-base font-bold text-white border-b border-white/10 pb-3 mb-3 flex items-center justify-between">
+<section class="hsai-card p-5 !border-t-amber-500">
+<h2 class="text-base font-extrabold text-slate-900 border-b border-slate-100 pb-3 mb-3 flex items-center justify-between">
 <span class="flex items-center gap-2">
-<span class="w-7 h-7 rounded-lg bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-sm border border-yellow-500/30">
+<span class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-sm border border-amber-200 shadow-sm">
 <i class="fa-solid fa-note-sticky"></i>
 </span>
-            Notas Rápidas
-          </span>
-<span class="text-[10px] bg-white/5 text-slate-400 px-2 py-0.5 rounded border border-white/5">Guardado Local</span>
+          Notas Rápidas
+        </span>
+<span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200 font-bold">Guardado Local</span>
 </h2>
-<textarea class="w-full h-28 p-3 text-xs bg-black/40 border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none transition text-slate-200 placeholder:text-slate-500" id="notepad" placeholder="Escribe notas de tu turno aquí..."></textarea>
-<div class="flex items-center justify-between mt-2 text-[11px] text-slate-400">
-<span id="noteCharCount" class="">0 caracteres</span>
-<span class="text-emerald-400 hidden flex items-center gap-1" id="noteSavedStatus"><i class="fa-solid fa-check"></i> Guardado</span>
+<textarea class="w-full h-28 p-3 text-xs bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 resize-none transition text-slate-800 placeholder:text-slate-400 font-medium" id="notepad" placeholder="Escribe notas de tu turno aquí..."></textarea>
+<div class="flex items-center justify-between mt-2 text-[11px] text-slate-500">
+<span class="" id="noteCharCount">0 caracteres</span>
+<span class="text-emerald-700 font-bold hidden flex items-center gap-1" id="noteSavedStatus"><i class="fa-solid fa-check"></i> Guardado</span>
 </div>
 </section>
 </aside>
 <!-- ÁREA PRINCIPAL DERECHA (8 Columnas en Desktop) -->
 <main class="lg:col-span-8 flex flex-col gap-6">
-<!-- Fila Superior: Directorio de Extensiones + Carpetas Destacadas -->
+<!-- Fila Superior: Directorio Telefónico + Carpetas Institucionales -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-<!-- Tabla de Extensiones (Directorio) - 7 cols -->
+<!-- Directorio Telefónico - 7 cols -->
 <section class="md:col-span-7 hsai-card p-5 flex flex-col">
-<div class="flex flex-wrap items-center justify-between gap-2 mb-3 border-b border-white/10 pb-3">
+<div class="flex flex-wrap items-center justify-between gap-2 mb-3 border-b border-slate-100 pb-3">
 <div>
-<h2 class="text-base font-bold text-white flex items-center gap-2">
-<span class="w-7 h-7 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm border border-orange-500/30">
+<h2 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+<span class="w-7 h-7 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-sm border border-red-200 shadow-sm">
 <i class="fa-solid fa-phone-volume"></i>
 </span>
-                Directorio Telefónico
-              </h2>
-<p class="text-xs text-slate-400">Haz clic en una fila para copiar la extensión</p>
+              Directorio Telefónico
+            </h2>
+<p class="text-xs text-slate-500 font-medium">Haz clic en una fila para copiar la extensión</p>
 </div>
-<span class="text-xs bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2.5 py-1 rounded-lg font-semibold" id="matchCount">
-              88 contactos
-            </span>
+<span class="text-xs bg-red-50 text-red-700 border border-red-200 px-2.5 py-1 rounded-lg font-bold shadow-sm" id="matchCount">
+            88 contactos
+          </span>
 </div>
 <!-- Buscador de Extensiones -->
 <div class="relative mb-3">
-<i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-orange-400/70 text-sm"></i>
-<input class="w-full pl-10 pr-9 py-2.5 text-xs md:text-sm bg-black/40 border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-orange-500 focus:bg-black/60 transition text-slate-200 placeholder:text-slate-500" id="searchInput" onkeyup="filterExtensions()" placeholder="Buscar por departamento o extensión..." type="text">
-<button class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-400 text-xs" id="clearSearchBtn" onclick="clearSearch()">
+<i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-red-500 text-sm"></i>
+<input class="w-full pl-10 pr-9 py-2.5 text-xs md:text-sm bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition text-slate-800 placeholder:text-slate-400 font-medium" id="searchInput" onkeyup="filterExtensions()" placeholder="Buscar por departamento o extensión..." type="text">
+<button class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-600 text-xs font-bold" id="clearSearchBtn" onclick="clearSearch()">
 <i class="fa-solid fa-xmark"></i>
 </button>
 </div>
 <!-- Tabla de Extensiones -->
-<div class="overflow-y-auto max-h-[420px] rounded-xl border border-white/10 bg-black/30">
-<table class="w-full text-xs text-left text-slate-300" id="extensionsTable">
-<thead class="text-[11px] uppercase bg-black/60 text-orange-300/90 sticky top-0 z-10 font-bold border-b border-white/10 backdrop-blur-md">
+<div class="overflow-y-auto max-h-[420px] rounded-xl border border-slate-200 bg-white shadow-inner">
+<table class="w-full text-xs text-left text-slate-700" id="extensionsTable">
+<thead class="text-[11px] uppercase bg-slate-100 text-slate-800 sticky top-0 z-10 font-bold border-b border-slate-200 backdrop-blur-md">
 <tr>
 <th class="py-2.5 px-3" scope="col">Área / Contacto</th>
 <th class="py-2.5 px-3 text-right" scope="col">Extensión</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-white/5">
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Coordinaciones Clínicas</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30224</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Administración de Dirección</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30298</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Dirección de Experiencia al Cliente</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30155</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Dirección de Planificación</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30169</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Dirección de Infraestructura</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30180</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Calidad</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30154</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Dirección de Finanzas</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30190</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Terapia Intensiva Adultos (UCIA)</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30251</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Terapia Intensiva Neonatal (UCIN)</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30222</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Urgencias Hospitalarias</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30401</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Nutrición Clínica</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30262</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Farmacovigilancia</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30112</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Vigilancia Epidemiológica</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30263</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Inhaloterapia</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30266</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Clínica Control de Peso</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30267</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Terapia Física y Rehabilitación</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30269</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Residencia Médica</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30243</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Laboratorio Central</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30405</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Laboratorio Recepción</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30406</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Imagenología / Ultrasonido</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30104</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Tomografía Computarizada</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30404</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Ingeniería Biomédica</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30410</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Archivo Clínico</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30172</td></tr>
-<tr class="bg-red-950/50 border-l-4 border-l-red-500 cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-bold text-red-300 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-red-400"></i> Activación de Código de Emergencia</td><td class="py-2.5 px-3 text-right font-black text-red-400 text-sm">70</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Dalinde Recepción</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">10000</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">HSAI UNIVERSIDAD</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">021</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">HSAI CHAPULTEPEC</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">31000</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">HSAI DEL VALLE</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">33100</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">HSAI PATRIOTISMO</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">32057</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Quirófano</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30260</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Quirófano 2</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30261</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Recuperación</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30265</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Descanso Médicos</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30252</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">CEyE</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30262</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Coordinación de Enfermería</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30250</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Coordinación de Enseñanza</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30266</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Supervisión de Enfermería</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30253</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Central de Enfermería "PB"</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30100</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Central de Enfermería "2A"</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30200</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Central de Enfermería "2B"</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30219</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Central de Enfermería Cuneros</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30220</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Central de Enfermería UCIN</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30222</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Central de Enfermería UCIA</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30251</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Central de Enfermería Urgencias</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30401</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Seguridad Hospitalaria</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30156</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Mantenimiento</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30407</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Tecnologías de la Información / Sistemas</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30175</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Servicios Generales / Ropería</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30201</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Vigilancia</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30408</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Cafetería</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30400</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Cocina</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30411</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Relaciones Públicas</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30294</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Coordinación de Admisión</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30111</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Caja</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30151</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Admisión Principal</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30152</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Recepción Principal</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30150</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Recepción 2</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30199</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Recepción Urgencias</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30402</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Mesa de Control Aseguradoras</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30174</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Recepción Consultorio 1</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30177</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Recepción Consultorio 2</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30178</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Mesa de Control</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30173</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Analista CxC</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30412</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Embajador Comercial</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30126</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Coordinación de Contabilidad</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30190</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Coordinación de Cuentas por Cobrar</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30181</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Auxiliar Cuentas por Cobrar</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30182</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Contador General</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30167</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Contabilidad Egresos</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30170</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Contabilidad Ingresos</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30189</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Coordinación de Compras</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30165</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Compras</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30158</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Coordinación de Almacén</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30409</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Coordinación de Farmacia</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30259</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Almacén de Farmacia</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30227</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Coordinación Capital Humano</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30162</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Reclutamiento y Selección</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30161</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Oficina Nóminas</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30166</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Sala Usos Múltiples (SUM)</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30179</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Habitaciones 101 a 110</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30101-30110</td></tr>
-<tr class="cursor-pointer hover:bg-orange-500/10 transition-colors"><td class="py-2.5 px-3 font-medium">Habitaciones 202 a 218</td><td class="py-2.5 px-3 text-right font-bold text-orange-400">30202-30218</td></tr>
+<tbody class="divide-y divide-slate-100">
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Coordinaciones Clínicas</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30224</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Administración de Dirección</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30298</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Dirección de Experiencia al Cliente</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30155</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Dirección de Planificación</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30169</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Dirección de Infraestructura</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30180</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Calidad</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30154</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Dirección de Finanzas</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30190</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Terapia Intensiva Adultos (UCIA)</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30251</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Terapia Intensiva Neonatal (UCIN)</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30222</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Urgencias Hospitalarias</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30401</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Nutrición Clínica</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30262</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Farmacovigilancia</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30112</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Vigilancia Epidemiológica</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30263</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Inhaloterapia</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30266</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Clínica Control de Peso</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30267</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Terapia Física y Rehabilitación</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30269</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Residencia Médica</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30243</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Laboratorio Central</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30405</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Laboratorio Recepción</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30406</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Imagenología / Ultrasonido</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30104</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Tomografía Computarizada</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30404</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Ingeniería Biomédica</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30410</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Archivo Clínico</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30172</td></tr>
+<tr class="bg-red-50 border-l-4 border-l-red-600 cursor-pointer hover:bg-red-100 transition-colors hover:bg-red-50"><td class="py-2.5 px-3 font-bold text-red-800 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-red-600"></i> Activación de Código de Emergencia</td><td class="py-2.5 px-3 text-right font-black text-red-700 text-sm">70</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Dalinde Recepción</td><td class="py-2.5 px-3 text-right font-bold text-red-700">10000</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">HSAI UNIVERSIDAD</td><td class="py-2.5 px-3 text-right font-bold text-red-700">021</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">HSAI CHAPULTEPEC</td><td class="py-2.5 px-3 text-right font-bold text-red-700">31000</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">HSAI DEL VALLE</td><td class="py-2.5 px-3 text-right font-bold text-red-700">33100</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">HSAI PATRIOTISMO</td><td class="py-2.5 px-3 text-right font-bold text-red-700">32057</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Quirófano</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30260</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Quirófano 2</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30261</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Recuperación</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30265</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Descanso Médicos</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30252</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">CEyE</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30262</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Coordinación de Enfermería</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30250</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Coordinación de Enseñanza</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30266</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Supervisión de Enfermería</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30253</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Central de Enfermería "PB"</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30100</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Central de Enfermería "2A"</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30200</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Central de Enfermería "2B"</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30219</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Central de Enfermería Cuneros</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30220</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Central de Enfermería UCIN</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30222</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Central de Enfermería UCIA</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30251</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Central de Enfermería Urgencias</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30401</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Seguridad Hospitalaria</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30156</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Mantenimiento</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30407</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Tecnologías de la Información / Sistemas</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30175</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Servicios Generales / Ropería</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30201</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Vigilancia</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30408</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Cafetería</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30400</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Cocina</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30411</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Relaciones Públicas</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30294</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Coordinación de Admisión</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30111</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Caja</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30151</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Admisión Principal</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30152</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Recepción Principal</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30150</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Recepción 2</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30199</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Recepción Urgencias</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30402</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Mesa de Control Aseguradoras</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30174</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Recepción Consultorio 1</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30177</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Recepción Consultorio 2</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30178</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Mesa de Control</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30173</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Analista CxC</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30412</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Embajador Comercial</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30126</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Coordinación de Contabilidad</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30190</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Coordinación de Cuentas por Cobrar</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30181</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Auxiliar Cuentas por Cobrar</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30182</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Contador General</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30167</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Contabilidad Egresos</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30170</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Contabilidad Ingresos</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30189</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Coordinación de Compras</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30165</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Compras</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30158</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Coordinación de Almacén</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30409</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Coordinación de Farmacia</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30259</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Almacén de Farmacia</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30227</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Coordinación Capital Humano</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30162</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Reclutamiento y Selección</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30161</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Oficina Nóminas</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30166</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Sala Usos Múltiples (SUM)</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30179</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Habitaciones 101 a 110</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30101-30110</td></tr>
+<tr class="cursor-pointer hover:bg-red-50 transition-colors"><td class="py-2.5 px-3 font-semibold text-slate-800">Habitaciones 202 a 218</td><td class="py-2.5 px-3 text-right font-bold text-red-700">30202-30218</td></tr>
 </tbody>
 </table>
 </div>
 </section>
 <!-- Carpetas e Información Institucional - 5 cols -->
 <section class="md:col-span-5 flex flex-col gap-4">
-<a class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-600 via-orange-600 to-orange-700 p-5 text-white shadow-lg hover:shadow-orange-500/25 transition-all duration-300 transform hover:-translate-y-1 border border-orange-400/40" href="Carpeta_Naranja.html" target="_blank">
+<a class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-red-600 via-red-700 to-rose-800 p-5 text-white shadow-md hover:shadow-xl hover:shadow-red-600/20 transition-all duration-300 transform hover:-translate-y-1 border border-red-500" href="Carpeta_Naranja.html" target="_blank">
 <div class="relative z-10 flex flex-col h-full justify-between">
 <div class="flex justify-between items-start">
-<span class="p-2.5 bg-black/25 rounded-xl backdrop-blur-sm border border-white/10"><i class="fa-solid fa-folder-open text-xl text-amber-200"></i></span>
-<i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-70 group-hover:opacity-100 transition"></i>
+<span class="p-2.5 bg-white/20 rounded-xl backdrop-blur-sm border border-white/30 shadow-sm"><i class="fa-solid fa-folder-open text-xl text-amber-200"></i></span>
+<i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-75 group-hover:opacity-100 transition"></i>
 </div>
 <div class="mt-4">
 <h3 class="text-base font-extrabold tracking-wide uppercase">CARPETA NARANJA</h3>
-<p class="text-xs text-orange-100/90 mt-1 font-medium">Procedimientos, protocolos y documentos hospitalarios</p>
+<p class="text-xs text-red-100 mt-1 font-medium">Procedimientos, protocolos y documentos hospitalarios</p>
 </div>
 </div>
 <div class="absolute -right-4 -bottom-4 w-28 h-28 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
 </a>
-<a class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-800 via-purple-900 to-slate-900 p-5 text-white shadow-lg hover:shadow-purple-500/25 transition-all duration-300 transform hover:-translate-y-1 border border-purple-500/40" href="Cuadro_Medicamentos.html" target="_blank">
+<a class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-700 via-emerald-800 to-teal-900 p-5 text-white shadow-md hover:shadow-xl hover:shadow-emerald-600/20 transition-all duration-300 transform hover:-translate-y-1 border border-emerald-600" href="Cuadro_Medicamentos.html" target="_blank">
 <div class="relative z-10 flex flex-col h-full justify-between">
 <div class="flex justify-between items-start">
-<span class="p-2.5 bg-black/25 rounded-xl backdrop-blur-sm border border-white/10"><i class="fa-solid fa-pills text-xl text-purple-300"></i></span>
-<i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-70 group-hover:opacity-100 transition"></i>
+<span class="p-2.5 bg-white/20 rounded-xl backdrop-blur-sm border border-white/30 shadow-sm"><i class="fa-solid fa-pills text-xl text-emerald-200"></i></span>
+<i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-75 group-hover:opacity-100 transition"></i>
 </div>
 <div class="mt-4">
 <h3 class="text-base font-extrabold tracking-wide uppercase">CUADRO BÁSICO DE MEDICAMENTOS</h3>
-<p class="text-xs text-purple-200/90 mt-1 font-medium">Consulta el catálogo institucional actualizado</p>
+<p class="text-xs text-emerald-100 mt-1 font-medium">Consulta el catálogo institucional actualizado</p>
 </div>
 </div>
-<div class="absolute -right-4 -bottom-4 w-28 h-28 bg-purple-500/10 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
+<div class="absolute -right-4 -bottom-4 w-28 h-28 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
 </a>
-<div class="rounded-2xl border-2 border-dashed border-white/10 p-5 text-center flex flex-col items-center justify-center bg-black/20">
-<i class="fa-solid fa-wand-magic-sparkles text-orange-400/60 text-2xl mb-2"></i>
-<h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Módulo en Desarrollo</h4>
-<p class="text-[11px] text-slate-500 mt-0.5">Nuevas herramientas se incorporarán próximamente</p>
+<div class="rounded-2xl border-2 border-dashed border-amber-300 p-5 text-center flex flex-col items-center justify-center bg-amber-50/60 shadow-sm">
+<i class="fa-solid fa-wand-magic-sparkles text-amber-600 text-2xl mb-2"></i>
+<h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Módulo en Desarrollo</h4>
+<p class="text-[11px] text-slate-500 mt-0.5 font-medium">Nuevas herramientas se incorporarán próximamente</p>
 </div>
 </section>
 </div>
 <!-- Carrusel de Comunicados Institucionales -->
 <section class="hsai-card p-5 relative overflow-hidden" id="carouselContainer">
-<div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
-<h2 class="text-base font-bold text-white flex items-center gap-2">
-<span class="w-7 h-7 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm border border-orange-500/30">
+<div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+<h2 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+<span class="w-7 h-7 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-sm border border-red-200 shadow-sm">
 <i class="fa-solid fa-newspaper"></i>
 </span>
-            Comunicados Destacados
-          </h2>
+          Comunicados Destacados
+        </h2>
 <span class="text-xs text-slate-400 font-medium flex items-center gap-1.5"><i class="fa-regular fa-eye"></i> Haz clic en la imagen para ampliar</span>
 </div>
 <div class="relative rounded-2xl overflow-hidden bg-black/60 shadow-xl group border border-white/10">
@@ -869,330 +759,390 @@
 </div>
 </div>
 <!-- Botones de Navegación del Carrusel -->
-<button class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/75 hover:bg-orange-600 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow-lg opacity-80 group-hover:opacity-100 border border-white/10" onclick="changeSlide(-1)" type="button">
+<button class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-red-600 hover:text-white text-slate-800 w-9 h-9 rounded-full flex items-center justify-center transition shadow-lg opacity-85 group-hover:opacity-100 border border-slate-200" onclick="changeSlide(-1)" type="button">
 <i class="fa-solid fa-chevron-left text-sm"></i>
 </button>
-<button class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/75 hover:bg-orange-600 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow-lg opacity-80 group-hover:opacity-100 border border-white/10" onclick="changeSlide(1)" type="button">
+<button class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-red-600 hover:text-white text-slate-800 w-9 h-9 rounded-full flex items-center justify-center transition shadow-lg opacity-85 group-hover:opacity-100 border border-slate-200" onclick="changeSlide(1)" type="button">
 <i class="fa-solid fa-chevron-right text-sm"></i>
 </button>
 <!-- Indicadores tipo Puntos -->
 <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2 z-10">
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(1)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(2)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(3)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(4)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(5)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(6)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(7)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(8)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(9)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(10)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(11)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(12)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(13)"></span>
-<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/30 cursor-pointer transition-all" onclick="setSlide(14)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(1)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(2)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(3)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(4)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(5)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(6)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(7)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(8)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(9)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(10)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(11)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(12)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(13)"></span>
+<span class="orienta-dot w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer transition-all" onclick="setSlide(14)"></span>
 </div>
 </div>
-<div class="mt-4 text-center bg-orange-950/20 p-3.5 rounded-xl border border-orange-500/20">
-<p class="font-bold text-orange-300 text-xs md:text-sm">¡PREPÁRATE PARA VIVIR TU BIENESTAR COMO NUNCA ANTES!</p>
-<p class="text-slate-400 text-[11px] mt-0.5">Para más detalles sobre los beneficios o comunicados, acércate a la Coordinación de Capital Humano.</p>
+<div class="mt-4 text-center bg-red-50 p-3.5 rounded-xl border border-red-200">
+<p class="font-extrabold text-red-700 text-xs md:text-sm">¡PREPÁRATE PARA VIVIR TU BIENESTAR COMO NUNCA ANTES EN ESTA TEMPORADA NAVIDEÑA!</p>
+<p class="text-slate-600 text-[11px] mt-0.5 font-medium">Para más detalles sobre los beneficios o comunicados, acércate a la Coordinación de Capital Humano.</p>
 </div>
 </section>
 </main>
 </div>
-<!-- Footer con estilo Halloween -->
-<footer class="bg-black/90 text-slate-400 py-6 border-t border-white/10 text-center text-xs mt-auto relative z-20">
+<!-- Footer con estilo Blanco / Festivo Claro -->
+<footer class="bg-white text-slate-500 py-6 border-t border-slate-200 text-center text-xs mt-auto relative z-20 shadow-inner">
 <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-<p class="">© 2026 Hospital San Ángel Inn Sur. Todos los derechos reservados.</p>
-<div class="flex items-center gap-3 text-slate-400">
-<span class="text-orange-400 flex items-center gap-1.5"><i class="fa-solid fa-ghost"></i> Edición Especial Halloween</span>
+<p class="font-medium">© 2026 Hospital San Ángel Inn Sur. Todos los derechos reservados.</p>
+<div class="flex items-center gap-3 text-slate-500">
+<span class="text-red-700 font-bold flex items-center gap-1.5"><i class="fa-solid fa-tree text-emerald-600"></i> Edición Especial Navidad 2026</span>
 <span class="">|</span>
-<p class="text-slate-400">Dirección de Tecnologías de Información &amp; Sistemas</p>
+<p class="text-slate-600 font-medium">Dirección de Tecnologías de Información &amp; Sistemas</p>
 </div>
 </div>
 </footer>
 <!-- Modal para Zoom de Imagen -->
-<div class="fixed inset-0 hidden items-center justify-center bg-black/90 z-50 p-4 backdrop-blur-md transition-opacity duration-300" id="imageModal">
+<div class="fixed inset-0 hidden items-center justify-center bg-slate-900/80 z-50 p-4 backdrop-blur-md transition-opacity duration-300" id="imageModal">
 <div class="relative max-w-4xl w-full max-h-[90vh] flex flex-col items-center justify-center">
-<button class="absolute -top-10 right-0 text-white text-2xl hover:text-orange-400 font-bold p-2 transition" onclick="hideImageModal()">
+<button class="absolute -top-10 right-0 text-white text-2xl hover:text-amber-400 font-bold p-2 transition" onclick="hideImageModal()">
 <i class="fa-solid fa-xmark"></i>
 </button>
-<img alt="Visualización Ampliada" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain border border-orange-500/30" id="modalImage" src="">
+<img alt="Visualización Ampliada" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain border-2 border-white" id="modalImage" src="">
 </div>
 </div>
 <!-- Toast Notification Container -->
-<div class="fixed bottom-5 right-5 bg-hsai-dark text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 translate-y-20 opacity-0 transition-all duration-300 z-50 border border-orange-500/40" id="toast">
-<div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm border border-emerald-500/30">
+<div class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 translate-y-20 opacity-0 transition-all duration-300 z-50 border border-slate-700" id="toast">
+<div class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm shadow-sm">
 <i class="fa-solid fa-check"></i>
 </div>
 <span class="text-xs md:text-sm font-medium text-slate-100" id="toastMessage">Extensión copiada al portapapeles</span>
 </div>
-<!-- SCRIPTING LÓGICO Y CONTROL DE INTERACCIONES -->
+<!-- SCRIPTING LÓGICO Y CONTROL DE INTERACCIONES (100% PRESERVADO) -->
 <script>
-    // --- Reloj Digital en Tiempo Real ---
-    function updateClock() {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('liveClock').textContent = `${hours}:${minutes}:${seconds}`;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
+  // --- Audio de Campanas Navideñas ---
+  let soundActive = false;
+  let audioCtx = null;
+  let chimeInterval = null;
 
-    // --- Notificaciones Toast ---
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toastMessage');
-      toastMsg.textContent = message;
-      toast.classList.remove('translate-y-20', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
+  function playBellChime() {
+    if (!soundActive) return;
+    try {
+      const ctx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      audioCtx = ctx;
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+
+      const freqs = [1046.5, 1318.5, 1567.98, 2093.0];
+      const noteTime = ctx.currentTime;
       
-      setTimeout(() => {
-        toast.classList.remove('translate-y-0', 'opacity-100');
-        toast.classList.add('translate-y-20', 'opacity-0');
-      }, 2500);
-    }
+      freqs.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, noteTime + idx * 0.12);
 
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        showToast(`📋 Extensión ${text} copiada al portapapeles`);
-      }).catch(err => {
-        console.error('Error al copiar: ', err);
+        gain.gain.setValueAtTime(0.001, noteTime + idx * 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.08, noteTime + idx * 0.12 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + idx * 0.12 + 1.2);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(noteTime + idx * 0.12);
+        osc.stop(noteTime + idx * 0.12 + 1.3);
       });
+    } catch(e) {
+      console.log('Audio disabled or blocked', e);
     }
+  }
 
-    // --- Módulo de Avisos y Noticias ---
-    const newsList = [
-      { text: "¡Bienvenidos al nuevo portal web institucional del Hospital San Ángel Inn Sur!", tag: "General" },
-      { text: "Recordatorio: La actualización del Cuadro Básico de Medicamentos se encuentra disponible.", tag: "Farmacia" },
-      { text: "Mantén limpio tu espacio de trabajo y reporta incidencias a la ext. 30175.", tag: "Sistemas" }
-    ];
-    let currentNewsIndex = 0;
+  function toggleChristmasSound() {
+    soundActive = !soundActive;
+    const btn = document.getElementById('soundToggleBtn');
+    const icon = document.getElementById('soundIcon');
+    const badge = document.getElementById('soundBadge');
 
-    function renderNews() {
-      const news = newsList[currentNewsIndex];
-      const wrapper = document.getElementById('newsWrapper');
-      wrapper.innerHTML = `
-        <div class="space-y-1.5">
-          <span class="bg-orange-500/20 text-orange-300 text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase border border-orange-500/30">${news.tag}</span>
-          <p class="text-xs font-semibold text-slate-200 leading-snug">${news.text}</p>
-        </div>
-      `;
-      document.getElementById('newsCounter').textContent = `${currentNewsIndex + 1}/${newsList.length}`;
+    if (soundActive) {
+      icon.className = 'fa-solid fa-bell text-amber-600 animate-bounce';
+      badge.textContent = 'ON';
+      badge.className = 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500 text-white';
+      playBellChime();
+      chimeInterval = setInterval(playBellChime, 18000);
+      showToast('🔔 Efectos de sonido navideños activados');
+    } else {
+      icon.className = 'fa-solid fa-bell-slash text-amber-600';
+      badge.textContent = 'MUTE';
+      badge.className = 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 text-slate-700';
+      if (chimeInterval) clearInterval(chimeInterval);
+      showToast('🔇 Sonido silenciado');
     }
+  }
 
-    function nextNews() {
-      currentNewsIndex = (currentNewsIndex + 1) % newsList.length;
-      renderNews();
-    }
+  // --- Reloj Digital en Tiempo Real ---
+  function updateClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('liveClock').textContent = `${hours}:${minutes}:${seconds}`;
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
 
-    function prevNews() {
-      currentNewsIndex = (currentNewsIndex - 1 + newsList.length) % newsList.length;
-      renderNews();
-    }
-    renderNews();
-    setInterval(nextNews, 6000);
-
-    // --- Higiene de Manos Interactivo ---
-    const hygieneSteps = [
-      { num: 1, title: "Agua al rescate", desc: "Moja tus manos con agua limpia y aplica suficiente jabón." },
-      { num: 2, title: "Súper espuma", desc: "Frota las palmas entre sí para generar abundante espuma." },
-      { num: 3, title: "Ataque dorsal", desc: "Frota la palma de una mano contra el dorso de la otra entrelazando dedos." },
-      { num: 4, title: "Entre los dedos", desc: "Limpia nudillos, espacio interdigital y rodea los pulgares." },
-      { num: 5, title: "Gran aclarado", desc: "Enjuaga completamente con abundante agua." },
-      { num: 6, title: "Secado seguro", desc: "Seca con toalla desechable y úsala para cerrar la llave del grifo." }
-    ];
-    let currentHygieneIndex = 0;
-    let hygieneInterval = null;
-
-    function renderHygieneStep(index) {
-      const step = hygieneSteps[index];
-      const card = document.getElementById('hygieneCardContent');
-      
-      card.innerHTML = `
-        <div class="flex items-start gap-3">
-          <span class="w-7 h-7 rounded-full bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">${step.num}</span>
-          <div>
-            <h4 class="text-xs font-bold text-emerald-200">${step.title}</h4>
-            <p class="text-[11px] text-slate-300 leading-tight mt-0.5">${step.desc}</p>
-          </div>
-        </div>
-      `;
-
-      // Actualizar Dots
-      const dotsContainer = document.getElementById('stepDots');
-      dotsContainer.innerHTML = hygieneSteps.map((_, i) => 
-        `<span onclick="jumpHygieneStep(${i})" class="w-2 h-2 rounded-full cursor-pointer transition-all ${i === index ? 'bg-orange-500 w-4 shadow-[0_0_6px_#f97316]' : 'bg-slate-700'}"></span>`
-      ).join('');
-
-      // Reiniciar Animación de Barra
-      const bar = document.getElementById('hygieneProgressBar');
-      bar.style.width = '0%';
-      setTimeout(() => { bar.style.width = '100%'; }, 50);
-    }
-
-    function startHygieneCycle() {
-      renderHygieneStep(currentHygieneIndex);
-      if (hygieneInterval) clearInterval(hygieneInterval);
-      hygieneInterval = setInterval(() => {
-        currentHygieneIndex = (currentHygieneIndex + 1) % hygieneSteps.length;
-        renderHygieneStep(currentHygieneIndex);
-      }, 5000);
-    }
-
-    function jumpHygieneStep(index) {
-      currentHygieneIndex = index;
-      startHygieneCycle();
-    }
-
-    const hygieneBox = document.getElementById('hygieneContainer');
-    hygieneBox.addEventListener('mouseenter', () => clearInterval(hygieneInterval));
-    hygieneBox.addEventListener('mouseleave', startHygieneCycle);
-    startHygieneCycle();
-
-    // --- Filtro e Interacción con la Tabla de Extensiones ---
-    const tableRows = document.querySelectorAll('#extensionsTable tbody tr');
+  // --- Notificaciones Toast ---
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMessage');
+    toastMsg.textContent = message;
+    toast.classList.remove('translate-y-20', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
     
+    setTimeout(() => {
+      toast.classList.remove('translate-y-0', 'opacity-100');
+      toast.classList.add('translate-y-20', 'opacity-0');
+    }, 2500);
+  }
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(`📋 Extensión ${text} copiada al portapapeles`);
+    }).catch(err => {
+      console.error('Error al copiar: ', err);
+    });
+  }
+
+  // --- Módulo de Avisos y Noticias ---
+  const newsList = [
+    { text: "¡Bienvenidos al portal institucional del Hospital San Ángel Inn Sur - Edición Navideña!", tag: "General" },
+    { text: "Recordatorio: La actualización del Cuadro Básico de Medicamentos se encuentra disponible.", tag: "Farmacia" },
+    { text: "Mantén limpio tu espacio de trabajo y reporta incidencias a la ext. 30175.", tag: "Sistemas" }
+  ];
+  let currentNewsIndex = 0;
+
+  function renderNews() {
+    const news = newsList[currentNewsIndex];
+    const wrapper = document.getElementById('newsWrapper');
+    wrapper.innerHTML = `
+      <div class="space-y-1.5">
+        <span class="bg-red-100 text-red-700 text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase border border-red-200">${news.tag}</span>
+        <p class="text-xs font-semibold text-slate-800 leading-snug">${news.text}</p>
+      </div>
+    `;
+    document.getElementById('newsCounter').textContent = `${currentNewsIndex + 1}/${newsList.length}`;
+  }
+
+  function nextNews() {
+    currentNewsIndex = (currentNewsIndex + 1) % newsList.length;
+    renderNews();
+  }
+
+  function prevNews() {
+    currentNewsIndex = (currentNewsIndex - 1 + newsList.length) % newsList.length;
+    renderNews();
+  }
+  renderNews();
+  setInterval(nextNews, 6000);
+
+  // --- Higiene de Manos Interactivo ---
+  const hygieneSteps = [
+    { num: 1, title: "Agua al rescate", desc: "Moja tus manos con agua limpia y aplica suficiente jabón." },
+    { num: 2, title: "Súper espuma", desc: "Frota las palmas entre sí para generar abundante espuma." },
+    { num: 3, title: "Ataque dorsal", desc: "Frota la palma de una mano contra el dorso de la otra entrelazando dedos." },
+    { num: 4, title: "Entre los dedos", desc: "Limpia nudillos, espacio interdigital y rodea los pulgares." },
+    { num: 5, title: "Gran aclarado", desc: "Enjuaga completamente con abundante agua." },
+    { num: 6, title: "Secado seguro", desc: "Seca con toalla desechable y úsala para cerrar la llave del grifo." }
+  ];
+  let currentHygieneIndex = 0;
+  let hygieneInterval = null;
+
+  function renderHygieneStep(index) {
+    const step = hygieneSteps[index];
+    const card = document.getElementById('hygieneCardContent');
+    
+    card.innerHTML = `
+      <div class="flex items-start gap-3">
+        <span class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">${step.num}</span>
+        <div>
+          <h4 class="text-xs font-bold text-emerald-900">${step.title}</h4>
+          <p class="text-[11px] text-slate-700 leading-tight mt-0.5">${step.desc}</p>
+        </div>
+      </div>
+    `;
+
+    // Actualizar Dots
+    const dotsContainer = document.getElementById('stepDots');
+    dotsContainer.innerHTML = hygieneSteps.map((_, i) => 
+      `<span onclick="jumpHygieneStep(${i})" class="w-2 h-2 rounded-full cursor-pointer transition-all ${i === index ? 'bg-emerald-600 w-4 shadow-sm' : 'bg-slate-300'}"></span>`
+    ).join('');
+
+    // Reiniciar Animación de Barra
+    const bar = document.getElementById('hygieneProgressBar');
+    bar.style.width = '0%';
+    setTimeout(() => { bar.style.width = '100%'; }, 50);
+  }
+
+  function startHygieneCycle() {
+    renderHygieneStep(currentHygieneIndex);
+    if (hygieneInterval) clearInterval(hygieneInterval);
+    hygieneInterval = setInterval(() => {
+      currentHygieneIndex = (currentHygieneIndex + 1) % hygieneSteps.length;
+      renderHygieneStep(currentHygieneIndex);
+    }, 5000);
+  }
+
+  function jumpHygieneStep(index) {
+    currentHygieneIndex = index;
+    startHygieneCycle();
+  }
+
+  const hygieneBox = document.getElementById('hygieneContainer');
+  hygieneBox.addEventListener('mouseenter', () => clearInterval(hygieneInterval));
+  hygieneBox.addEventListener('mouseleave', startHygieneCycle);
+  startHygieneCycle();
+
+  // --- Filtro e Interacción con la Tabla de Extensiones ---
+  const tableRows = document.querySelectorAll('#extensionsTable tbody tr');
+  
+  tableRows.forEach(tr => {
+    tr.classList.add('cursor-pointer', 'hover:bg-red-50', 'transition-colors');
+    tr.addEventListener('click', () => {
+      const extCell = tr.cells[1];
+      if (extCell) {
+        copyToClipboard(extCell.textContent.trim());
+      }
+    });
+  });
+
+  function filterExtensions() {
+    const input = document.getElementById('searchInput');
+    const term = input.value.toLowerCase().trim();
+    const clearBtn = document.getElementById('clearSearchBtn');
+    let visibleCount = 0;
+
+    if (term.length > 0) {
+      clearBtn.classList.remove('hidden');
+    } else {
+      clearBtn.classList.add('hidden');
+    }
+
     tableRows.forEach(tr => {
-      tr.classList.add('cursor-pointer', 'hover:bg-orange-500/10', 'transition-colors');
-      tr.addEventListener('click', () => {
-        const extCell = tr.cells[1];
-        if (extCell) {
-          copyToClipboard(extCell.textContent.trim());
-        }
-      });
-    });
+      const contact = tr.cells[0].textContent;
+      const ext = tr.cells[1].textContent;
+      
+      const match = contact.toLowerCase().includes(term) || ext.toLowerCase().includes(term);
 
-    function filterExtensions() {
-      const input = document.getElementById('searchInput');
-      const term = input.value.toLowerCase().trim();
-      const clearBtn = document.getElementById('clearSearchBtn');
-      let visibleCount = 0;
-
-      if (term.length > 0) {
-        clearBtn.classList.remove('hidden');
+      if (match) {
+        tr.style.display = '';
+        visibleCount++;
       } else {
-        clearBtn.classList.add('hidden');
+        tr.style.display = 'none';
       }
-
-      tableRows.forEach(tr => {
-        const contact = tr.cells[0].textContent;
-        const ext = tr.cells[1].textContent;
-        
-        const match = contact.toLowerCase().includes(term) || ext.toLowerCase().includes(term);
-
-        if (match) {
-          tr.style.display = '';
-          visibleCount++;
-        } else {
-          tr.style.display = 'none';
-        }
-      });
-
-      document.getElementById('matchCount').textContent = `${visibleCount} contactos`;
-    }
-
-    function clearSearch() {
-      document.getElementById('searchInput').value = '';
-      filterExtensions();
-    }
-
-    // --- Bloc de Notas con LocalStorage ---
-    const notepad = document.getElementById('notepad');
-    const noteCharCount = document.getElementById('noteCharCount');
-    const noteSavedStatus = document.getElementById('noteSavedStatus');
-
-    if (notepad) {
-      notepad.value = localStorage.getItem('hsai_sur_notes') || '';
-      noteCharCount.textContent = `${notepad.value.length} caracteres`;
-
-      notepad.addEventListener('input', () => {
-        localStorage.setItem('hsai_sur_notes', notepad.value);
-        noteCharCount.textContent = `${notepad.value.length} caracteres`;
-        
-        noteSavedStatus.classList.remove('hidden');
-        setTimeout(() => { noteSavedStatus.classList.add('hidden'); }, 1500);
-      });
-    }
-
-    // --- Carrusel de Comunicados Principal ---
-    let slideIndex = 1;
-    let autoTimer = null;
-
-    function displaySlide(n) {
-      const slides = document.getElementsByClassName("orienta-slide");
-      const dots = document.getElementsByClassName("orienta-dot");
-      if (slides.length === 0) return;
-
-      if (n > slides.length) slideIndex = 1;
-      if (n < 1) slideIndex = slides.length;
-
-      for (let i = 0; i < slides.length; i++) {
-        slides[i].classList.add("hidden");
-      }
-      for (let i = 0; i < dots.length; i++) {
-        dots[i].classList.remove("bg-orange-500", "w-5", "shadow-[0_0_8px_#f97316]");
-        dots[i].classList.add("bg-white/30", "w-2.5");
-      }
-
-      slides[slideIndex - 1].classList.remove("hidden");
-      if (dots[slideIndex - 1]) {
-        dots[slideIndex - 1].classList.remove("bg-white/30", "w-2.5");
-        dots[slideIndex - 1].classList.add("bg-orange-500", "w-5", "shadow-[0_0_8px_#f97316]");
-      }
-    }
-
-    function changeSlide(n) {
-      displaySlide(slideIndex += n);
-      restartTimer();
-    }
-
-    function setSlide(n) {
-      displaySlide(slideIndex = n);
-      restartTimer();
-    }
-
-    function restartTimer() {
-      if (autoTimer) clearInterval(autoTimer);
-      autoTimer = setInterval(() => changeSlide(1), 7000);
-    }
-
-    displaySlide(slideIndex);
-    restartTimer();
-
-    const carouselContainer = document.getElementById('carouselContainer');
-    if (carouselContainer) {
-      carouselContainer.addEventListener('mouseenter', () => clearInterval(autoTimer));
-      carouselContainer.addEventListener('mouseleave', restartTimer);
-    }
-
-    // --- Modal para Zoom de Imagen ---
-    function openModalWithImage(container) {
-      const img = container.querySelector('img');
-      if (img) {
-        document.getElementById('modalImage').src = img.src;
-        showImageModal();
-      }
-    }
-
-    function showImageModal() {
-      const modal = document.getElementById('imageModal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function hideImageModal() {
-      const modal = document.getElementById('imageModal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    document.getElementById('imageModal').addEventListener('click', function(e) {
-      if (e.target === this) hideImageModal();
     });
-  </script>
+
+    document.getElementById('matchCount').textContent = `${visibleCount} contactos`;
+  }
+
+  function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    filterExtensions();
+  }
+
+  // --- Bloc de Notas con LocalStorage ---
+  const notepad = document.getElementById('notepad');
+  const noteCharCount = document.getElementById('noteCharCount');
+  const noteSavedStatus = document.getElementById('noteSavedStatus');
+
+  if (notepad) {
+    notepad.value = localStorage.getItem('hsai_sur_notes') || '';
+    noteCharCount.textContent = `${notepad.value.length} caracteres`;
+
+    notepad.addEventListener('input', () => {
+      localStorage.setItem('hsai_sur_notes', notepad.value);
+      noteCharCount.textContent = `${notepad.value.length} caracteres`;
+      
+      noteSavedStatus.classList.remove('hidden');
+      setTimeout(() => { noteSavedStatus.classList.add('hidden'); }, 1500);
+    });
+  }
+
+  // --- Carrusel de Comunicados Principal ---
+  let slideIndex = 1;
+  let autoTimer = null;
+
+  function displaySlide(n) {
+    const slides = document.getElementsByClassName("orienta-slide");
+    const dots = document.getElementsByClassName("orienta-dot");
+    if (slides.length === 0) return;
+
+    if (n > slides.length) slideIndex = 1;
+    if (n < 1) slideIndex = slides.length;
+
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].classList.add("hidden");
+    }
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].classList.remove("bg-red-500", "w-5", "shadow-sm", "bg-amber-400");
+      dots[i].classList.add("bg-white/40", "w-2.5");
+    }
+
+    slides[slideIndex - 1].classList.remove("hidden");
+    if (dots[slideIndex - 1]) {
+      dots[slideIndex - 1].classList.remove("bg-white/40", "w-2.5");
+      dots[slideIndex - 1].classList.add("bg-red-500", "w-5", "shadow-sm");
+    }
+  }
+
+  function changeSlide(n) {
+    displaySlide(slideIndex += n);
+    restartTimer();
+  }
+
+  function setSlide(n) {
+    displaySlide(slideIndex = n);
+    restartTimer();
+  }
+
+  function restartTimer() {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = setInterval(() => changeSlide(1), 7000);
+  }
+
+  displaySlide(slideIndex);
+  restartTimer();
+
+  const carouselContainer = document.getElementById('carouselContainer');
+  if (carouselContainer) {
+    carouselContainer.addEventListener('mouseenter', () => clearInterval(autoTimer));
+    carouselContainer.addEventListener('mouseleave', restartTimer);
+  }
+
+  // --- Modal para Zoom de Imagen ---
+  function openModalWithImage(container) {
+    const img = container.querySelector('img');
+    if (img) {
+      document.getElementById('modalImage').src = img.src;
+      showImageModal();
+    }
+  }
+
+  function showImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function hideImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  document.getElementById('imageModal').addEventListener('click', function(e) {
+    if (e.target === this) hideImageModal();
+  });
+</script>
+
 
 </body>
-
 </html>
